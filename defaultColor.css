@@ -1,0 +1,77 @@
+
+body { background-color: #fff; }
+.body { color: #333; background-color: #fefefe; }
+
+.logoword { animation: move 3s linear infinite; }
+@keyframes move {
+    0%    { text-shadow:  2px  2px 6px #000; }
+    12.5% { text-shadow:  0px  4px 6px #000; }
+    25%   { text-shadow: -2px  2px 6px #000; }
+    37.5% { text-shadow: -3px  0px 6px #000; }
+    50%   { text-shadow: -2px -2px 6px #000; }
+    62.5% { text-shadow:  0px -4px 6px #000; }
+    75%   { text-shadow:  2px -2px 6px #000; }
+    87.5% { text-shadow:  3px  0px 6px #000; }
+    100%  { text-shadow:  2px  2px 6px #000; }
+}
+.rond { border-color: #e4e4e4; }
+.light { background-color: #333; }
+
+.header { border-bottom-color: #e4e4e4; }
+.headerNav a + a { border-left-color: #e4e4e4; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { color: #111; }
+h1,
+h2 { border-bottom-color: #eee; }
+
+a { color: #4183c4; }
+a:visited { color: #0b0080; }
+a:active { color:#faa700; }
+
+blockquote {
+    color: #666666;
+    border-left-color: #EEE;
+}
+
+hr {
+    border-top-color: #aaa;
+    border-bottom-color: #eee;
+}
+
+pre,
+code,
+kbd,
+samp { color: #000; }
+
+
+.ques-view code,
+#analysis code {
+    color: #e74c3c;
+    background-color: #f7f7f7;
+    border-color: #e4e4e4;
+}
+.ques-view pre,
+#analysis pre {
+    background-color: #f7f7f7;
+    border-color: #ddd;
+}
+.ques-view pre code,
+#analysis pre code {
+    color: #333;
+}
+
+table { border-color: #ddd; }
+
+table th,
+table td {
+    border-color: #ddd;
+}
+
+
+table th { color: #325d72; background-color: #eee; }
+
