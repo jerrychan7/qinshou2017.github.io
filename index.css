@@ -91,21 +91,29 @@ body.darktheme {
     background-color: #ddd;
 }
 
-.headerNav {
+.header {
     margin: auto auto 15px;
     border-bottom: 1px solid;
+    position: relative;
+}
+.headerNav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
 }
 .headerNav a { padding: 0 10px; }
 .headerNav a + a { border-left: 1px solid; }
 
-.headerNav { border-bottom-color: #e4e4e4; }
+.header { border-bottom-color: #e4e4e4; }
 .headerNav a + a { border-left-color: #e4e4e4; }
 
-.darktheme .headerNav { border-bottom-color: #555; }
+.darktheme .header { border-bottom-color: #555; }
 .darktheme .headerNav a + a { border-left-color: #555; }
 
 @media (max-width: 768px) {
-    .headerNav { text-align: center; }
+    .headerNav { position: static; }
     .logo {
         display: block;
         text-align: center;
