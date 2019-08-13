@@ -4,7 +4,6 @@ function setCookie(cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    console.log(cname + "=" + cvalue);
 }
 function getCookie(cname) {
     var name = cname + "=",
@@ -33,18 +32,11 @@ function retheme(theme) {
             now = i;
             break;
         }
-    console.log({now, theme, i: allTheme.indexOf(theme)});
     document.body.className = cn.replace(allTheme[now], "").replace(/(\s)\1*/, "$1").trim();
-    if (theme !== undefined && allTheme.indexOf(theme) > -1) {
-        if(allTheme.indexOf(theme)) {
-            document.body.className = (cn + " " + theme).trim();
-            setCookie("theme", theme);
-        }
-    }
-    else if (now != allTheme.length - 1) {
-        document.body.className = (cn + " " + allTheme[(now + 1) % allTheme.length]).trim();
-        if(allTheme.indexOf(theme)) setCookie("theme", allTheme[(now + 1) % allTheme.length]);
-    }
+    var nextTheme = theme || allTheme[(now + 1) % allTheme.length];
+    if (nextTheme != "default")
+        document.body.className = (cn + " " + nextTheme).trim();
+    setCookie("theme", nextTheme);
 }
 
 window.addEventListener("load", function(e) {
