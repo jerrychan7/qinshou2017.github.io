@@ -1,4 +1,6 @@
 
+.darktheme meta-theme-color { color: #3C3F41; }
+
 body.darktheme { background-color: #3C3F41; }
 .darktheme .body {  color: #DDD; background-color: #1D1F21; }
 

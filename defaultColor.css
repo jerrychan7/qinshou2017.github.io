@@ -1,4 +1,6 @@
 
+.default meta-theme-color { color: #fff; }
+
 body { background-color: #fff; }
 .body { color: #333; background-color: #fefefe; }
 
