@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>index</title>
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/theme.css" />
+    <script src="./js/index.js"></script>
+    <script src="./js/top.js"></script>
+    <script>
+        // {title: "string", time: "yyyy-MM-dd", tags: ["string",...], abstract: "string"}
+        var contentsItems = [{"title":"第一篇Blogger","time":"19-08-13","tags":["杂记"],"abstract":"如题，这是咱的第一篇博客。"}];
+        window.addEventListener("load", function(e) {
+            var nodes = [];
+            contentsItems.forEach(function(item) {
+                var tags = item.tags,
+                    title = item.title,
+                    time = item.time,
+                    abstract = item.abstract;
+                nodes.push("<li><a class=\"title\" href=\"./articles/" + title + "/" + title +".html\">" +
+                           title + "</a>" +
+                           "<span class=\"time\">" + time + "</span>" +
+                           "<span class=\"tags\">" +
+                          tags.map(function(t) {
+                    return "<a href=\"./tags.html#tag=" + t + "\"><code>" + t + "</code></a>";
+                }).join("&#09;") + "</span>" +
+                          "<p class=\"abstract\">" + abstract + "</p></li>");
+            });
+            document.getElementById("contents").innerHTML = "<ul>" + nodes.join("") + "</ul>";
+        });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="tags.html">tags</a>
+            <a href="about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="contents" id="contents"></div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></body>
+</html>
