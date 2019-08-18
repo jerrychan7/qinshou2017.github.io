@@ -21,6 +21,19 @@ function mkdir(dirPath) {
     }
 }
 
+function rmdir(dirPath){
+    if(fs.existsSync(dirPath)){
+        fs.readdirSync(dirPath).forEach((file, index) => {
+            let curPath = path.join(dirPath, file);
+            if(fs.statSync(curPath).isDirectory())
+                delDir(curPath);
+            else
+                fs.unlinkSync(curPath);
+        });
+        fs.rmdirSync(dirPath);
+    }
+}
+
 function copyFile(src, dst) {
     mkdir(path.dirname(src));
     fs.createReadStream(src).pipe(fs.createWriteStream(dst));
@@ -50,6 +63,7 @@ function buildSingleArticle(articleDirPath) {
         articleName = articleName.pop();
     else articleName = articleName[articleName.length - 2];
     const outputDirPath = path.join(articlesOutputDirPath, articleName);
+    rmdir(outputDirPath);
     mkdir(outputDirPath);
     
     files.forEach(filename => {
@@ -72,7 +86,7 @@ function buildSingleArticle(articleDirPath) {
         let out = marked(article);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
         
-        console.log(articleName);
+        console.log("built " + articleName);
     });
 }
 
@@ -85,4 +99,44 @@ function buildArticlesBank() {
     });
 }
 
-buildArticlesBank();
+function buildArticlesSync() {
+    let fileChangeFlag = {};
+    const watcher = fs.watch(articlesBankDirPath, {recursive: true}, (e,fileName) => {
+        var filePath = path.join(articlesBankDirPath, fileName);
+        // rename / delete
+        if (!fs.existsSync(filePath))
+            return;
+        var stats = fs.statSync(filePath);
+        if (stats.isFile() && stats.size) {
+            var dirPath = path.dirname(filePath);
+            if (!fileChangeFlag[dirPath]) {
+                fileChangeFlag[dirPath] = true;
+                setTimeout(function() {
+                    buildSingleArticle(dirPath);
+                    fileChangeFlag[dirPath] = false;
+                    delete fileChangeFlag[dirPath];
+                }, 800);
+            }
+        }
+    });
+    console.log("start sync build, enter 'exit' to close the program.");
+    const rl = require("readline").createInterface({input: process.stdin});
+    rl.on("line", async line => {
+        if (line.trim() === "exit") {
+            watcher.close();
+            process.exitCode = 0;
+            rl.close();
+        }
+    });
+}
+
+var cliArgv = process.argv.splice(2);
+switch (cliArgv[0]) {
+    case "sync":
+        buildArticlesSync();
+        break;
+    case "rebuild":
+    default:
+        buildArticlesBank();
+        break;
+}
