@@ -4,6 +4,7 @@ const path = require("path"),
       marked = require("marked");
 
 const rootDirPath = __dirname,
+      templateDirPath = path.join(rootDirPath, "/template"),
       articlesBankDirPath = path.join(rootDirPath, "/articlesBank"),
       articlesOutputDirPath = path.join(rootDirPath, "/articles");
 
@@ -52,6 +53,8 @@ function copyDir(srcDir, aimDir) {
     });
 }
 
+let articlesInfo = {};
+
 // rebuild
 // buildDiff
 
@@ -86,6 +89,12 @@ function buildSingleArticle(articleDirPath) {
         let out = marked(article);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
         
+        articlesInfo[articleName] = articleInfo;
+        articlesInfo[articleName].abstract = articleInfo.abstract
+            ? articleInfo.abstract
+            : out.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
+        articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
+
         console.log("built " + articleName);
     });
 }
@@ -97,6 +106,34 @@ function buildArticlesBank() {
         if (stats.isDirectory())
             buildSingleArticle(filedir);
     });
+    let infos = [], indexPageContentsItems = "",
+        tags_title = {};
+    for (let articleTitle in articlesInfo) {
+        let info = articlesInfo[articleTitle];
+        info.title = articleTitle;
+        infos.push(info);
+    }
+    infos.sort((a, b) => a.time.Post - b.time.Post);
+    infos.forEach(info => {
+        // {title: "string", time: "yyyy-MM-dd", tags: ["string",...], abstract: "string"}
+        indexPageContentsItems += JSON.stringify({
+            title: info.title,
+            time: info.time.Post.replace(/(\d{2})(\d{2})(\d{2})\d*/g, "$1-$2-$3"),
+            tags: info.tags,
+            abstract: info.abstract
+        });
+        info.tags.forEach(tag => {
+            if (tags_title[tag])
+                tags_title[tag].push(info.title);
+            else tags_title[tag] = [info.title];
+        });
+    });
+    console.log(indexPageContentsItems);
+    fs.writeFileSync(path.join(rootDirPath, "/index.html"),
+        fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
+            .replace("/*contentsItems*/", indexPageContentsItems));
+    copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
+    copyDir(path.join(templateDirPath, "/js"), path.join(rootDirPath, "/js"));
 }
 
 function buildArticlesSync() {

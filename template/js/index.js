@@ -38,7 +38,7 @@ function retheme(theme) {
     if (nextTheme != "default")
         document.body.className = (cn + " " + nextTheme).trim();
     setCookie("theme", nextTheme);
-    
+
     var meta = document.querySelector("meta[name=\"theme-color\"]");
     if (meta) meta.content = meta_theme_color[nextTheme];
 }
