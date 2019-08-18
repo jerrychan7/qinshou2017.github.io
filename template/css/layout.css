@@ -18,6 +18,17 @@ body { margin: 0; padding: 0; }
     background-clip: padding-box;
 }
 
+#gotoTop {
+    display: block;
+    position: fixed;
+    padding: 0.3em;
+    right: 10px; bottom: 8px;
+    width: 2em; height: 2em;
+    text-align: center;
+    line-height: 2em;
+    text-decoration: none;
+}
+
 .logo { display: inline-block; position: relative; padding: 5px; }
 .header .logo { display: block; }
 .logoword {
