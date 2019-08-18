@@ -32,7 +32,7 @@ function rmdir(dirPath){
         fs.readdirSync(dirPath).forEach((file, index) => {
             let curPath = path.join(dirPath, file);
             if(fs.statSync(curPath).isDirectory())
-                delDir(curPath);
+                rmdir(curPath);
             else
                 fs.unlinkSync(curPath);
         });
@@ -42,7 +42,8 @@ function rmdir(dirPath){
 
 function copyFile(src, dst) {
     mkdir(path.dirname(src));
-    fs.createReadStream(src).pipe(fs.createWriteStream(dst));
+//    fs.createReadStream(src).pipe(fs.createWriteStream(dst));
+    fs.copyFileSync(src, dst);
 }
 
 function copyDir(srcDir, aimDir) {
@@ -54,7 +55,8 @@ function copyDir(srcDir, aimDir) {
         if (stats.isDirectory())
             return copyDir(filedir, ad);
         if (!stats.isFile()) return;
-        fs.createReadStream(filedir).pipe(fs.createWriteStream(ad));
+//        fs.createReadStream(filedir).pipe(fs.createWriteStream(ad));
+        fs.copyFileSync(filedir, ad);
     });
 }
 
@@ -157,8 +159,20 @@ function buildArticlesBank() {
                 marked(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8")))
             .replace("{links}", links));
 
+    rmdir(path.join(rootDirPath, "/css"));
     copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
+    rmdir(path.join(rootDirPath, "/js"));
     copyDir(path.join(templateDirPath, "/js"), path.join(rootDirPath, "/js"));
+
+    fs.writeFileSync(path.join(rootDirPath, "/js/index.js"),
+        fs.readFileSync(path.join(templateDirPath, "/js/index.js"), "utf8")
+            .replace(/\/\*allTheme\*\//g,
+                     fs.readdirSync(path.join(templateDirPath, "/css/theme/")).reduce((allTheme, themeName) => {
+        if (themeName !== "default.css"
+            && fs.statSync(path.join(templateDirPath, "/css/theme/", themeName)).isFile())
+            allTheme.push(themeName.replace(path.extname(themeName), ""));
+        return allTheme;
+    }, ["default"]).join(",")));
 }
 
 function buildArticlesSync() {

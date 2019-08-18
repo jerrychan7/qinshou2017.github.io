@@ -26,7 +26,9 @@ function delCookie(cname) {
 var meta_theme_color = {};
 function retheme(theme) {
     var cn = document.body.className,
-        allTheme = ("default,darktheme"/*allTheme*/).split(",");
+        allTheme = ("/*allTheme*/").indexOf("/*") != -1
+            ? ("/*allTheme*/").split(",")
+            : ("default,darktheme").split(",");
     var now = 0;
     for (var i = 0; i < allTheme.length; ++i)
         if (cn.indexOf(allTheme[i]) > -1) {
