@@ -96,3 +96,19 @@ body.darktheme { background-color: #3C3F41; }
     background-color: #3C3F41;
     border-color: #62676a;
 }
+
+.darktheme .article .time {
+    color: #999;
+}
+.darktheme .article .tags code {
+    background-color: #3C3F41;
+    border-color: #62676a;
+}
+
+
+
+
+.darktheme table th {
+    color: #c8d4dc;
+    background-color: #3C3F41;
+}

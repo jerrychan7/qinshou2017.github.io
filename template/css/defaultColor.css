@@ -92,6 +92,14 @@ samp { color: #000; }
     color: #e74c3c;
 }
 
+.article .time {
+    color: #999;
+}
+.article .tags code {
+    background-color: #f7f7f7;
+    border-color: #e4e4e4;
+    color: #e74c3c;
+}
 
 table { border-color: #ddd; }
 

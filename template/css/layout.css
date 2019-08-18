@@ -195,6 +195,7 @@ pre { tab-size: 4; }
     text-transform: capitalize;
 }
 .contents li .tags {
+    margin-top: 5px;
     display: block;
     float: right;
 }
@@ -205,6 +206,7 @@ pre { tab-size: 4; }
     margin: 0 2px;
 }
 .contents li .abstract {
+    margin-top: 10px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -220,6 +222,13 @@ pre { tab-size: 4; }
     .contents li .tags { float: none; }
 }
 
+
+.article .tags code {
+    border-radius: 3px;
+    border: 1px solid;
+    padding: 0 3px;
+    margin: 0 2px;
+}
 
 
 b, strong { font-weight: bold; }
