@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>index</title>
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/defaultColor.css" />
+    <link rel="stylesheet" href="./css/darkColor.css" />
+    <script src="./js/index.js"></script>
+    <script>
+    function hashchange(e){
+      var hash = window.location.hash.replace("#","");
+        if (~hash.indexOf("tag=")) {
+          var tag = decodeURI(hash.split("tag=")[1].split("&")[0]);
+          document.getElementById(tag).nextElementSibling.style.display = "block";
+        }
+    }
+    window.addEventListener("hashchange", hashchange);
+    var tags_title = {/*tags-title*/};
+    window.addEventListener("load", function(e) {
+      var content = "<ul>";
+      for (var tag in tags_title) {
+        content += '<li><h3 id="' + tag + '">' + tag + '：</h3><ul>'
+          + tags_title[tag].map(function(t) {
+              return '<li><a href="./articles/' + t + '/' + t + '.html">' + t + '</a></li>';
+            }).join("")
+          + '</ul></li>';
+      }
+      content += "</ul>";
+      document.getElementById("tags").innerHTML = content;
+      hashchange();
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="index.html">index</a>
+            <a href="about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div id="tags"></div>
+</div></body>
+</html>

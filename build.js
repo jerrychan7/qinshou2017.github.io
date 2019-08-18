@@ -138,6 +138,9 @@ function buildArticlesBank() {
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
             .replace("/*contentsItems*/", indexPageContentsItems));
+    fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
+        fs.readFileSync(path.join(templateDirPath, "/tags.html"), "utf8")
+            .replace("{/*tags-title*/}", JSON.stringify(tags_title)));
     copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
     copyDir(path.join(templateDirPath, "/js"), path.join(rootDirPath, "/js"));
 }
