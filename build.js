@@ -8,6 +8,11 @@ const rootDirPath = __dirname,
       articlesBankDirPath = path.join(rootDirPath, "/articlesBank"),
       articlesOutputDirPath = path.join(rootDirPath, "/articles");
 
+const links = ([
+    {name: "kokic", href: "https://kokic.github.io/"},
+    {name: "兔子", href: "https://www.rabbittu.com/"}
+]).map(({name, href}) => `<li><a href="${href}">${name}</a></li>`).join("\n               ");
+
 marked.setOptions({
     rederer: new marked.Renderer(),
     gfm: true,
@@ -93,7 +98,8 @@ function buildSingleArticle(articleDirPath) {
                     .replace("{Post}", formatTime(articleInfo.time.Post))
                     .replace("{Update}", formatTime(articleInfo.time.Update))
                     .replace("{tags}", articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
-                    .replace("{articleContent}", marked_article);
+                    .replace("{articleContent}", marked_article)
+                    .replace("{links}", links);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
         
         articlesInfo[articleName] = articleInfo;
@@ -137,16 +143,19 @@ function buildArticlesBank() {
     });
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
-            .replace("/*contentsItems*/", indexPageContentsItems));
+            .replace("/*contentsItems*/", indexPageContentsItems)
+            .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
         fs.readFileSync(path.join(templateDirPath, "/tags.html"), "utf8")
-            .replace("{/*tags-title*/}", JSON.stringify(tags_title)));
+            .replace("{/*tags-title*/}", JSON.stringify(tags_title))
+            .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/about.html"),
         fs.readFileSync(path.join(templateDirPath, "/about.html"), "utf8")
             .replace("{about.md}",
-                marked(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8"))));
+                marked(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8")))
+            .replace("{links}", links));
 
     copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
     copyDir(path.join(templateDirPath, "/js"), path.join(rootDirPath, "/js"));

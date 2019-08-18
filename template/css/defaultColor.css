@@ -23,6 +23,10 @@ body { background-color: #fff; }
 .header { border-bottom-color: #e4e4e4; }
 .headerNav a + a { border-left-color: #e4e4e4; }
 
+.footer {
+    border-top-color: #e4e4e4;
+}
+
 h1,
 h2,
 h3,
@@ -68,8 +72,8 @@ samp { color: #000; }
     color: #333;
 }
 
-.contents li {
-    border-bottom-color: #e4e4e4;
+.contents li + li {
+    border-top-color: #e4e4e4;
 }
 .contents li .title {
     color: #333;

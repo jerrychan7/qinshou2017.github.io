@@ -77,6 +77,12 @@ body { margin: 0; padding: 0; }
 .headerNav a { padding: 0 10px; }
 .headerNav a + a { border-left: 1px solid; }
 
+.footer {
+    margin: 50px 0 0;
+    padding: 1em;
+    border-top: 1px solid;
+}
+
 @media (max-width: 768px) {
     .headerNav { position: static; }
     .header .logo {
@@ -173,13 +179,15 @@ pre { tab-size: 4; }
     padding: 0 1em;
 }
 .contents ul:first-child {
-    margin-top: 50px;
+    margin-top: -10px;
 }
 .contents li {
     display: block;
-    padding: 0 0 10px;
-    margin: 0 0 50px;
-    border-bottom: 1px solid;
+    padding: 50px 0 0;
+    margin: 10px 0 0;
+}
+.contents li + li {
+    border-top: 1px solid;
 }
 .contents li:after {
     content: "";

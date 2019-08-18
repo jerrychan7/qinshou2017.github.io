@@ -30,6 +30,8 @@ body.darktheme { background-color: #3C3F41; }
 .darktheme .header { border-bottom-color: #555; }
 .darktheme .headerNav a + a { border-left-color: #555; }
 
+.darktheme .footer { border-top-color: #555; }
+
 .darktheme h1,
 .darktheme h2,
 .darktheme h3,
