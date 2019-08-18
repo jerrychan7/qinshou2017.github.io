@@ -86,13 +86,20 @@ function buildSingleArticle(articleDirPath) {
             articleInfo = JSON.parse(article.substring(0, i));
             article = article.substring(i);
         }
-        let out = marked(article);
+        let marked_article = marked(article),
+            formatTime = s => s.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/g, "$1-$2-$3 $4:$5"),
+            out = fs.readFileSync(path.join(templateDirPath, "/articles/articleTitle/article.html"), "utf-8")
+                    .replace("{title}", articleName)
+                    .replace("{Post}", formatTime(articleInfo.time.Post))
+                    .replace("{Update}", formatTime(articleInfo.time.Update))
+                    .replace("{tags}", articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
+                    .replace("{articleContent}", marked_article);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
         
         articlesInfo[articleName] = articleInfo;
         articlesInfo[articleName].abstract = articleInfo.abstract
             ? articleInfo.abstract
-            : out.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
+            : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
         articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
 
         console.log("built " + articleName);
@@ -128,7 +135,6 @@ function buildArticlesBank() {
             else tags_title[tag] = [info.title];
         });
     });
-    console.log(indexPageContentsItems);
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
             .replace("/*contentsItems*/", indexPageContentsItems));

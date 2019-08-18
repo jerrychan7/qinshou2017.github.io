@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/defaultColor.css" />
+    <link rel="stylesheet" href="/css/darkColor.css" />
+    <script src="/js/index.js"></script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: {Post}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: {Update}
+        </div>
+        <div class="tags">{tags}</div>
+        {articleContent}
+    </div>
+</div></body>
+</html>
