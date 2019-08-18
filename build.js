@@ -138,9 +138,16 @@ function buildArticlesBank() {
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
             .replace("/*contentsItems*/", indexPageContentsItems));
+
     fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
         fs.readFileSync(path.join(templateDirPath, "/tags.html"), "utf8")
             .replace("{/*tags-title*/}", JSON.stringify(tags_title)));
+
+    fs.writeFileSync(path.join(rootDirPath, "/about.html"),
+        fs.readFileSync(path.join(templateDirPath, "/about.html"), "utf8")
+            .replace("{about.md}",
+                marked(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8"))));
+
     copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
     copyDir(path.join(templateDirPath, "/js"), path.join(rootDirPath, "/js"));
 }
