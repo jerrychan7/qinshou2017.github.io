@@ -1,3 +1,4 @@
+@charset "utf-8";
 
 .darktheme meta-theme-color { color: #3C3F41; }
 
@@ -73,4 +74,25 @@ body.darktheme { background-color: #3C3F41; }
 .darktheme #analysis pre code {
     color: #fff;
     border: none;
+}
+
+.darktheme .ques-view code, .darktheme #analysis code {
+    border: 1px solid;
+}
+.darktheme .ques-view pre, .darktheme #analysis pre {
+    border: 1px solid;
+}
+.darktheme .ques-view pre code, .darktheme #analysis pre code {
+    border: none;
+}
+
+.darktheme .contents li .title {
+    color: #B77FDB;
+}
+.darktheme .contents li:first-letter {
+    color: #6C9EF8;
+}
+.darktheme .contents li code {
+    background-color: #3C3F41;
+    border-color: #62676a;
 }

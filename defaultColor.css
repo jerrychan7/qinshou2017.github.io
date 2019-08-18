@@ -1,3 +1,4 @@
+@charset "utf-8";
 
 .default meta-theme-color { color: #fff; }
 
@@ -66,6 +67,31 @@ samp { color: #000; }
 #analysis pre code {
     color: #333;
 }
+
+.contents li {
+    border-bottom-color: #e4e4e4;
+}
+.contents li .title {
+    color: #333;
+}
+.contents li:first-letter {
+    color: #4183c4;
+}
+.contents li:hover:first-letter {
+    color: #333;
+}
+.contents li .title:hover {
+    color: #4183c4;
+}
+.contents li .tags {
+    color: #f00;
+}
+.contents li .tags code {
+    background-color: #f7f7f7;
+    border-color: #e4e4e4;
+    color: #e74c3c;
+}
+
 
 table { border-color: #ddd; }
 

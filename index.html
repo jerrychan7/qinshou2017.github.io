@@ -9,6 +9,38 @@
     <link rel="stylesheet" href="defaultColor.css" />
     <link rel="stylesheet" href="darkColor.css" />
     <script src="index.js"></script>
+    <script>
+        // {title: "string", time: "yyyy-MM-dd", tags: ["string",...], abstract: "string"}
+        var contentsItems = [{
+            title: "title title",
+            time: "2019-08-13",
+            tags: ["tag", "tag2", "tag3", "tag444444", "tag55555555555", "tag66"],
+            abstract: "Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content"
+        }, {
+            title: "title2",
+            time: "2019-08-13",
+            tags: ["tag", "tag2", "tag3", "tag444444", "tag55555555555", "tag66"],
+            abstract: "摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要"
+        }];
+        window.addEventListener("load", function(e) {
+            var nodes = [];
+            contentsItems.forEach(function(item) {
+                var tags = item.tags,
+                    title = item.title,
+                    time = item.time,
+                    abstract = item.abstract;
+                nodes.push("<li><a class=\"title\" href=\"./articles/" + title + "/" + title +".html\">" +
+                           title + "</a>" +
+                           "<span class=\"time\">" + time + "</span>" +
+                           "<span class=\"tags\">" +
+                          tags.map(function(t) {
+                    return "<a href=\"./tags.html#tag=" + t + "\"><code>" + t + "</code></a>";
+                }).join("&#09;") + "</span>" +
+                          "<p class=\"abstract\">" + abstract + "</p></li>");
+            });
+            document.getElementById("contents").innerHTML = "<ul>" + nodes.join("") + "</ul>";
+        });
+    </script>
 </head>
 <body><div class="body">
     <div class="header">
@@ -22,23 +54,6 @@
             <a href="javascript:void(0);" onclick="retheme();">change theme</a>
         </div>
     </div>
-    <h1>hello github pages</h1>
-    <h2>h2</h2>
-    <h3>h3</h3>
-    <h4>h4</h4>
-    <h5>h5</h5>
-    <h6>h6</h6>
-    <p>this ppppppppp</p>
-    <p>this p2</p>
-    <p>this long long long long long long long long long long long long long long long long long long long long long long long long long long p</p>
-    <blockquote>
-        <p>this blockquote</p>
-    </blockquote>
-    <hr />
-    <code>code</code>
-    <pre><code>pre code</code></pre>
-    <p><del>this del</del></p>
-    <p><strong>this strong</strong> <b>this b</b></p>
-    <p><i>this italic</i> <em>this em</em></p>
+    <div class="contents" id="contents"></div>
 </div></body>
 </html>
