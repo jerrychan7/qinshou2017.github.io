@@ -7,7 +7,7 @@ let server = http.createServer(function(request, response) {
     let pathObj = url.parse(request.url, true);
     if (pathObj.pathname === "/" || pathObj === "/index")
         pathObj.pathname = "/index.html";
-    let filePath = path.join(path.resolve(), pathObj.pathname);
+    let filePath = path.join(path.resolve(), decodeURI(pathObj.pathname));
     fs.readFile(filePath, "binary", function(err, fileContent) {
         if (err) {
             console.log("404 " + filePath);
