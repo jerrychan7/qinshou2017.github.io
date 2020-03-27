@@ -1,12 +1,15 @@
 
 const path = require("path"),
       fs = require("fs"),
-      marked = require("marked");
+      marked = require("marked"),
+      crypto = require("crypto");
 
 const rootDirPath = __dirname,
       templateDirPath = path.join(rootDirPath, "/template"),
       articlesBankDirPath = path.join(rootDirPath, "/articlesBank"),
-      articlesOutputDirPath = path.join(rootDirPath, "/articles");
+      articlesInfoPath = path.join(articlesBankDirPath, "/articleInfo.json"),
+      articlesOutputDirPath = path.join(rootDirPath, "/articles"),
+      nowTime = (new Date()).toJSON();
 
 const links = ([
     {name: "kokic", href: "https://kokic.github.io/"},
@@ -60,30 +63,33 @@ function copyDir(srcDir, aimDir) {
     });
 }
 
-let articlesInfo = {};
+function getMD5(fileContent) {
+    return crypto.createHash("md5").update(fileContent).digest("hex");
+}
+
+if (!fs.existsSync(articlesInfoPath))
+    throw "miss config file: " + articlesInfoPath;
+
+let articlesInfo = JSON.parse(fs.readFileSync(articlesInfoPath), "utf-8");
 
 // rebuild
 // buildDiff
 
 function buildSingleArticle(articleDirPath) {
     var files = fs.readdirSync(articleDirPath);
+    if (files.length === 0) return;
     const getFullPath = filename => path.join(articleDirPath, filename);
     var articleName = articleDirPath.split(/[/\\]/g);
     if (articleName[articleName.length - 1])
         articleName = articleName.pop();
     else articleName = articleName[articleName.length - 2];
     const outputDirPath = path.join(articlesOutputDirPath, articleName);
-    rmdir(outputDirPath);
-    mkdir(outputDirPath);
     
-    files.forEach(filename => {
-        if (filename.replace(path.extname(filename), "") != articleName) {
-            copyFile(getFullPath(filename), path.join(outputDirPath, filename));
-            return;
-        }
-        let article = fs.readFileSync(getFullPath(filename), "utf-8"),
+    if (files.includes(articleName + ".md") !== -1) {
+        let article = fs.readFileSync(getFullPath(articleName + ".md"), "utf-8"),
             articleInfo = {};
-        if (article.charAt(0) == '{') {
+        if (article[0] !== '{') return;
+        else {
             let c = 0, i = 0;
             do {
                 if (article.charAt(i) == '{') ++c;
@@ -93,25 +99,49 @@ function buildSingleArticle(articleDirPath) {
             articleInfo = JSON.parse(article.substring(0, i));
             article = article.substring(i);
         }
+        let md5 = getMD5(article);
+        if (articlesInfo[articleName]) {
+            articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
+            if (articlesInfo[articleName].abstract != articleInfo.abstract)
+                articlesInfo[articleName].abstract = articleInfo.abstract
+                    ? articleInfo.abstract
+                    : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
+            if (articlesInfo[articleName].md5 === md5)
+                return;
+            articlesInfo[articleName].md5 = md5;
+            articlesInfo[articleName].time.Updata = nowTime;
+        }
+        else {
+            articlesInfo[articleName] = {
+                time: {
+                    Post: nowTime,
+                    Updata: nowTime
+                },
+                md5,
+                tags: articleInfo.tags? articleInfo.tags: ["未分类"],
+                abstract: articleInfo.abstract
+                            ? articleInfo.abstract
+                            : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101)
+            };
+        }
+        rmdir(outputDirPath);
+        mkdir(outputDirPath);
         let marked_article = marked(article),
-            formatTime = s => s.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/g, "$1-$2-$3 $4:$5"),
             out = fs.readFileSync(path.join(templateDirPath, "/articles/articleTitle/article.html"), "utf-8")
                     .replace("{title}", articleName)
-                    .replace("{Post}", formatTime(articleInfo.time.Post))
-                    .replace("{Update}", formatTime(articleInfo.time.Update))
+                    .replace("{/*time*/}", JSON.stringify(articlesInfo[articleName].time))
                     .replace("{tags}", articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
                     .replace("{articleContent}", marked_article)
                     .replace("{links}", links);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
-        
-        articlesInfo[articleName] = articleInfo;
-        articlesInfo[articleName].abstract = articleInfo.abstract
-            ? articleInfo.abstract
-            : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
-        articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
+    }
 
-        console.log("built " + articleName);
+    files.forEach(filename => {
+        if (filename.replace(path.extname(filename), "") != articleName) {
+            copyFile(getFullPath(filename), path.join(outputDirPath, filename));
+        }
     });
+    console.log("built " + articleName);
 }
 
 function buildArticlesBank() {

@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="/css/theme.css" />
     <script src="/js/index.js"></script>
     <script src="/js/top.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2019-08-13T03:23+08:00","Update":"2019-08-13T03:23+08:00","Updata":"2020-03-27T11:13:40.151Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
 </head>
 <body><div class="body">
     <div class="header">
@@ -25,7 +32,7 @@
     </div>
     <div class="article">
         <div class="time">
-            Post: 19-08-13 03:23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: 19-08-13 03:23
+            Post: <span id="postTime">{Post}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: <span id="updateTime">{Update}</span>
         </div>
         <div class="tags"><a href="/tags.html#tag=杂记"><code>杂记</code></a></div>
         <h1 id="第一篇blogger">第一篇Blogger</h1>

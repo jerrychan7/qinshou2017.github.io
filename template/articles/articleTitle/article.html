@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="/css/theme.css" />
     <script src="/js/index.js"></script>
     <script src="/js/top.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {/*time*/};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
 </head>
 <body><div class="body">
     <div class="header">
@@ -25,7 +32,7 @@
     </div>
     <div class="article">
         <div class="time">
-            Post: {Post}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: {Update}
+            Post: <span id="postTime">{Post}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: <span id="updateTime">{Update}</span>
         </div>
         <div class="tags">{tags}</div>
         {articleContent}

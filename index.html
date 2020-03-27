@@ -10,14 +10,14 @@
     <script src="./js/index.js"></script>
     <script src="./js/top.js"></script>
     <script>
-        // {title: "string", time: "yyyy-MM-dd", tags: ["string",...], abstract: "string"}
-        var contentsItems = [{"title":"第一篇Blogger","time":"19-08-13","tags":["杂记"],"abstract":"如题，这是咱的第一篇博客。"}];
+        // {title: "string", time: "ISO 8601", tags: ["string",...], abstract: "string"}
+        var contentsItems = [{"title":"第一篇Blogger","time":"2019-08-13T03:23+08:00","tags":["杂记"]}];
         window.addEventListener("load", function(e) {
             var nodes = [];
             contentsItems.forEach(function(item) {
                 var tags = item.tags,
                     title = item.title,
-                    time = item.time,
+                    time = (new Date(item.time)).toLocaleString(),
                     abstract = item.abstract;
                 nodes.push("<li><a class=\"title\" href=\"./articles/" + title + "/" + title +".html\">" +
                            title + "</a>" +
