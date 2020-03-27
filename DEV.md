@@ -63,6 +63,8 @@
 语法高亮选择了prismjs，下载时的选项：  
 https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all
 
+数学公式显示使用了katex。
+
 # 运行
 
 `node build`进行构建。

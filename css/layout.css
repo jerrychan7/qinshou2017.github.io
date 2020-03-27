@@ -319,3 +319,7 @@ table th { font-weight: bold; color: #325d72; }
     h2, h3 { page-break-after: avoid; }
 }
 
+
+.katex-display>.katex>.katex-html {
+    position: relative;
+}

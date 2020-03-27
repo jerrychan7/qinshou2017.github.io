@@ -225,7 +225,8 @@ function buildArticlesSync() {
                     fileChangeFlag[dirPath] = true;
                     setTimeout(function() {
                         console.log("rebuild article: " + fileName);
-                        buildSingleArticle(dirPath, true);
+                        if (path.dirname(filePath) != articlesBankDirPath)
+                            buildSingleArticle(dirPath, true);
                         refreshOtherFiles();
                         fileChangeFlag[dirPath] = false;
                         delete fileChangeFlag[dirPath];
