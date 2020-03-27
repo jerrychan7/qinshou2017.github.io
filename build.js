@@ -72,10 +72,9 @@ if (!fs.existsSync(articlesInfoPath))
 
 let articlesInfo = JSON.parse(fs.readFileSync(articlesInfoPath), "utf-8");
 
-// rebuild
 // buildDiff
 
-function buildSingleArticle(articleDirPath) {
+function buildSingleArticle(articleDirPath, rebuild = false) {
     var files = fs.readdirSync(articleDirPath);
     if (files.length === 0) return;
     const getFullPath = filename => path.join(articleDirPath, filename);
@@ -104,7 +103,7 @@ function buildSingleArticle(articleDirPath) {
             articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
             if (articleInfo.abstract && articlesInfo[articleName].abstract != articleInfo.abstract)
                 articlesInfo[articleName].abstract = articleInfo.abstract;
-            if (articlesInfo[articleName].md5 === md5)
+            if (rebuild === false && articlesInfo[articleName].md5 === md5)
                 return;
             articlesInfo[articleName].md5 = md5;
             articlesInfo[articleName].time.Update = nowTime;
@@ -143,13 +142,8 @@ function buildSingleArticle(articleDirPath) {
     console.log("built " + articleName);
 }
 
-function buildArticlesBank() {
-    fs.readdirSync(articlesBankDirPath).forEach(articleDirName => {
-        var filedir = path.join(articlesBankDirPath, articleDirName),
-            stats = fs.statSync(filedir);
-        if (stats.isDirectory())
-            buildSingleArticle(filedir);
-    });
+// Refresh pages other than articles
+function refreshOtherFiles() {
     let infos = [], indexPageContentsItems = [],
         tags_title = {};
     for (let articleTitle in articlesInfo) {
@@ -205,6 +199,16 @@ function buildArticlesBank() {
     fs.writeFileSync(articlesInfoPath, JSON.stringify(articlesInfo, null, 4));
 }
 
+function buildArticlesBank(rebuild = false) {
+    fs.readdirSync(articlesBankDirPath).forEach(articleDirName => {
+        var filedir = path.join(articlesBankDirPath, articleDirName),
+            stats = fs.statSync(filedir);
+        if (stats.isDirectory())
+            buildSingleArticle(filedir, rebuild);
+    });
+    refreshOtherFiles();
+}
+
 function buildArticlesSync() {
     let fileChangeFlag = {};
     const watcher = fs.watch(articlesBankDirPath, {recursive: true}, (e,fileName) => {
@@ -218,7 +222,8 @@ function buildArticlesSync() {
             if (!fileChangeFlag[dirPath]) {
                 fileChangeFlag[dirPath] = true;
                 setTimeout(function() {
-                    buildSingleArticle(dirPath);
+                    buildSingleArticle(dirPath, true);
+                    refreshOtherFiles();
                     fileChangeFlag[dirPath] = false;
                     delete fileChangeFlag[dirPath];
                 }, 800);
@@ -242,6 +247,8 @@ switch (cliArgv[0]) {
         buildArticlesSync();
         break;
     case "rebuild":
+        buildArticlesBank(true);
+        break;
     default:
         buildArticlesBank();
         break;
