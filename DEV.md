@@ -60,12 +60,14 @@
     * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
 
 
+语法高亮选择了prismjs，下载时的选项：  
+https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all
 
 # 运行
 
 `node build`进行构建。
 
-`node build rebuild`强制全部重新构建。这个不会更新文章的上传时间。
+`node build rebuild`强制全部重新构建。这个不会更新文章的上传和最后修改时间，因为一般强制全部构建都是由于模板的改变。
 
 `node build sync`同步构建。**未经测试，运行结果未知！**
 

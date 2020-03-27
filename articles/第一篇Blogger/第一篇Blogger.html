@@ -7,11 +7,12 @@
     <title>第一篇Blogger</title>
     <link rel="stylesheet" href="/css/layout.css" />
     <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
     <script src="/js/index.js"></script>
     <script src="/js/top.js"></script>
     <script>
     window.addEventListener("load", function() {
-        var time = {"Post":"2019-08-13T03:23+08:00","Update":"2019-08-13T03:23+08:00","Updata":"2020-03-27T11:13:40.151Z"};
+        var time = {"Post":"2019-08-13T03:23+08:00","Update":"2020-03-27T21:37:56.614Z"};
         document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
         document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
     });
@@ -83,7 +84,7 @@ emm……貌似没必要，<a href="/about.html">about</a>里就有。那就说�
 <pre><code class="language-php">    &lt;?php
       echo &quot;hello, world!&quot;;
     ?&gt;</code></pre>
-<pre><code class="language-c/cpp">#include &lt;iostream&gt;
+<pre><code class="language-cpp">#include &lt;iostream&gt;
 int main(){
     int array[8000][8000];
     //...
@@ -126,5 +127,6 @@ function fn(j) { const i = 10, k = [], s = &quot;string&quot;; return i; }</code
             </li>
         </ul>
     </div>
+    <script src="/js/prism.js"></script>
 </div></body>
 </html>

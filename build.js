@@ -105,8 +105,10 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
                 articlesInfo[articleName].abstract = articleInfo.abstract;
             if (rebuild === false && articlesInfo[articleName].md5 === md5)
                 return;
-            articlesInfo[articleName].md5 = md5;
-            articlesInfo[articleName].time.Update = nowTime;
+            if (rebuild === false) {
+                articlesInfo[articleName].md5 = md5;
+                articlesInfo[articleName].time.Update = nowTime;
+            }
         }
         else {
             articlesInfo[articleName] = {
@@ -211,30 +213,53 @@ function buildArticlesBank(rebuild = false) {
 
 function buildArticlesSync() {
     let fileChangeFlag = {};
-    const watcher = fs.watch(articlesBankDirPath, {recursive: true}, (e,fileName) => {
-        var filePath = path.join(articlesBankDirPath, fileName);
-        // rename / delete
-        if (!fs.existsSync(filePath))
-            return;
-        var stats = fs.statSync(filePath);
-        if (stats.isFile() && stats.size) {
-            var dirPath = path.dirname(filePath);
-            if (!fileChangeFlag[dirPath]) {
-                fileChangeFlag[dirPath] = true;
-                setTimeout(function() {
-                    buildSingleArticle(dirPath, true);
-                    refreshOtherFiles();
-                    fileChangeFlag[dirPath] = false;
-                    delete fileChangeFlag[dirPath];
-                }, 800);
+    const bankWatcher = fs.watch(articlesBankDirPath, {recursive: true}, (e, fileName) => {
+            var filePath = path.join(articlesBankDirPath, fileName);
+            // rename / delete
+            if (filePath == articlesInfoPath || !fs.existsSync(filePath))
+                return;
+            var stats = fs.statSync(filePath);
+            if (stats.isFile() && stats.size) {
+                var dirPath = path.dirname(filePath);
+                if (!fileChangeFlag[dirPath]) {
+                    fileChangeFlag[dirPath] = true;
+                    setTimeout(function() {
+                        console.log("rebuild article: " + fileName);
+                        buildSingleArticle(dirPath, true);
+                        refreshOtherFiles();
+                        fileChangeFlag[dirPath] = false;
+                        delete fileChangeFlag[dirPath];
+                    }, 800);
+                }
             }
-        }
-    });
+        }),
+        templateWatch = fs.watch(templateDirPath, {recursive: true}, (e, fileName) => {
+            let filePath = path.join(templateDirPath, fileName);
+            // rename / delete
+            if (!fs.existsSync(filePath))
+                return;
+            var stats = fs.statSync(filePath);
+            if (stats.isFile() && stats.size) {
+                var dirPath = path.dirname(filePath);
+                if (!fileChangeFlag[filePath]) {
+                    fileChangeFlag[filePath] = true;
+                    setTimeout(function() {
+                        console.log("rebuild template: " + fileName);
+                        if (fileName.includes("article.html"))
+                            buildArticlesBank(true);
+                        refreshOtherFiles();
+                        fileChangeFlag[filePath] = false;
+                        delete fileChangeFlag[filePath];
+                    }, 800);
+                }
+            }
+        });
     console.log("start sync build, enter 'exit' to close the program.");
     const rl = require("readline").createInterface({input: process.stdin});
     rl.on("line", async line => {
         if (line.trim() === "exit") {
-            watcher.close();
+            bankWatcher.close();
+            templateWatch.close();
             process.exitCode = 0;
             rl.close();
         }

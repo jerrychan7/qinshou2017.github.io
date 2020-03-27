@@ -1,4 +1,4 @@
-{"tags": ["杂记"]}
+{"tags": ["杂记"], "abstract": "如题，这是咱的第一篇博客。"}
 
 # 第一篇Blogger
 
@@ -43,7 +43,7 @@ emm……貌似没必要，[about](/about.html)里就有。那就说说写博客
       echo "hello, world!";
     ?>
 > ```
-> ```c/cpp
+> ```cpp
 > #include <iostream>
 > int main(){
 >     int array[8000][8000];
