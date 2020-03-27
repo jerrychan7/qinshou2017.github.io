@@ -102,26 +102,22 @@ function buildSingleArticle(articleDirPath) {
         let md5 = getMD5(article);
         if (articlesInfo[articleName]) {
             articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
-            if (articlesInfo[articleName].abstract != articleInfo.abstract)
-                articlesInfo[articleName].abstract = articleInfo.abstract
-                    ? articleInfo.abstract
-                    : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101);
+            if (articleInfo.abstract && articlesInfo[articleName].abstract != articleInfo.abstract)
+                articlesInfo[articleName].abstract = articleInfo.abstract;
             if (articlesInfo[articleName].md5 === md5)
                 return;
             articlesInfo[articleName].md5 = md5;
-            articlesInfo[articleName].time.Updata = nowTime;
+            articlesInfo[articleName].time.Update = nowTime;
         }
         else {
             articlesInfo[articleName] = {
                 time: {
                     Post: nowTime,
-                    Updata: nowTime
+                    Update: nowTime
                 },
                 md5,
                 tags: articleInfo.tags? articleInfo.tags: ["未分类"],
-                abstract: articleInfo.abstract
-                            ? articleInfo.abstract
-                            : marked_article.replace(/.*<\/h\d>\n/, "").replace(/\n.*/g, "").replace(/<[^>]+>/g,"").substring(0,101)
+                abstract: ""
             };
         }
         rmdir(outputDirPath);
@@ -134,6 +130,9 @@ function buildSingleArticle(articleDirPath) {
                     .replace("{articleContent}", marked_article)
                     .replace("{links}", links);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
+        articlesInfo[articleName].abstract = articleInfo.abstract
+            ? articleInfo.abstract
+            : marked_article.replace(/.*<\/h\d>\n/g, "").trim().replace(/<[^>]+>/g,"").substring(0,101);
     }
 
     files.forEach(filename => {
@@ -151,22 +150,21 @@ function buildArticlesBank() {
         if (stats.isDirectory())
             buildSingleArticle(filedir);
     });
-    let infos = [], indexPageContentsItems = "",
+    let infos = [], indexPageContentsItems = [],
         tags_title = {};
     for (let articleTitle in articlesInfo) {
         let info = articlesInfo[articleTitle];
-        info.title = articleTitle;
-        infos.push(info);
-    }
-    infos.sort((a, b) => a.time.Post - b.time.Post);
-    infos.forEach(info => {
-        // {title: "string", time: "yyyy-MM-dd", tags: ["string",...], abstract: "string"}
-        indexPageContentsItems += JSON.stringify({
-            title: info.title,
-            time: info.time.Post.replace(/(\d{2})(\d{2})(\d{2})\d*/g, "$1-$2-$3"),
+        infos.push({
+            title: articleTitle,
+            time: info.time.Post,
             tags: info.tags,
             abstract: info.abstract
         });
+    }
+    infos.sort((a, b) => (new Date(b.time)) - (new Date(a.time)));
+    infos.forEach(info => {
+        // {title: "string", time: "ISO 8601", tags: ["string",...], abstract: "string"}
+        indexPageContentsItems.push(JSON.stringify(info));
         info.tags.forEach(tag => {
             if (tags_title[tag])
                 tags_title[tag].push(info.title);
@@ -175,7 +173,7 @@ function buildArticlesBank() {
     });
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
-            .replace("/*contentsItems*/", indexPageContentsItems)
+            .replace("/*contentsItems*/", indexPageContentsItems.join(", "))
             .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
@@ -203,6 +201,8 @@ function buildArticlesBank() {
             allTheme.push(themeName.replace(path.extname(themeName), ""));
         return allTheme;
     }, ["default"]).join(",")));
+
+    fs.writeFileSync(articlesInfoPath, JSON.stringify(articlesInfo, null, 4));
 }
 
 function buildArticlesSync() {

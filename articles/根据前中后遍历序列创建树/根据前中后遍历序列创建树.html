@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>根据前中后遍历序列创建树</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <script src="/js/index.js"></script>
+    <script src="/js/top.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2020-03-27T12:18:35.813Z","Update":"2020-03-27T12:18:35.813Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: <span id="postTime">{Post}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update: <span id="updateTime">{Update}</span>
+        </div>
+        <div class="tags"><a href="/tags.html#tag=数据结构与算法:树"><code>数据结构与算法:树</code></a></div>
+        <h1 id="根据前中后遍历序列创建树">根据前中后遍历序列创建树</h1>
+<h2 id="题目概述">题目概述</h2>
+<p>这是道经典的树的题，根据前中后遍历序列创建树，分为三种情况：</p>
+<ol>
+<li>根据前中遍历序列创建树；</li>
+<li>根据中后遍历序列创建树；</li>
+<li>根据前后遍历序列创建树；</li>
+</ol>
+<p>下面将展开对三种情况进行分析。</p>
+<p>此外，还看到有特殊的通过“扩展先序遍历序列”构建树的，
+扩展先序遍历是先对原有二叉树用空子树进行扩展，使每个节点都有左右子树存在，然后再对扩展后的二叉树进行先序遍历，遍历序列中使用特定的符号表示空子树。
+如图下图所示的子树的扩展先序遍历序列为<code>ABC..D..E.FG...</code>，其中<code>.</code>表示扩展出来的空子树。</p>
+<pre><code>扩展前：            扩展后：
+        A       |             A
+      ,` `.     |          ,&#39;   `.
+     B     E    |        B         E
+    / \     \   |     ,&#39;   `.     /  \
+   C   D     F  |    C       D  [.]   F
+            /   |   / \     / \      / \
+           G    | [.] [.] [.] [.]   G  [.]
+                |                  / \
+                |                [.] [.]</code></pre><p>通过“扩展先序遍历序列”构建树比较特殊，在这里就偷懒不展开讲了，等哪天算法题有看到类似的咱再补上吧。</p>
+<h2 id="分析">分析</h2>
+<p>前两种情况相似，所以我在这只详细讲根据第二种情况：根据中后遍历序列创建树。</p>
+<p>首先，我们知道后序遍历是最后访问根节点的值的，所以后序遍历序列中的最后一个一定是根节点。一般采用先左后右的方式访问，所以后序遍历序列的组成结构是：<br><strong>[左子树的后序遍历序列] + [右子树的后序遍历序列] + 根节点</strong>，
+这种模式组成。</p>
+<p>同理，<strong>先</strong>序遍历序列的第一个是根节点的值，组成模式是：<br><strong>根节点 + [左子树的后序遍历序列] + [右子树的后序遍历序列]</strong>。</p>
+<p>其次，我们知道中序遍历是中间访问根节点的值的，所以中序遍历序列中根节点值的左右一定是左右子树的中序遍历序列。一般采用先左后右的方式访问，所以后序遍历序列的组成结构是：<br><strong>[左子树的中序遍历序列] + 根节点 + [右子树的中序遍历序列]</strong>，
+这种模式组成。</p>
+<p>之后，我们可以依据根节点的位置将两个序列分割成左右子树的两个序列，直到无法再分割，子树就构建完成了。（同理知道 前中序遍历序列 也可以建树）</p>
+<p>最后，根据这两个特性，可以看出，知道序列建树除了一定要知道根节点的信息外还要知道左右子树的下个序列构成，这就是为何知道 <strong>前后遍历序列</strong> 不能构建一棵树的原因，因为无法知道子序列，中序遍历序列是这三种序列中唯一一个根据根节点能分辨出左右子序列的序列。</p>
+<p>接下来就一步一步手动建树来加深理解，假设现在给定：<br>后序遍历序列 <code>2 3 1 5 7 6 4</code>，和<br>中序遍历序列 <code>1 2 3 4 5 6 7</code>。</p>
+<p>第一步，可以根据后序遍历序列知道根节点为<code>4</code>，根据中序遍历序列知道左右子树的中序遍历序列分别为<code>1 2 3</code>和<code>5 6 7</code>，
+然后根据这两个子树的节点数量可以知道后序遍历序列的前3个是左子树的后序遍历序列，而后3个是右子树后序遍历序列。</p>
+<pre><code>中序遍历序列的情况:   后序遍历序列的情况:
+       4                  4
+      / \                / \
+[1 2 3] [5 6 7]    [2 3 1] [5 7 6]</code></pre><p>第二步，根据第一步的套路可以知道：左子树的根节点是<code>1</code>，左右子树的中序遍历序列分别为<code></code>和<code>2 3</code>，后序遍历序列分别为<code></code>和<code>2 3</code>；右子树的根节点是6，左右子树的中序遍历序列分别为<code>5</code>和<code>7</code>。</p>
+<pre><code>中序遍历序列的情况:   后序遍历序列的情况:
+        4                    4
+     ,&#39;   `.              ,&#39;   `.
+    1       6            1       6
+     \     / \            \     / \
+    [2 3] 5   7          [2 3] 5   7</code></pre><p>第三步，按套路来，3为根，2为左子树。至此树就构建完了。</p>
+<pre><code>        4
+     ,&#39;   `.
+    1       6
+     \     / \
+      3   5   7
+     /
+    2</code></pre><p>很明显，上面的套路可以写成<strong>递归</strong>，你甚至可以边建树边输出树的前序遍历序列【滑稽<br>以上。</p>
+<h2 id="具体栗子：l2-006-树的遍历-（25-分）">具体栗子：<a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805069361299456">L2-006 树的遍历 （25 分）</a></h2>
+<pre><code>时间限制: 400 ms
+内存限制: 64 MB
+代码长度限制: 16 KB</code></pre><p>给定一棵二叉树的后序遍历和中序遍历，请你输出其层序遍历的序列。这里假设键值都是互不相等的正整数。</p>
+<h3 id="输入格式：">输入格式：</h3>
+<p>输入第一行给出一个正整数N（≤ 30），是二叉树中结点的个数。第二行给出其后序遍历序列。第三行给出其中序遍历序列。数字间以空格分隔。</p>
+<h3 id="输出格式：">输出格式：</h3>
+<p>在一行中输出该树的层序遍历的序列。数字间以1个空格分隔，行首尾不得有多余空格。</p>
+<h3 id="输入样例：">输入样例：</h3>
+<pre><code>7
+2 3 1 5 7 6 4
+1 2 3 4 5 6 7</code></pre><h3 id="输出样例：">输出样例：</h3>
+<pre><code>4 1 6 3 5 7 2</code></pre><h3 id="来源">来源</h3>
+<p><a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805069361299456">团体程序设计天梯赛-练习集_L2-006. 树的遍历<br>作者: 陈越<br>单位: 浙江大学</a></p>
+<h2 id="答案">答案</h2>
+<pre><code class="language-CPP">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+using namespace std;
+struct Node {
+    int key;
+    Node *left, *right;
+};
+/*
+ *功能：根据中后序遍历序列和子节点总数构建树
+ *参数：后序遍历序列，中序遍历序列，子节点总数
+ *返回：根节点
+ */
+Node *build(int h[], int z[], int n) {
+    if (!n) return NULL;
+    Node *root = new Node;
+    root-&gt;key = h[n-1];
+    // 根节点在中序遍历序列中的下标
+    int mid = 0;
+    while (mid &lt; n)
+        if (z[mid] == h[n-1]) break;
+        else ++mid;
+    // 递归建立左右子树
+    root-&gt;left = build(h, z, mid);
+    root-&gt;right = build(h + mid, z + mid + 1, n - mid - 1);
+    return root;
+}
+// 释放资源
+void del(Node *r) {
+    if (!r) return;
+    del(r-&gt;left); del(r-&gt;right);
+    delete r;
+}
+int main() {
+    int n, i; cin &gt;&gt; n;
+    int hou[n], zhong[n];
+    for(i = 0; i &lt; n; ++i) cin &gt;&gt; hou[i];
+    for(i = 0; i &lt; n; ++i) cin &gt;&gt; zhong[i];
+    Node *root = build(hou, zhong, n);
+    // 层序遍历
+    queue&lt;Node*&gt; que; que.push(root);
+    bool b = true;
+    while (!que.empty()) {
+        Node *p = que.front(); que.pop();
+        if (p-&gt;left) que.push(p-&gt;left);
+        if (p-&gt;right) que.push(p-&gt;right);
+        cout &lt;&lt; (b? &quot;&quot;: &quot; &quot;) &lt;&lt; p-&gt;key;
+        b = false;
+    }
+    del(root);
+    return 0;
+}</code></pre>
+
+    </div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></body>
+</html>
