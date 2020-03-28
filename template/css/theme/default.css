@@ -104,6 +104,18 @@ samp { color: #000; }
 .article .time {
     color: #999;
 }
+.article code:not([class*="language-"]) {
+    color: #e74c3c;
+    background: #f7f7f7;
+    border-color: #e4e4e4;
+}
+.article pre:not([class*="language-"]) {
+    background: #f7f7f7;
+    border-color: #ddd;
+}
+.article pre code:not([class*="language-"]) {
+    color: #333;
+}
 .article .tags code {
     background-color: #f7f7f7;
     border-color: #e4e4e4;

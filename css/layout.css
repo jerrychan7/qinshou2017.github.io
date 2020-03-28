@@ -110,6 +110,20 @@ body { margin: 0; padding: 0; }
     }
 }
 
+.article .time #postTime::after {
+    white-space: pre-wrap;
+    content: "     ";
+}
+@media (max-width: 768px) {
+    .article .time {
+        font-size: 0.8em;
+        text-align: center;
+    }
+    .article .time #postTime::after {
+        content: "\A";
+    }
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     line-height: 1em;
@@ -126,6 +140,11 @@ h3 { font-size: 1.5em; }
 h4 { font-size: 1.2em; }
 h5 { font-size: 1em; }
 h6 { font-size: 0.9em; }
+
+@media (max-width: 768px) {
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.7em; }
+}
 
 .darktheme h1 {
     text-transform: capitalize;
@@ -160,7 +179,7 @@ pre, code, kbd, samp {
 }
 pre {
     white-space: pre;
-    white-space: pre-wrap;
+/*    white-space: pre-wrap;*/
     word-wrap: break-word;
 }
 
@@ -242,6 +261,25 @@ pre { tab-size: 4; }
 }
 
 
+.article code:not([class*="language-"]) {
+    padding: 0 3px;
+    margin: 0 2px;
+    border-radius: 3px;
+    border: 1px solid;
+}
+.article pre:not([class*="language-"]) {
+    padding: 6px 12px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: auto;
+}
+.article pre code:not([class*="language-"]) {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+}
 .article .tags code {
     border-radius: 3px;
     border: 1px solid;

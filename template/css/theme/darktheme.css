@@ -37,10 +37,13 @@ body.darktheme { background-color: #3C3F41; }
 .darktheme h3,
 .darktheme h4,
 .darktheme h5,
-.darktheme h6 { color: #ddd; }
+/*.darktheme h6 { color: #faa700; }*/
+.darktheme h6 { color: #D89333; }
 .darktheme h1, .darktheme h2 { border-bottom-color: #333; }
+/*
 .darktheme h1 { color: #B77FDB; }
 .darktheme h1:first-letter { color: #6C9EF8; }
+*/
 
 .darktheme a { color: #6C9EF8; }
 .darktheme a:visited { color: #B77FDB; }
@@ -61,6 +64,18 @@ body.darktheme { background-color: #3C3F41; }
 .darktheme kbd,
 .darktheme samp { color: #fff; }
 
+.darktheme .article code:not([class*="language-"]) {
+    color: #e74c3c;
+    background: #3C3F41;
+    border-color: #62676a;
+}
+.darktheme .article pre:not([class*="language-"]) {
+    background: #3C3F41;
+    border-color: #62676a;
+}
+.darktheme .article pre code:not([class*="language-"]) {
+    color: #fff;
+}
 
 .darktheme .ques-view code,
 .darktheme #analysis code {
@@ -104,10 +119,18 @@ body.darktheme { background-color: #3C3F41; }
 }
 .darktheme .article .tags code {
     background-color: #3C3F41;
-    border-color: #62676a;
+/*    border-color: #62676a;*/
+    border-color: #3C3F41;
+    color: #85A300;
+}
+.darktheme .article .tags a:visited,
+.darktheme .article .tags a:active {
+    color: #D89333;
 }
 
-
+.darktheme b, .darktheme strong {
+    color: #EEE;
+}
 
 
 .darktheme table th {

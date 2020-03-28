@@ -22,7 +22,7 @@
     window.addEventListener("load", function(e) {
       var content = "<ul>";
       for (var tag in tags_title) {
-        content += '<li><h3 id="' + tag + '">' + tag + '：</h3><ul>'
+        content += '<li><h3 id="' + tag + '"># ' + tag + '：</h3><ul>'
           + tags_title[tag].map(function(t) {
               return '<li><a href="./articles/' + t + '/' + t + '.html">' + t + '</a></li>';
             }).join("")

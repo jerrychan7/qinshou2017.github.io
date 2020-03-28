@@ -17,7 +17,7 @@
             contentsItems.forEach(function(item) {
                 var tags = item.tags,
                     title = item.title,
-                    time = (new Date(item.time)).toLocaleString(),
+                    time = (new Date(item.time)).toLocaleDateString(),
                     abstract = item.abstract;
                 nodes.push("<li><a class=\"title\" href=\"./articles/" + title + "/" + title +".html\">" +
                            title + "</a>" +
