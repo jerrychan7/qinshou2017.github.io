@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>内码对称</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
+    <script src="/js/index.js"></script>
+    <script src="/js/top.js"></script>
+    <link rel="stylesheet" href="/css/katex.min.css" />
+    <script defer src="/js/katex.min.js" ></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2020-03-29T21:12:00.694Z","Update":"2020-03-29T21:12:00.694Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+        </div>
+        <div class="tags"><a href="/tags.html#tag=数据结构与算法:位运算"><code>数据结构与算法:位运算</code></a></div>
+        <h1 id="内码对称">内码对称</h1>
+<pre><code>时间限制: 1 Sec  内存限制: 128 MB</code></pre><h2 id="题目描述">题目描述</h2>
+<p>C++中int型整数内码是一个32位的01序列，该01序列有些是对称的，有些是不对称的。对于给定的一个整数，在一些场合，需要判断其整数内码的对称性。这个事情要做好还非你不行呢。</p>
+<h2 id="输入">输入</h2>
+<p>输入中含有一些整数n（0 ≤ n &lt; 2^32）。</p>
+<h2 id="输出">输出</h2>
+<p>统计其中一共有多少个其内码对称的整数，输出之。</p>
+<h2 id="样例输入">样例输入</h2>
+<pre><code>0
+1
+2147483649
+2
+3</code></pre><h2 id="样例输出">样例输出</h2>
+<pre><code>2</code></pre><h2 id="来源">来源</h2>
+<p>作者未知。不过在浙江工业大学的在线oj上找到了一样的题目：<a href="http://cpp.zjut.edu.cn/ShowProblem.aspx?ShowID=1255">内码对称</a>。</p>
+<h1 id="分析">分析</h1>
+<p>这题最开始还以为对调高低位之后对比就行了，结果并不是，那样是高低位相同而不是对称【捂脸</p>
+<p>然后解决方法就出来了，用位运算操作，对比高位和对称的低位是否相等就行了。<br>需要注意的是读取的时候要赋值给无符号整数，因为位运算对于有符号位的数字会保留符号位。  </p>
+<pre><code class="language-cpp">for (int i = 0; i &lt;= 15; ++i) {
+    if ( ((n&gt;&gt;i) &amp; 1) != ((n&gt;&gt;(31-i)) &amp; 1) )
+        break;
+    if (i == 15) ++count;
+}</code></pre>
+<p>其中<code>(n &gt;&gt; i) &amp; 1</code>是取二进制从低位往高位数第<code>i</code>位的值，<code>31 - i</code>是对称位，<code>(n &gt;&gt; (31 - i)) &amp; 1</code>是取对称位的值。</p>
+<br />
+
+<p>分析到此结束，下面是废话，不想浪费时间的可以<a href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">跳过</a>。</p>
+<hr>
+<br />
+
+<p>还记得这题，咱和某大佬在比代码可以写得多短 2333<br>这个是他的代码（总计105个字符）：</p>
+<pre><code class="language-c">main(){int n,s=0,i;while(~scanf(&quot;%d&quot;,&amp;n))for(i=0;i!=16&amp;&amp;!(n&gt;&gt;i&amp;1^n&gt;&gt;31-i&amp;1);++i&amp;15||s++);printf(&quot;%d&quot;,s);}</code></pre>
+<p>这个是我的代码（总计102个字符）：</p>
+<pre><code class="language-c">main(){int n,z=0,i;while(~scanf(&quot;%u&quot;,&amp;n))for(i=31;i&amp;&amp;!(n&gt;&gt;i&amp;1^n&gt;&gt;31-i&amp;1);--i^15||++z);printf(&quot;%d&quot;,z);}</code></pre>
+<blockquote>
+<p>这个代码没带头文件、main能不用返回值都是因为编译环境的问题，所以好孩纸们别学咱们这么浪【捂脸<br>  读取输入的时候我们一般习惯是<code>scanf(&quot;%u&quot;, &amp;n) != EOF</code>，查下<code>EOF</code>是宏定义，一般情况下都是<code>-1</code>，所以可以用<code>~scanf(&quot;%u&quot;,&amp;n)</code>简写，但<code>EOF</code>的值具体要看解释器以及运行环境，好孩纸也别这么写【捂脸</p>
+</blockquote>
+<p>然后判断条件从正常的<code>((n&gt;&gt;i)&amp;1) != ((n&gt;&gt;(31-i))&amp;1)</code>改成了丧病的<code>!(n&gt;&gt;i&amp;1^n&gt;&gt;31-i&amp;1)</code>，来解释下怎么改的。
+首先根据<a href="https://baike.baidu.com/pic/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7/4752611/0/63d9f2d3572c11df57c9a205612762d0f703c2f8?fr=lemma&amp;ct=single#aid=0&amp;pic=63d9f2d3572c11df57c9a205612762d0f703c2f8">运算符的优先级</a>，<br />
+可知<code>&gt;&gt;</code>比<code>&amp;</code>先执行，所以可以变成<code>(n&gt;&gt;i&amp;1) != (n&gt;&gt;(31-i)&amp;1)</code>，<br />
+然后<code>-</code>比<code>&gt;&gt;</code>先执行，所以可以变成<code>(n&gt;&gt;i&amp;1) != (n&gt;&gt;31-i&amp;1)</code>，<br />
+之后就很沮丧的发现<code>!=</code>比<code>&amp;</code>先执行，两边的括号不能去掉，<br />
+但是<code>^</code>的优先级比<code>&amp;</code>低，而且<code>^</code>在这种情况下可以取代<code>==</code>，所以就用<code>!</code>和<code>^</code>取代掉<code>!=</code>，<br />
+所以又可以去掉一个括号，最终变成了<code>!(n&gt;&gt;i&amp;1^n&gt;&gt;31-i&amp;1)</code>。</p>
+<p>之后是循环的判断条件的解释：<br>大致翻译下：<br><code>--i^15||++z</code>在这里等效于<code>i -= 1; if (i==15) ++z;</code><br><code>++i&amp;15||s++</code>在这里等效于<code>i += 1; if (i==16) s++;</code><br>为何可以这么做呢，
+因为<code>||</code>运算符的性质，一旦前面的判断为<code>true</code>后面的就被短路了不会执行，只有在前面为<code>false</code>时才会执行后面的代码。根据c/cpp的规则，非0为true，0为false。<br>然后位运算部分。根据异或运算的数学特性，两个一样的数进行<strong>异或</strong>运算结果是0，即<code>A XOR A == 0</code>。在<code>--i^15||++z</code>中，只有当<code>--i == 15</code>时才执行<code>++z</code>操作。<br>在<code>++i&amp;15||s++</code>中，<code>15</code>的二进制<code>1111</code>，在这里进行 按位与 运算意味着<code>i+1</code>后的值的二进制的最低4位为0时才执行<code>s++</code>操作。在这里i∈(0, 16]，只有当i为16时，最低4位才为0。</p>
+<p>还有，可以看到虽然我的代码比他的短3个字符，但他的代码运算量比我的少一半，<br />
+我的<code>for</code>循环在对称的时候从31执行到0，共32次；但他的从0到15，共16次，是我的一半。<br>能仅仅比我多3个字符让运算量减少一半【给大佬递茶.gif</p>
+<p><img src="./%E7%BB%99%E5%A4%A7%E4%BD%AC%E9%80%92%E8%8C%B6.gif" alt="给大佬递茶.gif"></p>
+<p>以上。</p>
+<h1 id="具体实现">具体实现</h1>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+//    freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);
+
+    unsigned n, count = 0, i;
+    while (cin &gt;&gt; n) {
+        for (int i = 0; i &lt;= 15; ++i) {
+            if ( ((n&gt;&gt;i)&amp;1) != ((n&gt;&gt;(31-i))&amp;1) )
+                break;
+            if (i == 15) ++count;
+        }
+    }
+    cout &lt;&lt; count;
+
+    return 0;
+}</code></pre>
+
+    </div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script src="/js/prism.js"></script>
+</div></body>
+</html>

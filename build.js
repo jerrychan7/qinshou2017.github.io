@@ -50,7 +50,7 @@ function copyFile(src, dst) {
 }
 
 function copyDir(srcDir, aimDir) {
-    mkdir(aimDir);
+    if (!fs.existsSync(aimDir)) mkdir(aimDir);
     fs.readdirSync(srcDir).forEach(filename => {
         var filedir = path.join(srcDir, filename),
             stats = fs.statSync(filedir),
@@ -105,8 +105,8 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
                 articlesInfo[articleName].abstract = articleInfo.abstract;
             if (rebuild === false && articlesInfo[articleName].md5 === md5)
                 return;
+            articlesInfo[articleName].md5 = md5;
             if (rebuild === false) {
-                articlesInfo[articleName].md5 = md5;
                 articlesInfo[articleName].time.Update = nowTime;
             }
         }
