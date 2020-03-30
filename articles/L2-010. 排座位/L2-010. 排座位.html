@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>L2-010. 排座位</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
+    <script src="/js/index.js"></script>
+    <script src="/js/top.js"></script>
+    <link rel="stylesheet" href="/css/katex.min.css" />
+    <script defer src="/js/katex.min.js" ></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2020-03-29T22:32:39.452Z","Update":"2020-03-29T22:32:39.452Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+        </div>
+        <div class="tags"><a href="/tags.html#tag=团体程序设计天梯赛"><code>团体程序设计天梯赛</code></a>&#09;<a href="/tags.html#tag=数据结构与算法:树"><code>数据结构与算法:树</code></a>&#09;<a href="/tags.html#tag=数据结构与算法:并查集"><code>数据结构与算法:并查集</code></a>&#09;<a href="/tags.html#tag=数据结构与算法:集合"><code>数据结构与算法:集合</code></a>&#09;<a href="/tags.html#tag=数据结构与算法:图"><code>数据结构与算法:图</code></a></div>
+        <h1 id="l2-010-排座位">L2-010 排座位</h1>
+<h2 id="题目描述">题目描述</h2>
+<pre><code>时间限制: 150 ms
+内存限制: 64 MB
+代码长度限制: 16 KB</code></pre><p>布置宴席最微妙的事情，就是给前来参宴的各位宾客安排座位。无论如何，总不能把两个死对头排到同一张宴会桌旁！这个艰巨任务现在就交给你，对任何一对客人，请编写程序告诉主人他们是否能被安排同席。</p>
+<h3 id="输入格式：">输入格式：</h3>
+<p>输入第一行给出3个正整数：<code>N</code>（\(\le 100\)），即前来参宴的宾客总人数，则这些人从1到<code>N</code>编号；<code>M</code>为已知两两宾客之间的关系数；<code>K</code>为查询的条数。随后<code>M</code>行，每行给出一对宾客之间的关系，格式为：<code>宾客1 宾客2 关系</code>，其中<code>关系</code>为1表示是朋友，-1表示是死对头。注意两个人不可能既是朋友又是敌人。最后<code>K</code>行，每行给出一对需要查询的宾客编号。</p>
+<p>这里假设朋友的朋友也是朋友。但敌人的敌人并不一定就是朋友，朋友的敌人也不一定是敌人。只有单纯直接的敌对关系才是绝对不能同席的。</p>
+<h3 id="输出格式：">输出格式：</h3>
+<p>对每个查询输出一行结果：如果两位宾客之间是朋友，且没有敌对关系，则输出<code>No problem</code>；如果他们之间并不是朋友，但也不敌对，则输出<code>OK</code>；如果他们之间有敌对，然而也有共同的朋友，则输出<code>OK but...</code>；如果他们之间只有敌对关系，则输出<code>No way</code>。</p>
+<h3 id="输入样例：">输入样例：</h3>
+<pre><code>7 8 4
+5 6 1
+2 7 -1
+1 3 1
+3 4 1
+6 7 -1
+1 2 1
+1 4 1
+2 3 -1
+3 4
+5 7
+2 3
+7 2</code></pre><h3 id="输出样例：">输出样例：</h3>
+<pre><code>No problem
+OK
+OK but...
+No way</code></pre><h3 id="来源">来源</h3>
+<p><a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805066135879680">团体程序设计天梯赛-练习集_L2-010. 排座位<br>作者: 陈越<br>单位: 浙江大学</a></p>
+<h2 id="题目分析">题目分析</h2>
+<p>这道题是道关于集合和简单无向图的题。</p>
+<p>朋友的朋友也是朋友，那朋友的朋友的朋友也是朋友，类推下去，可以发现这就是一个朋友的集合，那可以用集合来记录朋友，在c++中可以用<code>STL</code>中的<code>set</code>来，或者可以用并查集来处理。下面将使用并查集来解决此题。</p>
+<p>敌人没有扩张性，是敌人就是敌人，不是敌人就不是，因为数据量不大，这种可以用简单的无向图来处理，判断两个节点之间有没有边就行了。</p>
+<p>然后来讲下并查集。<br>其实我们之前也有接触过类似并查集的东西，就是计算最短路径的Dijkstra里判断节点有无被计算过，用的就是数组标识，并查集和那个数组有异曲同工之妙，不过思维角度不一样。<br>并查集，并是合并的意思、查是查找的意思、集是集合的意思。顾名思义，就是可以一种表示集合的方式，支持合并和查找操作的一种<strong>数据结构</strong>。</p>
+<blockquote>
+<p>并查集是一种树型的数据结构，用于处理一些不相交集合（Disjoint Sets）的合并及查询问题。常常在使用中以森林来表示。——来自百科<br>  并查集一般用于查询无向图中两个节点是否联通。</p>
+</blockquote>
+<p>并查集属于树的一种，但树怎么表示集合呢，怎么进行查找呢。<br>我们都知道，在森林里，若两个节点都有一个共同的父节点，那么这两个节点就属于同一棵树。<br>并查集就是运用了这点常识。一个最简单的并查集表示一个森林，里面所有的节点都只指向父节点。<strong>查询</strong>两个元素是否属于同一集合的时候只要找两个两个元素是否是同个父节点就行。<strong>合并</strong>两个集合的时候只需要将其中一个集合的父节点指向另一个集合的任意节点就行。
+<img src="./db.jpg" alt="对比"></p>
+<p>并查集的<strong>表示</strong>：由于每个节点都只记录其直接前驱，所以可以直接用<strong>数组</strong>表示并查集。
+数组每个元素都代表一个节点。储存当前节点的父节点下标就行。若要查询a和b两个元素是否属于同个集合，那只用从a节点向上追溯，b元素也向上追溯，看最后是否是相同就行了。</p>
+<p>之后是并查集的<strong>优化</strong>。我们可以看到，并查集中所有的元素都只用追溯到树的根节点就行了，中间的层与结果无关，所以一个最主要的优化就是：<strong>路径压缩</strong>，将子节点直接指向父节点就行了。还有其他优化的什么将小点的树接到大的树上面之类的都无伤大雅了。
+<img src="./ys.jpg" alt="路径压缩"></p>
+<p>说了这么多其实代码就几行：</p>
+<pre><code class="language-cpp">// int bcj[]；
+// 初始化时我习惯将所有都初始化成-1
+// 可以稍作修改用负数来记录当前集合的大小什么的
+// 查找某个元素的根节点
+int find(int p) {
+    // 该节点为根节点？返回根下标：让该节点指向根节点；
+    return bcj[p] &lt; 0? p: bcj[p] = find(bcj[p]);
+}
+// 合并两个元素所在的集合
+void join(int a, int b) {
+    a = find(a); b = find(b);
+    // 若不在一个集合内则合并
+    if (a != b) bcj[b] = a;
+}</code></pre>
+<h2 id="参考答案">参考答案</h2>
+<p>使用并查集：</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+int n, bcj[101], dr[101][101];
+int find(int p) {
+    return bcj[p] &lt; 0? p: bcj[p] = find(bcj[p]);
+}
+void join(int a, int b) {
+    a = find(a); b = find(b);
+    if (a != b) bcj[b] = a;
+}
+int main() {
+//    freopen(&quot;L2-010. 排座位in.txt&quot;,&quot;r&quot;,stdin);
+
+    for(int i=0; i &lt; 101; ++i) bcj[i] = -1;
+    int m, k; cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+    while (m--) {
+        int a, b, gx; cin &gt;&gt; a &gt;&gt; b &gt;&gt; gx;
+        if(gx == 1) join(a, b);
+        else dr[a][b] = dr[b][a] = 1;
+    }
+    while (k--) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        if (find(a) == find(b) &amp;&amp; dr[a][b] == 0)
+            cout &lt;&lt; &quot;No problem&quot; &lt;&lt; endl;
+        else if (find(a) != find(b) &amp;&amp; dr[a][b] == 0)
+            cout &lt;&lt; &quot;OK&quot; &lt;&lt; endl;
+        else if (dr[a][b] &amp;&amp; find(a) == find(b))
+            cout &lt;&lt; &quot;OK but...&quot; &lt;&lt; endl;
+        else if (dr[a][b])
+            cout &lt;&lt; &quot;No way&quot; &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre>
+
+    </div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script src="/js/prism.js"></script>
+</div></body>
+</html>

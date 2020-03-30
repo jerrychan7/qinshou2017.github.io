@@ -169,7 +169,11 @@ function refreshOtherFiles() {
     });
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
-            .replace("/*contentsItems*/", indexPageContentsItems.join(", "))
+            .replace("/*contentsItems*/", indexPageContentsItems.map(i => {
+        let o = JSON.parse(i);
+        o.tags = o.tags.map(t => t.replace(/.*:/g, "")).sort();
+        return JSON.stringify(o);
+    }).join(", "))
             .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
@@ -235,22 +239,22 @@ function buildArticlesSync() {
             }
         }),
         templateWatch = fs.watch(templateDirPath, {recursive: true}, (e, fileName) => {
+            if (fileName === null) return;
             let filePath = path.join(templateDirPath, fileName);
             // rename / delete
             if (!fs.existsSync(filePath))
                 return;
             var stats = fs.statSync(filePath);
             if (stats.isFile() && stats.size) {
-                var dirPath = path.dirname(filePath);
-                if (!fileChangeFlag[filePath]) {
-                    fileChangeFlag[filePath] = true;
+                if (!fileChangeFlag[templateDirPath]) {
+                    fileChangeFlag[templateDirPath] = true;
                     setTimeout(function() {
                         console.log("rebuild template: " + fileName);
                         if (fileName.includes("article.html"))
                             buildArticlesBank(true);
                         refreshOtherFiles();
-                        fileChangeFlag[filePath] = false;
-                        delete fileChangeFlag[filePath];
+                        fileChangeFlag[templateDirPath] = false;
+                        delete fileChangeFlag[templateDirPath];
                     }, 800);
                 }
             }
