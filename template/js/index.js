@@ -69,4 +69,25 @@ window.addEventListener("load", function(e) {
     }
 
     retheme(getCookie("theme") || "default");
+
+
+    // image
+    // todo: resize
+    var imgs = document.getElementsByTagName("img");
+    for (var i = 0; i < imgs.length; ++i) {
+        var img = imgs[i],
+            p = img.parentElement;
+        if (img.width <= p.clientWidth)
+            continue;
+        if (img.width <= p.clientWidth + 100) {
+            img.style.width = "100%";
+        }
+        else {
+            var div = document.createElement("div");
+            div.style.overflow = "auto";
+            div.innerHTML = img.outerHTML;
+            p.insertBefore(div, img);
+            p.removeChild(img);
+        }
+    }
 });

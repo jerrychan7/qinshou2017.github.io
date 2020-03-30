@@ -131,7 +131,14 @@ body.darktheme { background-color: #3C3F41; }
 .darktheme b, .darktheme strong {
     color: #EEE;
 }
-
+.darktheme img {
+    filter: invert(88%);
+    overflow: auto;
+}
+.darktheme img[src^="data:image/gif;base64,"],
+.darktheme img[src$=".gif"] {
+    filter: invert(0);
+}
 
 .darktheme table th {
     color: #c8d4dc;
