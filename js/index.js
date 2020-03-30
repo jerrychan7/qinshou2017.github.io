@@ -90,4 +90,19 @@ window.addEventListener("load", function(e) {
             p.removeChild(img);
         }
     }
+    
+    // hyperlink
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; ++i) {
+        var a = links[i],
+            src = a.href;
+        if (src.length === 0) continue;
+        if (("./#?").indexOf(src[0]) > -1)
+            continue;
+        if (src.indexOf(document.location.host) > -1)
+            continue;
+        if (src.match(/^javascript/i))
+            continue;
+        a.target = "_blank";
+    }
 });
