@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>全排列</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
+    <script src="/js/index.js"></script>
+    <script src="/js/top.js"></script>
+    <link rel="stylesheet" href="/css/katex.min.css" />
+    <script defer src="/js/katex.min.js" ></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2020-05-14T18:10:10.299Z","Update":"2020-05-14T18:10:10.299Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+        </div>
+        <div class="tags"><a href="/tags.html#tag=算法"><code>算法</code></a>&#09;<a href="/tags.html#tag=全排列"><code>全排列</code></a></div>
+        <h1 id="全排列问题">全排列问题</h1>
+<p>全排列也是很常见的问题之一，或者说，排列组合都是很常见的问题，但这里只讲全排列。</p>
+<blockquote>
+<p>从n个不同元素中任取m（m≤n）个元素，按照一定的顺序排列起来，叫做从n个不同元素中取出m个元素的一个排列。当m=n时所有的排列情况叫全排列。 ——百度百科</p>
+</blockquote>
+<p>举个栗子：abc的全排列结果为“abc”，“acb”，“bac”，“bca”，“cab”，“cba”，一共有\(3!=6\)种。</p>
+<p>下面两个排列组合公式当我自己的复习，可跳：</p>
+<p>\(P_n^m=n(n-1)(n-2)...(n-m+1)={n! \over (n-m)!}\)</p>
+<p>\(C_n^m=C_n^{m-n}={P_n^m \over m!}={n! \over m!(n-m)!}\)</p>
+<p>全排列是典型的递归问题，从全排列的排列数上也可以看到端倪：</p>
+<p>1个元素时，一共1种排列方式；<br>2个元素时，一共2*1=2种排列方式；<br>3个元素时，一共3*2=6种排列方式；<br>4个元素时，一共4*6=24种排列方式；<br>可以看出f(n) = n * f(n - 1)。</p>
+<blockquote>
+<p>对于字符串 <code>abcd</code>的全排列，我们可以这样看待。<br>它的全排列应当是以字符串<code>abcd</code>中任一字符+其它字符的全排列：<br>就<code>abcd</code>这个例子，分以下情况：<br><code>a</code> + <code>bcd</code>的全排列<br><code>b</code> + <code>acd</code>的全排列<br><code>c</code> + <code>abd</code>的全排列<br><code>d</code> + <code>abc</code>的全排列<br>可以看到我们已经能构造出子问题了。<br>——<a href="https://votorye.github.io/2016/09/25/%E5%85%A8%E6%8E%92%E5%88%97%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0/">John Doe</a></p>
+</blockquote>
+<h1 id="解法1：选择法">解法1：选择法</h1>
+<p>解法也很简单，根据全排列的定义，从n个不同元素中取出n个元素的作为一个排列，作为死脑筋的计算机，只要按某种规则不重复的取出元素即可。
+最简单的方式是把取出的元素标记上，每次取没被标记的元素，简单来说，标记就是为了防止取出之前取过的元素。</p>
+<p>知道方法后，也就知道怎么写了。下面以输出abc三个字母的全排列为例子。
+使用<code>ans</code>存放结果，辅助空间<code>flags</code>来记录哪个字母被访问过。</p>
+<pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
+    flag  = new Array(input.length);
+function permu1(data, ans = &quot;&quot;) {
+    if (ans.length == data.length) {
+        console.log(ans);   // 输出结果
+        return;
+    }
+    // 选取元素
+    for (let i = 0; i &lt; data.length; ++i) {
+        // 若被标记了则跳过
+        if (flag[i] == true) continue;
+        flag[i] = true;     // 标记
+        permu1(data, ans + data[i]);  // 递归
+        flag[i] = false;    // 回溯 取消标记 可以理解为将元素放了回去 下次还能取
+    }
+}
+permu1(input);</code></pre>
+<p>输出：</p>
+<pre><code>abc
+acb
+bac
+bca
+cab
+cba</code></pre><p>状态示意图，<code>x</code>表示被标记：</p>
+<pre><code>                 abc
+                [   ]
+        .;&quot;       |       `:.
+    abc          abc          abc
+   [x  ]        [ x ]        [  x]
+   /   \        /   \        /   \
+ abc   abc    abc   abc    abc   abc
+[xx ] [x x]  [xx ] [ xx]  [x x] [ xx]
+  |     |      |     |      |     |
+ abc   abc    abc   abc    abc   abc  
+[xxx] [xxx]  [xxx] [xxx]  [xxx] [xxx] </code></pre><p>流程图：</p>
+<pre><code> abc      abc      abc             abc      abc
+[x  ] -&gt; [xx ] -&gt; [xxx] -&gt; abc -&gt; [x x] -&gt; [xxx] -&gt; acb -&gt; 
+
+ abc      abc      abc             abc      abc
+[ x ] -&gt; [xx ] -&gt; [xxx] -&gt; bac -&gt; [ xx] -&gt; [xxx] -&gt; bca -&gt;
+
+ abc      abc      abc             abc      abc
+[  x] -&gt; [x x] -&gt; [xxx] -&gt; cab -&gt; [ xx] -&gt; [xxx] -&gt; cba
+</code></pre><h1 id="解法2：交换法">解法2：交换法</h1>
+<p>假设以字符串第0个位置（也就是第一个字符）为起点，分别与后面的每一个位置对应的字符进行交换。
+直到交换到字符串最后一个位置时，就会排列出新的组合。</p>
+<pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
+    flag  = new Array(input.length);
+function swap(arr, i, j) {
+    if (i == j) return;
+    let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+}
+function permu1(data, index = 0) {
+    if (index == data.length) {
+        console.log(data.join(&quot;&quot;));   // 输出结果
+        return;
+    }
+    // 选取元素
+    for (let i = index; i &lt; data.length; ++i) {
+        swap(data, i, index);
+        permu1(data, index + 1);
+        swap(data, index, i);
+    }
+}
+permu1(input);</code></pre>
+<p>输出一样，就不贴出来了。过程贴一下帮助理解，<code>*</code>为输出：</p>
+<pre><code>abc -&gt; abc -&gt; abc -&gt; abc* -&gt;
+acb -&gt; acb* -&gt;
+bac -&gt; bac -&gt; bac -&gt; bac* -&gt;
+bca -&gt; bca -&gt; bca* -&gt;
+cba -&gt; cba -&gt; cba -&gt; cba* -&gt;
+cab -&gt; cab -&gt; cab*</code></pre><p>解释下，在<code>for</code>循环时，会对index到data.length的每个元素都交换一次，然后在交换后下次递归从index+1开始。
+换个角度理解，index之前都是被选择出来的，从index开始，后面每个元素都将被选取一次，交换是为了将位于index的元素放到后面没选过的元素中。
+简单的示意图：</p>
+<pre><code>   从后面的某个元素交换到前面的值
+         v------┐
+       +---+----------+
+array  | v | balabala |
+       +---+----------+
+          ↗|----------|
+    index    下次参与递归的子数组</code></pre><h1 id="解法3：插入法">解法3：插入法</h1>
+<p>这个用得比较少，这里只讲下思路。每次选出一个元素，将该元素插入到已排列好的队伍中。
+队伍只有一个人，有两种插队方式，前后；
+队伍里有两个人，有三种插队方式，前中后；
+队伍里有三个人，有四种插队方式，前后+中间两个。。。</p>
+<p>递归即可。</p>
+<h1 id="解法4：heaps-algorithm">解法4：Heap&#39;s algorithm</h1>
+<p>待完善。。。</p>
+<h1 id="非递归版">非递归版</h1>
+<p>待完善。。。</p>
+<h1 id="去重">去重</h1>
+<p>若含有相同元素，则上述方法的全排列中会有重复排列的情况出现。可以使用交换法，在交换之前可以先判断[index, i)内是否有相同的元素，不相同才交换，因为相同的元素在之前已经选过了。</p>
+<pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;b&#39;],
+    flag  = new Array(input.length);
+function swap(arr, i, j) {
+    if (i == j) return;
+    let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+}
+function isSwap(arr, i, j) {
+    for (; i &lt; j; ++i)
+        if (arr[i] == arr[j])
+            return true;
+    return false;
+}
+function permu1(data, index = 0) {
+    if (index == data.length) {
+        console.log(data.join(&quot;&quot;));   // 输出结果
+        return;
+    }
+    // 选取元素
+    for (let i = index; i &lt; data.length; ++i) {
+        if (isSwap(data, index, i)) continue;
+        swap(data, i, index);
+        permu1(data, index + 1);
+        swap(data, index, i);
+    }
+}
+permu1(input);</code></pre>
+<p>输出：</p>
+<pre><code>abb
+bab
+bba</code></pre>
+    </div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script src="/js/prism.js"></script>
+</div></body>
+</html>
