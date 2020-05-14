@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFF" />
+    <title>快速排序</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
+    <script src="/js/index.js"></script>
+    <script src="/js/top.js"></script>
+    <link rel="stylesheet" href="/css/katex.min.css" />
+    <script defer src="/js/katex.min.js" ></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script>
+    window.addEventListener("load", function() {
+        var time = {"Post":"2020-05-14T18:10:10.299Z","Update":"2020-05-14T18:10:10.299Z"};
+        document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
+        document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
+    });
+    </script>
+</head>
+<body><div class="body">
+    <div class="header">
+        <div class="logo">
+            <div class="logoword">QS</div>
+           <div class="rond"><div class="light"></div></div>
+        </div>
+        <div class="headerNav">
+            <a href="/index.html">index</a>
+            <a href="/tags.html">tags</a>
+            <a href="/about.html">about</a>
+            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        </div>
+    </div>
+    <div class="article">
+        <div class="time">
+            Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+        </div>
+        <div class="tags"><a href="/tags.html#tag=算法"><code>算法</code></a>&#09;<a href="/tags.html#tag=排序"><code>排序</code></a>&#09;<a href="/tags.html#tag=快速排序"><code>快速排序</code></a></div>
+        <h1 id="快速排序">快速排序</h1>
+<p>快速排序（quick sort）是排序算法的一种，属于交换排序的一种，是对冒泡排序的一种改进。</p>
+<h1 id="流程">流程</h1>
+<p>下面以从小到大排序为例。</p>
+<p>首先，在数组内选择一个元素v，然后遍历一遍数组，把小于v的元素放在v左边，大于v的元素放在v右边。<br>简单来说，将元素v作为中间值，或是说中轴，将数组分成左右两个子数组，左边数组内的元素全部小于v，右边的都大于v，两个子数组内的元素是无序的。</p>
+<p>接下来，将对左右两个数组都可以执行上面的步骤，当子数组大小为1时结束，此时数组有序（每个元素的左边都小于自己，右边都大于自己，那该数组就是有序的）。</p>
+<p>从算法流程可以看到算法可以用递归实现。</p>
+<p>↓很抽象的示意图，左右两个子数组回到步骤1</p>
+<pre><code>+---+-------------+
+| v |             | &lt;-+
++---+-------------+   |
+         ↓           |
++------+---+------+   |
+|  &lt;v  | v |  &gt;v  |   |
++------+---+------+   |
+    |          |      |
+    +----------+------+</code></pre><h1 id="实现">实现</h1>
+<pre><code class="language-javascript">function quickSort(data, begin = 0, end = data.length - 1) {
+    if (begin &gt;= end) return;
+    // 单次排序 将t作为选中的值 i和j向中间靠拢
+    let i = begin, j = end, t = data[i];
+    while (i &lt; j) {
+        // 从右往左 找到第一个小于t的值
+        while (data[j] &gt;= t &amp;&amp; i &lt; j) --j;
+        // 将该值交换到左边i 然后i+1
+        if (i &lt; j) data[i++] = data[j];
+        // 从左往右 找到第一个大于t的值
+        while (data[i] &lt;= t &amp;&amp; i &lt; j) ++i;
+        // 将该值交换到右边j 然后j-1
+        if (i &lt; j) data[j--] = data[i];
+    }
+    // 当循环结束时 i=j 指向轴的位置
+    let mid = i;
+    data[mid] = t;
+    // 递归
+    quickSort(data, begin, mid - 1);
+    quickSort(data, mid + 1, end);
+}</code></pre>
+<h1 id="分析">分析</h1>
+<p>如何取元素，理论上，当取的元素是刚好是数组的中位数时，可以有效减少递归次数，但寻找中位数需要排序，所以每次取中位数是不可能的。
+而且从概率上来说，从数组中随机选择一个元素恰好是该数组的中位数的概率是一样的，所以一般图方便，都会直接选第一个或最后一个元素作为中间值。</p>
+<p>因为在划分左右子数组时会乱交换元素，所以该排序算法是<strong>不稳定</strong>的。</p>
+<p>最坏时的时间复杂度为\(O(n^2)\)，平均时间复杂度为\(O(n\log_2n)\)，空间复杂度为\(O(\log_2n)\)。</p>
+<h1 id="改进：三向切分">改进：三向切分</h1>
+<p>在伟大的前辈们的不懈努力下，快速排序还是给优化了。</p>
+<p>上面也提到了，首先需要选出一个中间值作为轴，划分左右数组。当数组中有大量重复元素时，快速排序依旧会将单个值作为轴进行左右划分。
+那如果，把和中间值相等的值都拢一块，作为一个有宽度的轴，那划分出来是子数组数量就会少很多，进行递归的次数就会大福下降。
+简单来说，每次将数组分为三个子数组，左边数组内的元素全部小于v，右边的都大于v，中间的都等于v，左右两个子数组内的元素是无序的。</p>
+<p>↓很抽象的示意图，左右两个子数组回到步骤1</p>
+<pre><code>+---+--------------+
+| v |              | &lt;-+
++---+--------------+   |
+         ↓            |
++------+----+------+   |
+|  &lt;v  | =v |  &gt;v  |   |
++------+----+------+   |
+    |           |      |
+    +-----------+------+</code></pre><h2 id="三向切分实现">三向切分实现</h2>
+<pre><code class="language-javascript">function quickSort3(data, begin = 0, end = data.length - 1) {
+    if (begin &gt;= end) return;
+    // 单次排序 将t作为选中的值 i和j向中间靠拢
+    let i = begin, t = data[i],
+        k = i + 1, j = end;
+    while (k &lt;= j) {
+        if (data[k] &lt; t)
+            data[i++] = data[k++];
+        else if (data[k] &gt; t) {
+            let tmp = data[k];
+            data[k] = data[j];
+            data[j--] = tmp;
+        }
+        else ++k;
+    }
+    // 当循环结束时 k指向轴末端+1的位置 j指向轴末端 i指向轴开始
+    data[i] = t;
+    // 递归
+    quickSort3(data, begin, i - 1);
+    quickSort3(data, k, end);
+}</code></pre>
+<p>示意图：</p>
+<pre><code>          +-+----------+
+before    |v|          |
+          +-+----------+
+           ^begin     ^end
+          +----+----+----------+----+
+during    | &lt;v | =v | unjudged | &gt;v |
+          +----+----+----------+----+
+                ^-&gt;  ^-&gt;    &lt;-^
+                i    k        j
+          +----+----+----+
+after     | &lt;v | =v | &gt;v |
+          +----+----+----+
+                ^i ^j^k</code></pre><h1 id="改进：双轴快速排序">改进：双轴快速排序</h1>
+<p>还有一个优化是取两个轴。根据两个轴，划分成三个数组，小于轴1的，在轴1和轴2之间的，和大于轴2的（轴1 &lt; 轴2）。</p>
+<p>直接示意图了，代码也懒得实现了，道理都和上面差不多，自己顿悟吧<del>【才不是因为懒</del>：</p>
+<pre><code>+----+-----------------------------------+
+| v1 |                              | v2 | &lt;-+
++----+-----------------------------------+   |
+                    ↓                       |
++-------+----+--------------+----+-------+   |
+|  &lt;v1  | v1 | &gt;=v1 &amp;&amp; &lt;=v2 | v2 |  &gt;v2  |   |
++-------+----+--------------+----+-------+   |
+    |               |                |       |
+    +---------------+----------------+-------+</code></pre>
+    </div>
+    <div class="footer">
+        <ul><li>All rights reserved @qinshou2017</li>
+            <li>Links:
+                <ul>
+                    <li><a href="https://kokic.github.io/">kokic</a></li>
+               <li><a href="https://www.rabbittu.com/">兔子</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script src="/js/prism.js"></script>
+</div></body>
+</html>
