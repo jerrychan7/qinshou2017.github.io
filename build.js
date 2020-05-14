@@ -103,12 +103,11 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
             articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
             if (articleInfo.abstract && articlesInfo[articleName].abstract != articleInfo.abstract)
                 articlesInfo[articleName].abstract = articleInfo.abstract;
-            if (rebuild === false && articlesInfo[articleName].md5 === md5)
+            if (articlesInfo[articleName].md5 !== md5)
+                articlesInfo[articleName].time.Update = nowTime;
+            else if (rebuild === false)
                 return;
             articlesInfo[articleName].md5 = md5;
-            if (rebuild === false) {
-                articlesInfo[articleName].time.Update = nowTime;
-            }
         }
         else {
             articlesInfo[articleName] = {
