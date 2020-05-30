@@ -15,7 +15,7 @@
     <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <script>
     window.addEventListener("load", function() {
-        var time = {"Post":"2020-05-14T18:10:10.299Z","Update":"2020-05-14T18:10:10.299Z"};
+        var time = {"Post":"2020-05-14T18:11:10.299Z","Update":"2020-05-28T20:10:51.186Z"};
         document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
         document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
     });
@@ -51,9 +51,9 @@
 <p>全排列是典型的递归问题，从全排列的排列数上也可以看到端倪：</p>
 <p>1个元素时，一共1种排列方式；<br>2个元素时，一共2*1=2种排列方式；<br>3个元素时，一共3*2=6种排列方式；<br>4个元素时，一共4*6=24种排列方式；<br>可以看出f(n) = n * f(n - 1)。</p>
 <blockquote>
-<p>对于字符串 <code>abcd</code>的全排列，我们可以这样看待。<br>它的全排列应当是以字符串<code>abcd</code>中任一字符+其它字符的全排列：<br>就<code>abcd</code>这个例子，分以下情况：<br><code>a</code> + <code>bcd</code>的全排列<br><code>b</code> + <code>acd</code>的全排列<br><code>c</code> + <code>abd</code>的全排列<br><code>d</code> + <code>abc</code>的全排列<br>可以看到我们已经能构造出子问题了。<br>——<a href="https://votorye.github.io/2016/09/25/%E5%85%A8%E6%8E%92%E5%88%97%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0/">John Doe</a></p>
+<p>对于字符串 <code>abcd</code>的全排列，我们可以这样看待。<br>它的全排列应当是以字符串<code>abcd</code>中任一字符+其它字符的全排列：<br>就<code>abcd</code>这个例子，分以下情况：<br><code>a</code> + <code>bcd</code>的全排列<br><code>b</code> + <code>acd</code>的全排列<br><code>c</code> + <code>abd</code>的全排列<br><code>d</code> + <code>abc</code>的全排列<br>可以看到我们已经能构造出子问题了。<br>——<a href="https://votorye.github.io/2016/09/25/%E5%85%A8%E6%8E%92%E5%88%97%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0/">VoctoYe</a></p>
 </blockquote>
-<h1 id="解法1：选择法">解法1：选择法</h1>
+<h2 id="解法1：选择法">解法1：选择法</h2>
 <p>解法也很简单，根据全排列的定义，从n个不同元素中取出n个元素的作为一个排列，作为死脑筋的计算机，只要按某种规则不重复的取出元素即可。
 最简单的方式是把取出的元素标记上，每次取没被标记的元素，简单来说，标记就是为了防止取出之前取过的元素。</p>
 <p>知道方法后，也就知道怎么写了。下面以输出abc三个字母的全排列为例子。
@@ -101,7 +101,8 @@ cba</code></pre><p>状态示意图，<code>x</code>表示被标记：</p>
 
  abc      abc      abc             abc      abc
 [  x] -&gt; [x x] -&gt; [xxx] -&gt; cab -&gt; [ xx] -&gt; [xxx] -&gt; cba
-</code></pre><h1 id="解法2：交换法">解法2：交换法</h1>
+</code></pre><p>这个解决方法在每一次都会从头开始看哪个元素被选中了，所以复杂度是\(O(n^n)\)。</p>
+<h2 id="解法2：交换法">解法2：交换法</h2>
 <p>假设以字符串第0个位置（也就是第一个字符）为起点，分别与后面的每一个位置对应的字符进行交换。
 直到交换到字符串最后一个位置时，就会排列出新的组合。</p>
 <pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
@@ -124,32 +125,156 @@ function permu1(data, index = 0) {
 }
 permu1(input);</code></pre>
 <p>输出一样，就不贴出来了。过程贴一下帮助理解，<code>*</code>为输出：</p>
-<pre><code>abc -&gt; abc -&gt; abc -&gt; abc* -&gt;
-acb -&gt; acb* -&gt;
-bac -&gt; bac -&gt; bac -&gt; bac* -&gt;
-bca -&gt; bca -&gt; bca* -&gt;
-cba -&gt; cba -&gt; cba -&gt; cba* -&gt;
-cab -&gt; cab -&gt; cab*</code></pre><p>解释下，在<code>for</code>循环时，会对index到data.length的每个元素都交换一次，然后在交换后下次递归从index+1开始。
-换个角度理解，index之前都是被选择出来的，从index开始，后面每个元素都将被选取一次，交换是为了将位于index的元素放到后面没选过的元素中。
+<pre><code>abc -&gt; abc -&gt; abc* -&gt;
+acb* -&gt;
+bac -&gt; bac -&gt; bac* -&gt;
+bca -&gt; bca* -&gt;
+cba -&gt; cba -&gt; cba* -&gt;
+cab -&gt; cab*</code></pre><p>解释下，在<code>for</code>循环时，会对<code>index</code>到<code>data.length</code>的每个元素都交换到<code>index</code>上一次，然后在交换后下次递归从<code>index+1</code>开始。
+换个角度理解，<code>index</code>之前都是被选择出来的，从<code>index</code>开始，后面每个元素都将被选取一次，交换是为了将位于<code>index</code>的元素放到后面没选过的元素中。
+简单来说，分别将每个位置交换到最前面位，之后全排列剩下的元素。
 简单的示意图：</p>
-<pre><code>   从后面的某个元素交换到前面的值
-         v------┐
-       +---+----------+
-array  | v | balabala |
-       +---+----------+
-          ↗|----------|
-    index    下次参与递归的子数组</code></pre><h1 id="解法3：插入法">解法3：插入法</h1>
+<pre><code>            从后面的某个元素交换到前面的值
+                  v------v
+       +--------+---+----------+
+array  | lalala | v | balabala |
+       +--------+---+----------+
+       |--------| ↑ |----------|
+之前递归选出来的值 index 下次参与递归的子数组</code></pre><p>时间复杂度为\(O(n!)\)。</p>
+<h2 id="解法3：插入法">解法3：插入法</h2>
 <p>这个用得比较少，这里只讲下思路。每次选出一个元素，将该元素插入到已排列好的队伍中。
 队伍只有一个人，有两种插队方式，前后；
 队伍里有两个人，有三种插队方式，前中后；
 队伍里有三个人，有四种插队方式，前后+中间两个。。。</p>
 <p>递归即可。</p>
-<h1 id="解法4：heaps-algorithm">解法4：Heap&#39;s algorithm</h1>
-<p>待完善。。。</p>
-<h1 id="非递归版">非递归版</h1>
-<p>待完善。。。</p>
-<h1 id="去重">去重</h1>
-<p>若含有相同元素，则上述方法的全排列中会有重复排列的情况出现。可以使用交换法，在交换之前可以先判断[index, i)内是否有相同的元素，不相同才交换，因为相同的元素在之前已经选过了。</p>
+<h2 id="解法4：br-heaps-permutation-algorithm">解法4：B.R. Heap&#39;s permutation algorithm</h2>
+<pre><code class="language-javascript">function swap(arr, i, j) {
+    let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+}
+function permu(remainingLen, arr) {
+    if (remainingLen == 1) {
+        console.log(arr.join(&quot;&quot;));
+        return;
+    }
+    // 写法1
+    for (let i = 0; i &lt; remainingLen - 1; ++i) {
+        permu(remainingLen - 1, arr);
+        if (remainingLen % 2 == 0)
+            swap(arr, i, remainingLen - 1);
+        else
+            swap(arr, 0, remainingLen - 1);
+    }
+    permu(remainingLen - 1, arr);
+
+    // 写法2
+    permu(remainingLen - 1, arr);
+    for (let i = 0; i &lt; remainingLen - 1; ++i) {
+        if (remainingLen % 2 == 0)
+            swap(arr, i, remainingLen - 1);
+        else
+            swap(arr, 0, remainingLen - 1);
+        permu(remainingLen - 1, arr);
+    }
+}
+let input = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+permu(input.length, input);</code></pre>
+<p>输出：</p>
+<pre><code>abc
+bac
+cab
+acb
+bca
+cba</code></pre><p>直白的讲，我也不知道原理。为何要要根据元素奇偶来选择置换位置，为何每次都可以保留字符串最后一个字符构建前面字符串的全排列。
+网上资料也比较少，为数不多的详解<a href="http://ruslanledesma.com/2016/06/17/why-does-heap-work.html">Why does Heap&#39;s algorithm work?</a>和<a href="https://mikejfromva.com/2016/10/15/heaps-algorithm/">Talks about Heap’s Algorithm</a>，
+看懂的可以<a href="https://github.com/qinshou2017/qinshou2017.github.io/issues">在这里讨论</a>。</p>
+<h2 id="非递归版">非递归版</h2>
+<h3 id="字典序法">字典序法</h3>
+<p>网上资料大同小异烂大街，咱就偷个懒不讲了【咸鱼瘫：</p>
+<ul>
+<li><a href="https://blog.csdn.net/LJT_csdne/article/details/89818035">关于字典序法实现全排列</a></li>
+<li><a href="https://www.cnblogs.com/big-xuyue/p/4147635.html">全排列的几种实现（含字典序排列算法分析）</a></li>
+<li><a href="https://blog.csdn.net/sinat_36215255/article/details/78197129">全排列的实现方法+字典序输出</a></li>
+<li><a href="https://www.cnblogs.com/DWVictor/p/10301666.html">STL next_permutation 算法原理和自行实现</a></li>
+</ul>
+<p>下面是JavaScript实现版本<del>【积累代码库中</del>：</p>
+<pre><code class="language-javascript">function permu(arr) {
+    function swap(i, j) {
+        if (i == j) return;
+        let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    function reverse(i, j) { while (i &lt; j) swap(i++, j--); }
+    function next_permutation(start, end) {
+        let cur = end - 1, pre = cur - 1;
+        // 从后向前找第一双相邻的递增元素 (cur, pre)
+        while (cur &gt; start &amp;&amp; arr[pre] &gt;= arr[cur]) --cur, --pre;
+        if (cur &lt;= start) return false;
+        // 从后面找一个比pre大的最小元素
+        for (cur = end - 1; arr[cur] &lt;= arr[pre]; --cur);
+        swap(cur, pre);
+        // 颠倒[pre + 1, arr.len)的元素
+        reverse(pre + 1, end - 1);
+        return true;
+    }
+    arr.sort((a, b) =&gt; a.charCodeAt() - b.charCodeAt());
+    do {
+        console.log(arr.join(&quot;&quot;));
+    } while (next_permutation(0, arr.length));
+}
+permu([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</code></pre>
+<h3 id="其他">其他</h3>
+<p>来自<a href="https://www.cnblogs.com/bakari/archive/2012/08/02/2620826.html">全排列（含递归和非递归的解法）</a>。原文乱七八糟，代码一塌糊涂，但方法是有用的。</p>
+<p>步骤：</p>
+<ol>
+<li>选取最后一个元素<code>x</code>；</li>
+<li>把<code>x</code>依次往前移动，每移动一次就产生一个排列；</li>
+<li>当<code>x</code>移动到了第一位，交换现在列表中的最后两个元素，得到一个排列；</li>
+<li>把<code>x</code>依次往后移动，每移动一次就产生一个排列；</li>
+<li>当<code>x</code>移动到了最后一位，交换现在列表中的头两个元素，得到一个排列；</li>
+<li>重复步骤2-5，直到把所有的排列输出为止。</li>
+</ol>
+<p>例子：<br>1234<br>-&gt; 1243 -&gt; 1423 -&gt; 4123  // 步骤2<br>-&gt; 4132  // 步骤3<br>-&gt; 1432 -&gt; 1342 -&gt; 1324  // 步骤4<br>-&gt; 3124  // 步骤5<br>-&gt; 3142 -&gt; 3412 -&gt; 4312  // 重复步骤2 ...</p>
+<p>好的，这个算法和B.R. Heap&#39;s permutation algorithm很像，咱也不知道为何可以产生全排列，貌似是将所有可能的交换情况都遍历了一遍？看懂的可以<a href="https://github.com/qinshou2017/qinshou2017.github.io/issues">在这里讨论</a>。</p>
+<p>同时，发现只要在步骤6的时候判断交换后的排列是否和最开始的排列一样就能确定是否输出了全部的排列，即判断交换后是否变成和原来一样，例如abc在经过多次交换后再次变回abc即表明枚举完所有的情况。</p>
+<p>证明也很简单，设有n个元素，则一共有n!种全排列，当n&gt;2时，n!一定是2n的倍数，因为从1乘2乘到n。那么将最后一个元素从后往前移动，再从前往后移动，一共2n次，所以只要n&gt;2，则只需要在步骤6的时候判断即可。</p>
+<p>顺带，提出一个简单的猜想，如果交换的时候判断交换的两个元素是否一样，一样则不交换，能否得出去重复的全排列？没能力验证，若是有能验证这个的大佬指点一二，咱感激不尽。</p>
+<p>由于原文的代码过于糟糕<del>根本就没调试过吧</del>，这里给出JavaScript的实现：</p>
+<pre><code class="language-javascript">function permu(arr) {
+    function print() { console.log(arr.join(&quot;&quot;)); }
+    function swap(i, j) {
+        if (i == j) return;
+        let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    if (arr.length == 1) return print();
+    if (arr.length == 2) {
+        print(); swap(0, 1);
+        return print();
+    }
+    let beginP = arr.join(&quot;&quot;),
+        x = arr.length - 1;
+    do {
+        print();
+        for (; x &gt; 0; --x) {
+            swap(x, x - 1);
+            print();
+        }
+        swap(arr.length - 1, arr.length - 2);
+        print();
+        for (; x &lt; arr.length - 1; ++x) {
+            swap(x, x + 1);
+            print();
+        }
+        swap(0, 1);
+    } while (arr.join(&quot;&quot;) != beginP);
+}
+permu([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</code></pre>
+<p>输出：</p>
+<pre><code>abc
+acb
+cab
+cba
+bca
+bac</code></pre><h2 id="去重">去重</h2>
+<p>若含有相同元素，则上述方法的全排列中，除了字典序法，其他的都会有重复排列的情况出现。可以使用交换法，在交换之前可以先判断[index, i)内是否有相同的元素，不相同才交换，因为相同的元素在之前已经选过了。</p>
 <pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;b&#39;],
     flag  = new Array(input.length);
 function swap(arr, i, j) {
@@ -179,7 +304,26 @@ permu1(input);</code></pre>
 <p>输出：</p>
 <pre><code>abb
 bab
-bba</code></pre>
+bba</code></pre><p><br /><br /></p>
+<hr>
+<p><del>上面讲了这么多，咱还是选择使用C++的STL库中的<code>next_permutation</code>。用库就完事了，造啥轮子。</del></p>
+<p>顺带附一个prev_permutation的JavaScript实现版本：</p>
+<pre><code class="language-javascript">function prev_permutation(arr) {
+    const start = 0, end = arr.length,
+        swap = (i, j) =&gt; {
+            if (i == j) return;
+            let t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+        },
+        reverse = (i, j) =&gt; { while (i &lt; j) swap(i++, j--); };
+    let cur = end - 1, pre = cur - 1;
+    while (cur &gt; start &amp;&amp; arr[pre] &lt;= arr[cur]) --cur, --pre;
+    if (cur &lt;= start) return false;
+    for (cur = end - 1; arr[cur] &gt;= arr[pre]; --cur);
+    swap(cur, pre);
+    reverse(pre + 1, end - 1);
+    return true;
+}</code></pre>
+
     </div>
     <div class="footer">
         <ul><li>All rights reserved @qinshou2017</li>
