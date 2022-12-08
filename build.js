@@ -6,14 +6,14 @@ const path = require("path"),
 
 const rootDirPath = __dirname,
       templateDirPath = path.join(rootDirPath, "/template"),
-      articlesBankDirPath = path.join(rootDirPath, "/articlesBank"),
+      articlesBankDirPath = path.join(rootDirPath, "/markdowns"),
       articlesInfoPath = path.join(articlesBankDirPath, "/articleInfo.json"),
       articlesOutputDirPath = path.join(rootDirPath, "/articles"),
       nowTime = (new Date()).toJSON();
 
 const links = ([
     {name: "kokic", href: "https://kokic.github.io/"},
-    {name: "兔子", href: "https://www.rabbittu.com/"}
+    // {name: "兔子", href: "https://www.rabbittu.com/"}
 ]).map(({name, href}) => `<li><a href="${href}">${name}</a></li>`).join("\n               ");
 
 marked.setOptions({
@@ -63,9 +63,7 @@ function copyDir(srcDir, aimDir) {
     });
 }
 
-function getMD5(fileContent) {
-    return crypto.createHash("md5").update(fileContent).digest("hex");
-}
+const getMD5 = str => crypto.createHash("md5").update(str).digest("hex");
 
 if (!fs.existsSync(articlesInfoPath))
     throw "miss config file: " + articlesInfoPath;

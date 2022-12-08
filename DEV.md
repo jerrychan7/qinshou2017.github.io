@@ -3,13 +3,12 @@
 
 所有的文本将由utf-8编码。未来若出现编码问题，可以使用`iconv-lite`模块解决。
 
-
-```
+```text
 +-- articles/
 |   `-- articlesName/
 |       +-- articleName.html    # 文章内容 自动生成
 |       `-- [Other Files]
-+-- articlesBank/
++-- markdowns/
 |   +-- articlesName/
 |   |   +-- articleName.md      # 文章内容 运行build.js后将变为html
 |   |   `-- [Other Files]
@@ -30,7 +29,7 @@
 +-- package-lock.json           # 貌似因为版权？需要带上就是了
 +-- README.html                 # 暂时空白
 +-- server.js                   # 本机测试时使用服务端
-`-- tags.html                   # 文章标签 再build时自动生成
+`-- tags.html                   # 文章标签 在build时自动生成
 ```
 
 # 配置文件
@@ -56,12 +55,11 @@
 
 * 从`/articlesBank/`自动生成到`/articles/`中。
 * 文章的第一行要由JSON打头（`{`），这个JSON字符串更新不会影响文章的最后修改时间，里面放入文章的：
-    * 文章的`tags`，若无该字段，则会归类为“未分类”；
-    * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
-
+  * 文章的`tags`，若无该字段，则会归类为“未分类”；
+  * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
 
 语法高亮选择了prismjs，下载时的选项：  
-https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all
+[https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all]
 
 数学公式显示使用了katex。
 

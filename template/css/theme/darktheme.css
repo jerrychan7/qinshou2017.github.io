@@ -5,27 +5,24 @@
 body.darktheme { background-color: #3C3F41; }
 .darktheme .body {  color: #DDD; background-color: #1D1F21; }
 
-.darktheme .logoword { animation: darkthememove 3s linear infinite; }
-@keyframes darkthememove {
-    0%    { text-shadow:  2px  2px 6px #fff; }
-    12.5% { text-shadow:  0px  4px 6px #fff; }
-    25%   { text-shadow: -2px  2px 6px #fff; }
-    37.5% { text-shadow: -3px  0px 6px #fff; }
-    50%   { text-shadow: -2px -2px 6px #fff; }
-    62.5% { text-shadow:  0px -4px 6px #fff; }
-    75%   { text-shadow:  2px -2px 6px #fff; }
-    87.5% { text-shadow:  3px  0px 6px #fff; }
-    100%  { text-shadow:  2px  2px 6px #fff; }
+.darktheme .logoBg2 {
+    background: repeating-radial-gradient(at 0 0,
+        transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
+        #1D1F21 var(--logoBg2-offset), #1D1F21 calc(var(--logoBg2-offset) + 4px));
 }
-.darktheme .rond {
-    border-color: #555;
-    animation: darkthemerond 3s linear infinite;
+@media (max-width: 768px) {
+    .darktheme .logoBg2 {
+        background: repeating-radial-gradient(
+            transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
+            #1D1F21 var(--logoBg2-offset), #1D1F21 calc(var(--logoBg2-offset) + 4px));
+    }
 }
-@keyframes darkthemerond {
-  0% { transform : rotate(0deg); }
-  100% { transform : rotate(360deg); }
+
+.darktheme #back2top {
+    color: #2c84fa;
+    background-color: #2b2830;
+    transition: all .2s ease;
 }
-.darktheme .light { background-color: #ddd; }
 
 .darktheme .header { border-bottom-color: #555; }
 .darktheme .headerNav a + a { border-left-color: #555; }

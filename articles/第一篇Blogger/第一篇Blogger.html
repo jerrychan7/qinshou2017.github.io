@@ -15,7 +15,7 @@
     <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <script>
     window.addEventListener("load", function() {
-        var time = {"Post":"2019-08-13T03:23+08:00","Update":"2020-03-27T21:37:56.614Z"};
+        var time = {"Post":"2019-08-13T03:23+08:00","Update":"2022-12-08T14:34:40.878Z"};
         document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
         document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
     });
@@ -25,7 +25,7 @@
     <div class="header">
         <div class="logo">
             <div class="logoword">QS</div>
-           <div class="rond"><div class="light"></div></div>
+            <div class="logoBg2"></div>
         </div>
         <div class="headerNav">
             <a href="/index.html">index</a>
@@ -53,12 +53,14 @@ emm……貌似没必要，<a href="/about.html">about</a>里就有。那就说�
 <p>接下来是一些奇怪的 无意义的测试</p>
 <hr>
 <ul>
-<li>无序列表<ol start="2">
+<li><p>无序列表</p>
+<ol start="2">
 <li>有序列表</li>
 <li>有序列表</li>
 </ol>
 </li>
-<li>无序列表<ol>
+<li><p>无序列表</p>
+<ol>
 <li>第一行</li>
 </ol>
 <ul>
@@ -66,7 +68,8 @@ emm……貌似没必要，<a href="/about.html">about</a>里就有。那就说�
 <li>第三行</li>
 </ul>
 </li>
-<li>无序列表</li>
+<li><p>无序列表</p>
+</li>
 </ul>
 <blockquote>
 <p>引用</p>
@@ -140,11 +143,10 @@ $$</p>
 
     </div>
     <div class="footer">
-        <ul><li>All rights reserved @qinshou2017</li>
-            <li>Links:
+        <ul><li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
+            <li>友链:
                 <ul>
                     <li><a href="https://kokic.github.io/">kokic</a></li>
-               <li><a href="https://www.rabbittu.com/">兔子</a></li>
                 </ul>
             </li>
         </ul>
