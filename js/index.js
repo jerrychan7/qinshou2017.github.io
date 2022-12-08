@@ -61,7 +61,6 @@ window.addEventListener("load", function(e) {
             }
         }
     }
-    console.log(meta_theme_color);
 
     retheme(cookie.get("theme", "default"));
 

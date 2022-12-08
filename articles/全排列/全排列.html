@@ -186,7 +186,7 @@ acb
 bca
 cba</code></pre><p>直白的讲，我也不知道原理。为何要要根据元素奇偶来选择置换位置，为何每次都可以保留字符串最后一个字符构建前面字符串的全排列。
 网上资料也比较少，为数不多的详解<a href="http://ruslanledesma.com/2016/06/17/why-does-heap-work.html">Why does Heap&#39;s algorithm work?</a>和<a href="https://mikejfromva.com/2016/10/15/heaps-algorithm/">Talks about Heap’s Algorithm</a>，
-看懂的可以<a href="https://github.com/qinshou2017/qinshou2017.github.io/issues">在这里讨论</a>。</p>
+看懂的可以<a href="https://github.com/jerrychan7/jerrychan7.github.io/issues">在这里讨论</a>。</p>
 <h2 id="非递归版">非递归版</h2>
 <h3 id="字典序法">字典序法</h3>
 <p>网上资料大同小异烂大街，咱就偷个懒不讲了【咸鱼瘫：</p>
@@ -233,7 +233,7 @@ permu([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</code></pre>
 <li>重复步骤2-5，直到把所有的排列输出为止。</li>
 </ol>
 <p>例子：<br>1234<br>-&gt; 1243 -&gt; 1423 -&gt; 4123  // 步骤2<br>-&gt; 4132  // 步骤3<br>-&gt; 1432 -&gt; 1342 -&gt; 1324  // 步骤4<br>-&gt; 3124  // 步骤5<br>-&gt; 3142 -&gt; 3412 -&gt; 4312  // 重复步骤2 ...</p>
-<p>好的，这个算法和B.R. Heap&#39;s permutation algorithm很像，咱也不知道为何可以产生全排列，貌似是将所有可能的交换情况都遍历了一遍？看懂的可以<a href="https://github.com/qinshou2017/qinshou2017.github.io/issues">在这里讨论</a>。</p>
+<p>好的，这个算法和B.R. Heap&#39;s permutation algorithm很像，咱也不知道为何可以产生全排列，貌似是将所有可能的交换情况都遍历了一遍？看懂的可以<a href="https://github.com/jerrychan7/jerrychan7.github.io/issues">在这里讨论</a>。</p>
 <p>同时，发现只要在步骤6的时候判断交换后的排列是否和最开始的排列一样就能确定是否输出了全部的排列，即判断交换后是否变成和原来一样，例如abc在经过多次交换后再次变回abc即表明枚举完所有的情况。</p>
 <p>证明也很简单，设有n个元素，则一共有n!种全排列，当n&gt;2时，n!一定是2n的倍数，因为从1乘2乘到n。那么将最后一个元素从后往前移动，再从前往后移动，一共2n次，所以只要n&gt;2，则只需要在步骤6的时候判断即可。</p>
 <p>顺带，提出一个简单的猜想，如果交换的时候判断交换的两个元素是否一样，一样则不交换，能否得出去重复的全排列？没能力验证，若是有能验证这个的大佬指点一二，咱感激不尽。</p>
