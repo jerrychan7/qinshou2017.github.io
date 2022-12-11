@@ -76,13 +76,14 @@ function permu1(data, ans = &quot;&quot;) {
 }
 permu1(input);</code></pre>
 <p>输出：</p>
-<pre><code>abc
+<pre><code class="language-text">abc
 acb
 bac
 bca
 cab
-cba</code></pre><p>状态示意图，<code>x</code>表示被标记：</p>
-<pre><code>                 abc
+cba</code></pre>
+<p>状态示意图，<code>x</code>表示被标记：</p>
+<pre><code class="language-text">                 abc
                 [   ]
         .;&quot;       |       `:.
     abc          abc          abc
@@ -92,8 +93,9 @@ cba</code></pre><p>状态示意图，<code>x</code>表示被标记：</p>
 [xx ] [x x]  [xx ] [ xx]  [x x] [ xx]
   |     |      |     |      |     |
  abc   abc    abc   abc    abc   abc  
-[xxx] [xxx]  [xxx] [xxx]  [xxx] [xxx] </code></pre><p>流程图：</p>
-<pre><code> abc      abc      abc             abc      abc
+[xxx] [xxx]  [xxx] [xxx]  [xxx] [xxx] </code></pre>
+<p>流程图：</p>
+<pre><code class="language-text"> abc      abc      abc             abc      abc
 [x  ] -&gt; [xx ] -&gt; [xxx] -&gt; abc -&gt; [x x] -&gt; [xxx] -&gt; acb -&gt; 
 
  abc      abc      abc             abc      abc
@@ -101,7 +103,8 @@ cba</code></pre><p>状态示意图，<code>x</code>表示被标记：</p>
 
  abc      abc      abc             abc      abc
 [  x] -&gt; [x x] -&gt; [xxx] -&gt; cab -&gt; [ xx] -&gt; [xxx] -&gt; cba
-</code></pre><p>这个解决方法在每一次都会从头开始看哪个元素被选中了，所以复杂度是\(O(n^n)\)。</p>
+</code></pre>
+<p>这个解决方法在每一次都会从头开始看哪个元素被选中了，所以复杂度是\(O(n^n)\)。</p>
 <h2 id="解法2：交换法">解法2：交换法</h2>
 <p>假设以字符串第0个位置（也就是第一个字符）为起点，分别与后面的每一个位置对应的字符进行交换。
 直到交换到字符串最后一个位置时，就会排列出新的组合。</p>
@@ -125,22 +128,24 @@ function permu1(data, index = 0) {
 }
 permu1(input);</code></pre>
 <p>输出一样，就不贴出来了。过程贴一下帮助理解，<code>*</code>为输出：</p>
-<pre><code>abc -&gt; abc -&gt; abc* -&gt;
+<pre><code class="language-text">abc -&gt; abc -&gt; abc* -&gt;
 acb* -&gt;
 bac -&gt; bac -&gt; bac* -&gt;
 bca -&gt; bca* -&gt;
 cba -&gt; cba -&gt; cba* -&gt;
-cab -&gt; cab*</code></pre><p>解释下，在<code>for</code>循环时，会对<code>index</code>到<code>data.length</code>的每个元素都交换到<code>index</code>上一次，然后在交换后下次递归从<code>index+1</code>开始。
+cab -&gt; cab*</code></pre>
+<p>解释下，在<code>for</code>循环时，会对<code>index</code>到<code>data.length</code>的每个元素都交换到<code>index</code>上一次，然后在交换后下次递归从<code>index+1</code>开始。
 换个角度理解，<code>index</code>之前都是被选择出来的，从<code>index</code>开始，后面每个元素都将被选取一次，交换是为了将位于<code>index</code>的元素放到后面没选过的元素中。
 简单来说，分别将每个位置交换到最前面位，之后全排列剩下的元素。
 简单的示意图：</p>
-<pre><code>            从后面的某个元素交换到前面的值
+<pre><code class="language-text">            从后面的某个元素交换到前面的值
                   v------v
        +--------+---+----------+
 array  | lalala | v | balabala |
        +--------+---+----------+
        |--------| ↑ |----------|
-之前递归选出来的值 index 下次参与递归的子数组</code></pre><p>时间复杂度为\(O(n!)\)。</p>
+之前递归选出来的值 index 下次参与递归的子数组</code></pre>
+<p>时间复杂度为\(O(n!)\)。</p>
 <h2 id="解法3：插入法">解法3：插入法</h2>
 <p>这个用得比较少，这里只讲下思路。每次选出一个元素，将该元素插入到已排列好的队伍中。
 队伍只有一个人，有两种插队方式，前后；
@@ -179,12 +184,13 @@ function permu(remainingLen, arr) {
 let input = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
 permu(input.length, input);</code></pre>
 <p>输出：</p>
-<pre><code>abc
+<pre><code class="language-text">abc
 bac
 cab
 acb
 bca
-cba</code></pre><p>直白的讲，我也不知道原理。为何要要根据元素奇偶来选择置换位置，为何每次都可以保留字符串最后一个字符构建前面字符串的全排列。
+cba</code></pre>
+<p>直白的讲，我也不知道原理。为何要要根据元素奇偶来选择置换位置，为何每次都可以保留字符串最后一个字符构建前面字符串的全排列。
 网上资料也比较少，为数不多的详解<a href="http://ruslanledesma.com/2016/06/17/why-does-heap-work.html">Why does Heap&#39;s algorithm work?</a>和<a href="https://mikejfromva.com/2016/10/15/heaps-algorithm/">Talks about Heap’s Algorithm</a>，
 看懂的可以<a href="https://github.com/jerrychan7/jerrychan7.github.io/issues">在这里讨论</a>。</p>
 <h2 id="非递归版">非递归版</h2>
@@ -268,12 +274,13 @@ permu([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</code></pre>
 }
 permu([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</code></pre>
 <p>输出：</p>
-<pre><code>abc
+<pre><code class="language-text">abc
 acb
 cab
 cba
 bca
-bac</code></pre><h2 id="去重">去重</h2>
+bac</code></pre>
+<h2 id="去重">去重</h2>
 <p>若含有相同元素，则上述方法的全排列中，除了字典序法，其他的都会有重复排列的情况出现。可以使用交换法，在交换之前可以先判断[index, i)内是否有相同的元素，不相同才交换，因为相同的元素在之前已经选过了。</p>
 <pre><code class="language-javascript">let input = [&#39;a&#39;, &#39;b&#39;, &#39;b&#39;],
     flag  = new Array(input.length);
@@ -302,9 +309,10 @@ function permu1(data, index = 0) {
 }
 permu1(input);</code></pre>
 <p>输出：</p>
-<pre><code>abb
+<pre><code class="language-text">abb
 bab
-bba</code></pre><p><br /><br /></p>
+bba</code></pre>
+<p><br /><br /></p>
 <hr>
 <p><del>上面讲了这么多，咱还是选择使用C++的STL库中的<code>next_permutation</code>。用库就完事了，造啥轮子。</del></p>
 <p>顺带附一个prev_permutation的JavaScript实现版本：</p>

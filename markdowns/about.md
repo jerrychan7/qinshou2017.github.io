@@ -9,9 +9,9 @@
 
 伪宅(求推完结番 ~~片荒~~)，喜欢MineCraft
 
-最近用js和WebGL实现了一个[简易的网页版的mc](https://github.com/jerrychan7/WebMC)，咱知道大佬们肯定不屑于star的， ~~虽然内心是期待有star的~~
+最近用js和WebGL实现了一个[简易的网页版的mc]({&MY_GITHUB_URL%}/WebMC)，咱知道大佬们肯定不屑于star的， ~~虽然内心是期待有star的~~
 
-触屏设备也能**[在线](https://jerrychan7.github.io/WebMC)**玩哟。
+触屏设备也能**[在线]({&GITHUB_PAGE_URL%}/WebMC)**玩哟。
 
 # 技能
 

@@ -8,13 +8,28 @@ const rootDirPath = __dirname,
       templateDirPath = path.join(rootDirPath, "/template"),
       articlesBankDirPath = path.join(rootDirPath, "/markdowns"),
       articlesInfoPath = path.join(articlesBankDirPath, "/articleInfo.json"),
-      articlesOutputDirPath = path.join(rootDirPath, "/articles"),
-      nowTime = (new Date()).toJSON();
+      articlesOutputDirPath = path.join(rootDirPath, "/articles");
 
-const links = ([
-    {name: "kokic", href: "https://kokic.github.io/"},
-    // {name: "兔子", href: "https://www.rabbittu.com/"}
-]).map(({name, href}) => `<li><a href="${href}">${name}</a></li>`).join("\n               ");
+if (!fs.existsSync(articlesInfoPath))
+    throw "miss config file: " + articlesInfoPath;
+
+const githubName = "jerrychan7";
+const githubPage = `${githubName}.github.io`;
+const myGithubURL = `https://github.com/${githubName}`;
+const githubRepoURL = `${myGithubURL}/${githubPage}`;
+const githubPageURL = `https://${githubPage}`;
+
+const replaceGithubVar = str =>
+    str.replace(/{&GITHUB_NAME_URL%}/g, githubName)
+    .replace(/{&MY_GITHUB_URL%}/g, myGithubURL)
+    .replace(/{&GITHUB_REPO_URL%}/g, githubRepoURL)
+    .replace(/{&GITHUB_PAGE_URL%}/g, githubPageURL);
+
+const links = Object.entries({
+    "kokic": "https://kokic.github.io/",
+    // "兔子": "https://www.rabbittu.com/",
+}).map(([name, href]) => `<li><a href="${href}">${name}</a></li>`)
+.join("\n               ");
 
 marked.setOptions({
     rederer: new marked.Renderer(),
@@ -65,10 +80,8 @@ function copyDir(srcDir, aimDir) {
 
 const getMD5 = str => crypto.createHash("md5").update(str).digest("hex");
 
-if (!fs.existsSync(articlesInfoPath))
-    throw "miss config file: " + articlesInfoPath;
-
 let articlesInfo = JSON.parse(fs.readFileSync(articlesInfoPath), "utf-8");
+const saveArticlesMetadata = () => fs.writeFileSync(articlesInfoPath, JSON.stringify(articlesInfo, null, 4));
 
 // buildDiff
 
@@ -96,7 +109,7 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
             articleInfo = JSON.parse(article.substring(0, i));
             article = article.substring(i);
         }
-        let md5 = getMD5(article);
+        const nowTime = (new Date()).toJSON(), md5 = getMD5(article);
         if (articlesInfo[articleName]) {
             articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
             if (articleInfo.abstract && articlesInfo[articleName].abstract != articleInfo.abstract)
@@ -120,7 +133,7 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
         }
         rmdir(outputDirPath);
         mkdir(outputDirPath);
-        let marked_article = marked(article),
+        let marked_article = marked(replaceGithubVar(article)),
             out = fs.readFileSync(path.join(templateDirPath, "/articles/articleTitle/article.html"), "utf-8")
                     .replace("{title}", articleName)
                     .replace("{/*time*/}", JSON.stringify(articlesInfo[articleName].time))
@@ -166,23 +179,22 @@ function refreshOtherFiles() {
     });
     fs.writeFileSync(path.join(rootDirPath, "/index.html"),
         fs.readFileSync(path.join(templateDirPath, "/index.html"), "utf8")
-            .replace("/*contentsItems*/", indexPageContentsItems.map(i => {
-        let o = JSON.parse(i);
-        o.tags = o.tags.map(t => t.replace(/.*:/g, "")).sort();
-        return JSON.stringify(o);
-    }).join(", "))
-            .replace("{links}", links));
+        .replace("/*contentsItems*/", indexPageContentsItems.map(i => {
+            let o = JSON.parse(i);
+            o.tags = o.tags.map(t => t.replace(/.*:/g, "")).sort();
+            return JSON.stringify(o);
+        }).join(", "))
+        .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/tags.html"),
         fs.readFileSync(path.join(templateDirPath, "/tags.html"), "utf8")
-            .replace("{/*tags-title*/}", JSON.stringify(tags_title))
-            .replace("{links}", links));
+        .replace("{/*tags-title*/}", JSON.stringify(tags_title))
+        .replace("{links}", links));
 
     fs.writeFileSync(path.join(rootDirPath, "/about.html"),
         fs.readFileSync(path.join(templateDirPath, "/about.html"), "utf8")
-            .replace("{about.md}",
-                marked(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8")))
-            .replace("{links}", links));
+        .replace("{about.md}", marked(replaceGithubVar(fs.readFileSync(path.join(articlesBankDirPath, "/about.md"), "utf8"))))
+        .replace("{links}", links));
 
     rmdir(path.join(rootDirPath, "/css"));
     copyDir(path.join(templateDirPath, "/css"), path.join(rootDirPath, "/css"));
@@ -191,15 +203,16 @@ function refreshOtherFiles() {
 
     fs.writeFileSync(path.join(rootDirPath, "/js/index.js"),
         fs.readFileSync(path.join(templateDirPath, "/js/index.js"), "utf8")
-            .replace(/\/\*allTheme\*\//g,
-                     fs.readdirSync(path.join(templateDirPath, "/css/theme/")).reduce((allTheme, themeName) => {
-        if (themeName !== "default.css"
-            && fs.statSync(path.join(templateDirPath, "/css/theme/", themeName)).isFile())
-            allTheme.push(themeName.replace(path.extname(themeName), ""));
-        return allTheme;
-    }, ["default"]).join(",")));
+        .replace(/\/\*allTheme\*\//g,
+            fs.readdirSync(path.join(templateDirPath, "/css/theme/"))
+            .reduce((allTheme, themeName) => {
+                if (themeName !== "default.css"
+                    && fs.statSync(path.join(templateDirPath, "/css/theme/", themeName)).isFile())
+                    allTheme.push(themeName.replace(path.extname(themeName), ""));
+                return allTheme;
+            }, ["default"]).join(",")));
 
-    fs.writeFileSync(articlesInfoPath, JSON.stringify(articlesInfo, null, 4));
+    saveArticlesMetadata();
 }
 
 function buildArticlesBank(rebuild = false) {
@@ -213,48 +226,44 @@ function buildArticlesBank(rebuild = false) {
 }
 
 function buildArticlesSync() {
-    let fileChangeFlag = {};
+    const fileChangeFlag = {};
+    const refreshFlag = (dirPath, fn, delay = 800) => {
+        if (dirPath in fileChangeFlag)
+            clearTimeout(fileChangeFlag[dirPath]);
+        fileChangeFlag[dirPath] = setTimeout(() => {
+            fn();
+            delete fileChangeFlag[dirPath];
+        }, delay);
+    };
     const bankWatcher = fs.watch(articlesBankDirPath, {recursive: true}, (e, fileName) => {
-            var filePath = path.join(articlesBankDirPath, fileName);
+            const filePath = path.join(articlesBankDirPath, fileName);
             // rename / delete
             if (filePath == articlesInfoPath || !fs.existsSync(filePath))
                 return;
-            var stats = fs.statSync(filePath);
-            if (stats.isFile() && stats.size) {
-                var dirPath = path.dirname(filePath);
-                if (!fileChangeFlag[dirPath]) {
-                    fileChangeFlag[dirPath] = true;
-                    setTimeout(function() {
-                        console.log("rebuild article: " + fileName);
-                        if (path.dirname(filePath) != articlesBankDirPath)
-                            buildSingleArticle(dirPath, true);
-                        refreshOtherFiles();
-                        fileChangeFlag[dirPath] = false;
-                        delete fileChangeFlag[dirPath];
-                    }, 800);
-                }
-            }
+            const stats = fs.statSync(filePath);
+            if (!(stats.isFile() && stats.size)) return;
+            const dirPath = path.dirname(filePath);
+            refreshFlag(dirPath, () => {
+                console.log("rebuild article: " + fileName);
+                if (path.dirname(filePath) != articlesBankDirPath)
+                    buildSingleArticle(dirPath, true);
+                refreshOtherFiles();
+            });
         }),
         templateWatch = fs.watch(templateDirPath, {recursive: true}, (e, fileName) => {
             if (fileName === null) return;
-            let filePath = path.join(templateDirPath, fileName);
+            const filePath = path.join(templateDirPath, fileName);
             // rename / delete
             if (!fs.existsSync(filePath))
                 return;
-            var stats = fs.statSync(filePath);
-            if (stats.isFile() && stats.size) {
-                if (!fileChangeFlag[templateDirPath]) {
-                    fileChangeFlag[templateDirPath] = true;
-                    setTimeout(function() {
-                        console.log("rebuild template: " + fileName);
-                        if (fileName.includes("article.html"))
-                            buildArticlesBank(true);
-                        refreshOtherFiles();
-                        fileChangeFlag[templateDirPath] = false;
-                        delete fileChangeFlag[templateDirPath];
-                    }, 800);
-                }
-            }
+            const stats = fs.statSync(filePath);
+            if (!(stats.isFile() && stats.size)) return;
+            refreshFlag(templateDirPath, () => {
+                console.log("rebuild template: " + fileName);
+                if (fileName.includes("article.html"))
+                    buildArticlesBank(true);
+                else refreshOtherFiles();
+            });
         });
     console.log("start sync build, enter 'exit' to close the program.");
     const rl = require("readline").createInterface({input: process.stdin});
