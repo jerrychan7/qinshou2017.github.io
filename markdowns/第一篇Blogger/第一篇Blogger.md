@@ -70,28 +70,30 @@ function fn(j) { const i = 10, k = [], s = "string"; return i; }
 |abc|bcd|cde|
 |abc|bcd|cde|
 
-$$$$
+$$
 \begin{bmatrix}
    a & b \\\\
    c & d
 \end{bmatrix}
-$$$$
+$$
 
-$$$$
+$$
 \displaystyle \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-$$$$
+$$
 
-$$$$
+$$
 \begin{alignedat}{2}
    10&x+ &3&y = 2 \\\\
    3&x+&13&y = 4
 \end{alignedat}
-$$$$
+$$
 
-$$$$
-\\tag\*{hi} \int_{-\infty}^\infty
-$$$$
+$$
+\tag*{hi} \int_{-\infty}^\infty
+$$
 
 \\(S\_{n}=\cfrac {(a\_{1}+a\_{n})\cdot n} {2}\\)
+
+$S\_{n}=\cfrac {(a\_{1}+a\_{n})\cdot n} {2}$
 
 [咸鱼.gif]: ./xy.gif

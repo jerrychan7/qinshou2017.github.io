@@ -137,13 +137,13 @@ function buildSingleArticle(articleDirPath, rebuild = false, { notUpdateTime = f
         }
         rmdir(outputDirPath);
         mkdir(outputDirPath);
-        let marked_article = marked(replaceGithubVar(article)),
+        let marked_article = marked.parse(replaceGithubVar(article)),
             out = fs.readFileSync(path.join(templateDirPath, "/articles/articleTitle/article.html"), "utf-8")
-                    .replace("{title}", articleName)
-                    .replace("{/*time*/}", JSON.stringify(articlesInfo[articleName].time))
-                    .replace("{tags}", articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
-                    .replace("{articleContent}", marked_article)
-                    .replace("{links}", links);
+                    .replace("{title}", () => articleName)
+                    .replace("{/*time*/}", () => JSON.stringify(articlesInfo[articleName].time))
+                    .replace("{tags}", () => articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
+                    .replace("{articleContent}", () => marked_article)
+                    .replace("{links}", () => links);
         fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
         articlesInfo[articleName].abstract = articleInfo.abstract
             ? articleInfo.abstract
