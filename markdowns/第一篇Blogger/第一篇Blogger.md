@@ -40,11 +40,13 @@ emm……貌似没必要，[about](/about.html)里就有。那就说说写博客
 
 > 引用
 > `code`
+>
 > ```php
-    <?php
-      echo "hello, world!";
-    ?>
+>   <?php
+>     echo "hello, world!";
+>   ?>
 > ```
+>
 > ```cpp
 > #include <iostream>
 > int main(){

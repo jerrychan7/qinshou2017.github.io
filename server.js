@@ -1,9 +1,10 @@
 
-const http = require("http"),
-      fs = require("fs"),
-      url = require("url"),
-      path = require("path");
-let server = http.createServer(function(request, response) {
+import http from "http";
+import fs from "fs";
+import url from "url";
+import path from "path";
+
+const server = http.createServer(function(request, response) {
     let pathObj = url.parse(request.url, true);
     if (pathObj.pathname === "/" || pathObj === "/index")
         pathObj.pathname = "/index.html";
@@ -13,21 +14,24 @@ let server = http.createServer(function(request, response) {
             console.log("404 " + filePath);
             response.writeHead(404, "not found");
             response.end("<h1>404 Not Found</h1>");
+            return;
         }
-        else {
-            console.log("ok " + filePath);
-            response.write(fileContent, "binary");
-            response.end();
-        }
+        console.log("ok " + filePath);
+        response.write(fileContent, "binary");
+        response.end();
     });
+}).listen(3000, () => {
+    console.log("visit http://localhost:3000 \nenter 'exit'/'e'/'quit'/'q'/'close' to close the program.");
 });
-server.listen(3000);
-console.log("visit http://localhost:3000 \nenter 'exit' to close the program.");
-let rl = require("readline").createInterface({input: process.stdin});
+
+import { createInterface } from "readline";
+let rl = createInterface({ input: process.stdin });
 rl.on("line", async line => {
-    if (line.trim() === "exit") {
+    switch (line.trim().toLowerCase()) {
+    case "exit": case "e": case "quit": case "q": case "close":
         server.close();
         process.exitCode = 0;
         rl.close();
+        break;
     }
 });

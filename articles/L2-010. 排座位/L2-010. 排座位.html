@@ -43,13 +43,15 @@
 <h2 id="题目描述">题目描述</h2>
 <pre><code>时间限制: 150 ms
 内存限制: 64 MB
-代码长度限制: 16 KB</code></pre><p>布置宴席最微妙的事情，就是给前来参宴的各位宾客安排座位。无论如何，总不能把两个死对头排到同一张宴会桌旁！这个艰巨任务现在就交给你，对任何一对客人，请编写程序告诉主人他们是否能被安排同席。</p>
-<h3 id="输入格式：">输入格式：</h3>
+代码长度限制: 16 KB
+</code></pre>
+<p>布置宴席最微妙的事情，就是给前来参宴的各位宾客安排座位。无论如何，总不能把两个死对头排到同一张宴会桌旁！这个艰巨任务现在就交给你，对任何一对客人，请编写程序告诉主人他们是否能被安排同席。</p>
+<h3 id="输入格式">输入格式：</h3>
 <p>输入第一行给出3个正整数：<code>N</code>（\(\le 100\)），即前来参宴的宾客总人数，则这些人从1到<code>N</code>编号；<code>M</code>为已知两两宾客之间的关系数；<code>K</code>为查询的条数。随后<code>M</code>行，每行给出一对宾客之间的关系，格式为：<code>宾客1 宾客2 关系</code>，其中<code>关系</code>为1表示是朋友，-1表示是死对头。注意两个人不可能既是朋友又是敌人。最后<code>K</code>行，每行给出一对需要查询的宾客编号。</p>
 <p>这里假设朋友的朋友也是朋友。但敌人的敌人并不一定就是朋友，朋友的敌人也不一定是敌人。只有单纯直接的敌对关系才是绝对不能同席的。</p>
-<h3 id="输出格式：">输出格式：</h3>
+<h3 id="输出格式">输出格式：</h3>
 <p>对每个查询输出一行结果：如果两位宾客之间是朋友，且没有敌对关系，则输出<code>No problem</code>；如果他们之间并不是朋友，但也不敌对，则输出<code>OK</code>；如果他们之间有敌对，然而也有共同的朋友，则输出<code>OK but...</code>；如果他们之间只有敌对关系，则输出<code>No way</code>。</p>
-<h3 id="输入样例：">输入样例：</h3>
+<h3 id="输入样例">输入样例：</h3>
 <pre><code>7 8 4
 5 6 1
 2 7 -1
@@ -62,11 +64,15 @@
 3 4
 5 7
 2 3
-7 2</code></pre><h3 id="输出样例：">输出样例：</h3>
+7 2
+</code></pre>
+<h3 id="输出样例">输出样例：</h3>
 <pre><code>No problem
 OK
 OK but...
-No way</code></pre><h3 id="来源">来源</h3>
+No way
+</code></pre>
+<h3 id="来源">来源</h3>
 <p><a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805066135879680">团体程序设计天梯赛-练习集_L2-010. 排座位<br>作者: 陈越<br>单位: 浙江大学</a></p>
 <h2 id="题目分析">题目分析</h2>
 <p>这道题是道关于集合和简单无向图的题。</p>
@@ -96,42 +102,44 @@ void join(int a, int b) {
     a = find(a); b = find(b);
     // 若不在一个集合内则合并
     if (a != b) bcj[b] = a;
-}</code></pre>
+}
+</code></pre>
 <h2 id="参考答案">参考答案</h2>
 <p>使用并查集：</p>
 <pre><code class="language-cpp">#include &lt;iostream&gt;
 using namespace std;
 int n, bcj[101], dr[101][101];
 int find(int p) {
-    return bcj[p] &lt; 0? p: bcj[p] = find(bcj[p]);
+	return bcj[p] &lt; 0? p: bcj[p] = find(bcj[p]);
 }
 void join(int a, int b) {
-    a = find(a); b = find(b);
-    if (a != b) bcj[b] = a;
+	a = find(a); b = find(b);
+	if (a != b) bcj[b] = a;
 }
 int main() {
-//    freopen(&quot;L2-010. 排座位in.txt&quot;,&quot;r&quot;,stdin);
+//	freopen(&quot;L2-010. 排座位in.txt&quot;,&quot;r&quot;,stdin);
 
-    for(int i=0; i &lt; 101; ++i) bcj[i] = -1;
-    int m, k; cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
-    while (m--) {
-        int a, b, gx; cin &gt;&gt; a &gt;&gt; b &gt;&gt; gx;
-        if(gx == 1) join(a, b);
-        else dr[a][b] = dr[b][a] = 1;
-    }
-    while (k--) {
-        int a, b; cin &gt;&gt; a &gt;&gt; b;
-        if (find(a) == find(b) &amp;&amp; dr[a][b] == 0)
-            cout &lt;&lt; &quot;No problem&quot; &lt;&lt; endl;
-        else if (find(a) != find(b) &amp;&amp; dr[a][b] == 0)
-            cout &lt;&lt; &quot;OK&quot; &lt;&lt; endl;
-        else if (dr[a][b] &amp;&amp; find(a) == find(b))
-            cout &lt;&lt; &quot;OK but...&quot; &lt;&lt; endl;
-        else if (dr[a][b])
-            cout &lt;&lt; &quot;No way&quot; &lt;&lt; endl;
-    }
-    return 0;
-}</code></pre>
+	for(int i=0; i &lt; 101; ++i) bcj[i] = -1;
+	int m, k; cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+	while (m--) {
+		int a, b, gx; cin &gt;&gt; a &gt;&gt; b &gt;&gt; gx;
+		if(gx == 1) join(a, b);
+		else dr[a][b] = dr[b][a] = 1;
+	}
+	while (k--) {
+		int a, b; cin &gt;&gt; a &gt;&gt; b;
+		if (find(a) == find(b) &amp;&amp; dr[a][b] == 0)
+			cout &lt;&lt; &quot;No problem&quot; &lt;&lt; endl;
+		else if (find(a) != find(b) &amp;&amp; dr[a][b] == 0)
+			cout &lt;&lt; &quot;OK&quot; &lt;&lt; endl;
+		else if (dr[a][b] &amp;&amp; find(a) == find(b))
+			cout &lt;&lt; &quot;OK but...&quot; &lt;&lt; endl;
+		else if (dr[a][b])
+			cout &lt;&lt; &quot;No way&quot; &lt;&lt; endl;
+	}
+	return 0;
+}
+</code></pre>
 
     </div>
     <div class="footer">

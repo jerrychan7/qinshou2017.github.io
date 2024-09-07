@@ -1,14 +1,19 @@
 
-const path = require("path"),
-      fs = require("fs"),
-      marked = require("marked"),
-      crypto = require("crypto");
+import path from "path";
+import fs from "fs";
+import { marked } from "marked";
+import { gfmHeadingId } from "marked-gfm-heading-id";
+import crypto from "crypto";
+import { fileURLToPath } from "url";
 
-const rootDirPath = __dirname,
-      templateDirPath = path.join(rootDirPath, "/template"),
-      articlesBankDirPath = path.join(rootDirPath, "/markdowns"),
-      articlesInfoPath = path.join(articlesBankDirPath, "/articleInfo.json"),
-      articlesOutputDirPath = path.join(rootDirPath, "/articles");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const rootDirPath = __dirname;
+const templateDirPath = path.join(rootDirPath, "/template");
+const articlesBankDirPath = path.join(rootDirPath, "/markdowns");
+const articlesInfoPath = path.join(articlesBankDirPath, "/articleInfo.json");
+const articlesOutputDirPath = path.join(rootDirPath, "/articles");
 
 if (!fs.existsSync(articlesInfoPath))
     throw "miss config file: " + articlesInfoPath;
@@ -31,10 +36,9 @@ const links = Object.entries({
 }).map(([name, href]) => `<li><a href="${href}">${name}</a></li>`)
 .join("\n               ");
 
-marked.setOptions({
-    rederer: new marked.Renderer(),
+marked.use({
     gfm: true,
-});
+}, gfmHeadingId());
 
 function mkdir(dirPath) {
     var dir = "", dps = dirPath.split(/[/\\]/g);
@@ -85,7 +89,7 @@ const saveArticlesMetadata = () => fs.writeFileSync(articlesInfoPath, JSON.strin
 
 // buildDiff
 
-function buildSingleArticle(articleDirPath, rebuild = false) {
+function buildSingleArticle(articleDirPath, rebuild = false, { notUpdateTime = false } = {}) {
     var files = fs.readdirSync(articleDirPath);
     if (files.length === 0) return;
     const getFullPath = filename => path.join(articleDirPath, filename);
@@ -114,7 +118,7 @@ function buildSingleArticle(articleDirPath, rebuild = false) {
             articlesInfo[articleName].tags = articleInfo.tags? articleInfo.tags: ["未分类"];
             if (articleInfo.abstract && articlesInfo[articleName].abstract != articleInfo.abstract)
                 articlesInfo[articleName].abstract = articleInfo.abstract;
-            if (articlesInfo[articleName].md5 !== md5)
+            if (notUpdateTime === false && articlesInfo[articleName].md5 !== md5)
                 articlesInfo[articleName].time.Update = nowTime;
             else if (rebuild === false)
                 return;
@@ -215,12 +219,13 @@ function refreshOtherFiles() {
     saveArticlesMetadata();
 }
 
-function buildArticlesBank(rebuild = false) {
+function buildArticlesBank(rebuild = false, { notUpdateTime = false } = {}) {
     fs.readdirSync(articlesBankDirPath).forEach(articleDirName => {
+        if (articleDirName.endsWith(".tmp")) return;
         var filedir = path.join(articlesBankDirPath, articleDirName),
             stats = fs.statSync(filedir);
         if (stats.isDirectory())
-            buildSingleArticle(filedir, rebuild);
+            buildSingleArticle(filedir, rebuild, { notUpdateTime });
     });
     refreshOtherFiles();
 }
@@ -283,7 +288,7 @@ switch (cliArgv[0]) {
         buildArticlesSync();
         break;
     case "rebuild":
-        buildArticlesBank(true);
+        buildArticlesBank(true, { notUpdateTime: cliArgv.includes("notUpdateTime") });
         break;
     default:
         buildArticlesBank();

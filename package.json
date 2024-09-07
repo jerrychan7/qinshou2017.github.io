@@ -3,13 +3,20 @@
     "version": "0.0.1",
     "description": "",
     "main": "build.js",
+    "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node build.js"
+        "build": "node build.js",
+        "rebuild": "node build.js rebuild",
+        "rebuild:notUpdateTime": "node build.js rebuild notUpdateTime",
+        "rebuild:nut": "node build.js rebuild notUpdateTime",
+        "sync": "node build.js sync",
+        "start": "node server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "qinshou2017",
     "license": "MIT",
     "dependencies": {
-        "marked": "^0.7.0"
+        "marked": "^14.1.1",
+        "marked-gfm-heading-id": "^4.1.0"
     }
 }

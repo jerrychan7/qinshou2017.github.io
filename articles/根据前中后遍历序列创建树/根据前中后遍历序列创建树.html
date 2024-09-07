@@ -60,7 +60,9 @@
             /   |   / \     / \      / \
            G    | [.] [.] [.] [.]   G  [.]
                 |                  / \
-                |                [.] [.]</code></pre><p>通过“扩展先序遍历序列”构建树比较特殊，在这里就偷懒不展开讲了，等哪天算法题有看到类似的咱再补上吧。</p>
+                |                [.] [.]
+</code></pre>
+<p>通过“扩展先序遍历序列”构建树比较特殊，在这里就偷懒不展开讲了，等哪天算法题有看到类似的咱再补上吧。</p>
 <h2 id="分析">分析</h2>
 <p>前两种情况相似，所以我在这只详细讲根据第二种情况：根据中后遍历序列创建树。</p>
 <p>首先，我们知道后序遍历是最后访问根节点的值的，所以后序遍历序列中的最后一个一定是根节点。一般采用先左后右的方式访问，所以后序遍历序列的组成结构是：<br><strong>[左子树的后序遍历序列] + [右子树的后序遍历序列] + 根节点</strong>，<br />
@@ -76,41 +78,53 @@
 <pre><code>中序遍历序列的情况:   后序遍历序列的情况:
        4                  4
       / \                / \
-[1 2 3] [5 6 7]    [2 3 1] [5 7 6]</code></pre><p>第二步，根据第一步的套路可以知道：左子树的根节点是<code>1</code>，左右子树的中序遍历序列分别为<code></code>和<code>2 3</code>，后序遍历序列分别为<code></code>和<code>2 3</code>；右子树的根节点是<code>6</code>，左右子树的中序遍历序列分别为<code>5</code>和<code>7</code>。</p>
+[1 2 3] [5 6 7]    [2 3 1] [5 7 6]
+</code></pre>
+<p>第二步，根据第一步的套路可以知道：左子树的根节点是<code>1</code>，左右子树的中序遍历序列分别为<code> </code>和<code>2 3</code>，后序遍历序列分别为<code> </code>和<code>2 3</code>；右子树的根节点是<code>6</code>，左右子树的中序遍历序列分别为<code>5</code>和<code>7</code>。</p>
 <pre><code>中序遍历序列的情况:   后序遍历序列的情况:
         4                    4
      ,&#39;   `.              ,&#39;   `.
     1       6            1       6
      \     / \            \     / \
-    [2 3] 5   7          [2 3] 5   7</code></pre><p>第三步，按套路来，3为根，2为左子树。至此树就构建完了。</p>
+    [2 3] 5   7          [2 3] 5   7
+</code></pre>
+<p>第三步，按套路来，3为根，2为左子树。至此树就构建完了。</p>
 <pre><code>        4     
      ,&#39;   `.   
     1       6  
      \     / \ 
       3   5   7
      /
-    2</code></pre><p>很明显，上面的套路可以写成<strong>递归</strong>，你甚至可以边建树边输出树的前序遍历序列【滑稽<br>以上。</p>
-<h2 id="具体栗子：l2-006-树的遍历-（25-分）">具体栗子：<a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805069361299456">L2-006 树的遍历 （25 分）</a></h2>
+    2
+</code></pre>
+<p>很明显，上面的套路可以写成<strong>递归</strong>，你甚至可以边建树边输出树的前序遍历序列【滑稽<br>以上。</p>
+<h2 id="具体栗子l2-006-树的遍历-25-分">具体栗子：<a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805069361299456">L2-006 树的遍历 （25 分）</a></h2>
 <pre><code>时间限制: 400 ms
 内存限制: 64 MB
-代码长度限制: 16 KB</code></pre><p>给定一棵二叉树的后序遍历和中序遍历，请你输出其层序遍历的序列。这里假设键值都是互不相等的正整数。</p>
-<h3 id="输入格式：">输入格式：</h3>
+代码长度限制: 16 KB
+</code></pre>
+<p>给定一棵二叉树的后序遍历和中序遍历，请你输出其层序遍历的序列。这里假设键值都是互不相等的正整数。</p>
+<h3 id="输入格式">输入格式：</h3>
 <p>输入第一行给出一个正整数N（≤ 30），是二叉树中结点的个数。第二行给出其后序遍历序列。第三行给出其中序遍历序列。数字间以空格分隔。</p>
-<h3 id="输出格式：">输出格式：</h3>
+<h3 id="输出格式">输出格式：</h3>
 <p>在一行中输出该树的层序遍历的序列。数字间以1个空格分隔，行首尾不得有多余空格。</p>
-<h3 id="输入样例：">输入样例：</h3>
+<h3 id="输入样例">输入样例：</h3>
 <pre><code>7
 2 3 1 5 7 6 4
-1 2 3 4 5 6 7</code></pre><h3 id="输出样例：">输出样例：</h3>
-<pre><code>4 1 6 3 5 7 2</code></pre><h3 id="来源">来源</h3>
+1 2 3 4 5 6 7
+</code></pre>
+<h3 id="输出样例">输出样例：</h3>
+<pre><code>4 1 6 3 5 7 2
+</code></pre>
+<h3 id="来源">来源</h3>
 <p><a href="https://pintia.cn/problem-sets/994805046380707840/problems/994805069361299456">团体程序设计天梯赛-练习集_L2-006. 树的遍历<br>作者: 陈越<br>单位: 浙江大学</a></p>
 <h2 id="答案">答案</h2>
 <pre><code class="language-CPP">#include &lt;iostream&gt;
 #include &lt;queue&gt;
 using namespace std;
 struct Node {
-    int key;
-    Node *left, *right;
+	int key;
+	Node *left, *right;
 };
 /*
  *功能：根据中后序遍历序列和子节点总数构建树
@@ -118,44 +132,45 @@ struct Node {
  *返回：根节点
  */
 Node *build(int h[], int z[], int n) {
-    if (!n) return NULL;
-    Node *root = new Node;
-    root-&gt;key = h[n-1];
-    // 根节点在中序遍历序列中的下标 
-    int mid = 0;
-    while (mid &lt; n)
-        if (z[mid] == h[n-1]) break;
-        else ++mid;
-    // 递归建立左右子树 
-    root-&gt;left = build(h, z, mid);
-    root-&gt;right = build(h + mid, z + mid + 1, n - mid - 1);
-    return root;
+	if (!n) return NULL;
+	Node *root = new Node;
+	root-&gt;key = h[n-1];
+	// 根节点在中序遍历序列中的下标 
+	int mid = 0;
+	while (mid &lt; n)
+		if (z[mid] == h[n-1]) break;
+		else ++mid;
+	// 递归建立左右子树 
+	root-&gt;left = build(h, z, mid);
+	root-&gt;right = build(h + mid, z + mid + 1, n - mid - 1);
+	return root;
 }
 // 释放资源 
 void del(Node *r) {
-    if (!r) return;
-    del(r-&gt;left); del(r-&gt;right);
-    delete r;
+	if (!r) return;
+	del(r-&gt;left); del(r-&gt;right);
+	delete r;
 }
 int main() {
-    int n, i; cin &gt;&gt; n;
-    int hou[n], zhong[n];
-    for(i = 0; i &lt; n; ++i) cin &gt;&gt; hou[i];
-    for(i = 0; i &lt; n; ++i) cin &gt;&gt; zhong[i];
-    Node *root = build(hou, zhong, n);
-    // 层序遍历
-    queue&lt;Node*&gt; que; que.push(root);
-    bool b = true;
-    while (!que.empty()) {
-        Node *p = que.front(); que.pop();
-        if (p-&gt;left) que.push(p-&gt;left);
-        if (p-&gt;right) que.push(p-&gt;right);
-        cout &lt;&lt; (b? &quot;&quot;: &quot; &quot;) &lt;&lt; p-&gt;key;
-        b = false;
-    }
-    del(root);
-    return 0;
-}</code></pre>
+	int n, i; cin &gt;&gt; n;
+	int hou[n], zhong[n];
+	for(i = 0; i &lt; n; ++i) cin &gt;&gt; hou[i];
+	for(i = 0; i &lt; n; ++i) cin &gt;&gt; zhong[i];
+	Node *root = build(hou, zhong, n);
+	// 层序遍历
+	queue&lt;Node*&gt; que; que.push(root);
+	bool b = true;
+	while (!que.empty()) {
+		Node *p = que.front(); que.pop();
+		if (p-&gt;left) que.push(p-&gt;left);
+		if (p-&gt;right) que.push(p-&gt;right);
+		cout &lt;&lt; (b? &quot;&quot;: &quot; &quot;) &lt;&lt; p-&gt;key;
+		b = false;
+	}
+	del(root);
+	return 0;
+}
+</code></pre>
 
     </div>
     <div class="footer">

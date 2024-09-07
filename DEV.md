@@ -59,16 +59,18 @@
   * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
 
 语法高亮选择了prismjs，下载时的选项：  
-[https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all]
+<https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all>
 
 数学公式显示使用了katex。
 
 # 运行
 
-`node build`进行构建。
+`npm run build` 进行构建。
 
-`node build rebuild`强制全部重新构建。这个不会更新文章的上传和最后修改时间，因为一般强制全部构建都是由于模板的改变。
+`npm run rebuild` 强制全部重新构建。
 
-`node build sync`同步构建。**未经测试，运行结果未知！**
+`npm run rebuild:nut` / `npm run rebuild:notUpdateTime` 强制全部重新构建。这个不会更新文章的最后修改时间，一般用于由于模板的改变/插件的更新而需要刷新。
 
-`node server`运行本地服务器。虽然浏览器控台有警告，但随它去吧，没看见啦啦啦~
+`npm run sync` 同步构建。**未经测试，运行结果未知！**
+
+`npm start` 运行本地服务器。虽然浏览器控台有警告，但随它去吧，没看见啦啦啦~
