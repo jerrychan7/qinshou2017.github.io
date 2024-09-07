@@ -11,8 +11,8 @@
     <script src="/js/index.js"></script>
     <script src="/js/top.js"></script>
     <link rel="stylesheet" href="/css/katex.min.css" />
-    <script defer src="/js/katex.min.js" ></script>
-    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="/js/katex.min.js"></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
     <script>
     window.addEventListener("load", function() {
         var time = {"Post":"2020-05-14T18:10:10.299Z","Update":"2020-05-14T20:25:18.123Z"};
@@ -85,7 +85,7 @@
 <p>如何取元素，理论上，当取的元素是刚好是数组的中位数时，可以有效减少递归次数，但寻找中位数需要排序，所以每次取中位数是不可能的。
 而且从概率上来说，从数组中随机选择一个元素恰好是该数组的中位数的概率是一样的，所以一般图方便，都会直接选第一个或最后一个元素作为中间值。</p>
 <p>因为在划分左右子数组时会乱交换元素，所以该排序算法是<strong>不稳定</strong>的。</p>
-<p>最坏时的时间复杂度为\(O(n^2)\)，平均时间复杂度为\(O(n\log_2n)\)，空间复杂度为\(O(\log_2n)\)。</p>
+<p>$O(n^2)$，平均时间复杂度为$O(n\log_2n)$，空间复杂度为$O(\log_2n)$。</p>
 <h2 id="改进三向切分">改进：三向切分</h2>
 <p>在伟大的前辈们的不懈努力下，快速排序还是给优化了。</p>
 <p>上面也提到了，首先需要选出一个中间值作为轴，划分左右数组。当数组中有大量重复元素时，快速排序依旧会将单个值作为轴进行左右划分。

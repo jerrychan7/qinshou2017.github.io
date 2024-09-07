@@ -11,8 +11,8 @@
     <script src="/js/index.js"></script>
     <script src="/js/top.js"></script>
     <link rel="stylesheet" href="/css/katex.min.css" />
-    <script defer src="/js/katex.min.js" ></script>
-    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="/js/katex.min.js"></script>
+    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
     <script>
     window.addEventListener("load", function() {
         var time = {"Post":"2020-05-14T18:11:10.299Z","Update":"2020-05-28T20:10:51.186Z"};
@@ -44,10 +44,10 @@
 <blockquote>
 <p>从n个不同元素中任取m（m≤n）个元素，按照一定的顺序排列起来，叫做从n个不同元素中取出m个元素的一个排列。当m=n时所有的排列情况叫全排列。 ——百度百科</p>
 </blockquote>
-<p>举个栗子：abc的全排列结果为“abc”，“acb”，“bac”，“bca”，“cab”，“cba”，一共有\(3!=6\)种。</p>
+<p>举个栗子：abc的全排列结果为“abc”，“acb”，“bac”，“bca”，“cab”，“cba”，一共有$3!=6$种。</p>
 <p>下面两个排列组合公式当我自己的复习，可跳：</p>
-<p>\(P_n^m=n(n-1)(n-2)...(n-m+1)={n! \over (n-m)!}\)</p>
-<p>\(C_n^m=C_n^{m-n}={P_n^m \over m!}={n! \over m!(n-m)!}\)</p>
+<p>$P_n^m=n(n-1)(n-2)...(n-m+1)={n! \over (n-m)!}$</p>
+<p>$C_n^m=C_n^{m-n}={P_n^m \over m!}={n! \over m!(n-m)!}$</p>
 <p>全排列是典型的递归问题，从全排列的排列数上也可以看到端倪：</p>
 <p>1个元素时，一共1种排列方式；<br>2个元素时，一共2*1=2种排列方式；<br>3个元素时，一共3*2=6种排列方式；<br>4个元素时，一共4*6=24种排列方式；<br>可以看出f(n) = n * f(n - 1)。</p>
 <blockquote>
@@ -107,7 +107,7 @@ cba
  abc      abc      abc             abc      abc
 [  x] -&gt; [x x] -&gt; [xxx] -&gt; cab -&gt; [ xx] -&gt; [xxx] -&gt; cba
 </code></pre>
-<p>这个解决方法在每一次都会从头开始看哪个元素被选中了，所以复杂度是\(O(n^n)\)。</p>
+<p>这个解决方法在每一次都会从头开始看哪个元素被选中了，所以复杂度是$O(n^n)$。</p>
 <h2 id="解法2交换法">解法2：交换法</h2>
 <p>假设以字符串第0个位置（也就是第一个字符）为起点，分别与后面的每一个位置对应的字符进行交换。
 直到交换到字符串最后一个位置时，就会排列出新的组合。</p>
@@ -151,7 +151,7 @@ array  | lalala | v | balabala |
        |--------| ↑ |----------|
 之前递归选出来的值 index 下次参与递归的子数组
 </code></pre>
-<p>时间复杂度为\(O(n!)\)。</p>
+<p>时间复杂度为$O(n!)$。</p>
 <h2 id="解法3插入法">解法3：插入法</h2>
 <p>这个用得比较少，这里只讲下思路。每次选出一个元素，将该元素插入到已排列好的队伍中。
 队伍只有一个人，有两种插队方式，前后；
