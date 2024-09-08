@@ -71,6 +71,10 @@
 
 `npm run rebuild:nut` / `npm run rebuild:notUpdateTime` 强制全部重新构建。这个不会更新文章的最后修改时间，一般用于由于模板的改变/插件的更新而需要刷新。
 
-`npm run sync` 同步构建。**未经测试，运行结果未知！**
+`npm run watch` 同步构建。对于文章的更新会更新最后修改时间，而模板的更新则不会。
+
+`npm run watch:updateTime` 同步构建。无论是模板还是文章，都会更新最后修改时间。
 
 `npm start` 运行本地服务器。虽然浏览器控台有警告，但随它去吧，没看见啦啦啦~
+
+TODO: hot reload

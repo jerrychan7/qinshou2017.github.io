@@ -5,6 +5,7 @@ import { marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
+import { createInterface } from "readline";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -230,7 +231,11 @@ function buildArticlesBank(rebuild = false, { notUpdateTime = false } = {}) {
     refreshOtherFiles();
 }
 
-function buildArticlesSync() {
+function buildArticlesSync({
+    autoNotUpdateTime = false,
+    notUpdateTime_article = autoNotUpdateTime,
+    notUpdateTime_template = !autoNotUpdateTime,
+} = {}) {
     const fileChangeFlag = {};
     const refreshFlag = (dirPath, fn, delay = 800) => {
         if (dirPath in fileChangeFlag)
@@ -251,7 +256,7 @@ function buildArticlesSync() {
             refreshFlag(dirPath, () => {
                 console.log("rebuild article: " + fileName);
                 if (path.dirname(filePath) != articlesBankDirPath)
-                    buildSingleArticle(dirPath, true);
+                    buildSingleArticle(dirPath, true, { notUpdateTime: notUpdateTime_article });
                 refreshOtherFiles();
             });
         }),
@@ -266,18 +271,20 @@ function buildArticlesSync() {
             refreshFlag(templateDirPath, () => {
                 console.log("rebuild template: " + fileName);
                 if (fileName.includes("article.html"))
-                    buildArticlesBank(true);
+                    buildArticlesBank(true, { notUpdateTime: notUpdateTime_template });
                 else refreshOtherFiles();
             });
         });
-    console.log("start sync build, enter 'exit' to close the program.");
-    const rl = require("readline").createInterface({input: process.stdin});
+    console.log("start sync build, enter 'exit'/'e'/'quit'/'q'/'close' to close the program.");
+    const rl = createInterface({input: process.stdin});
     rl.on("line", async line => {
-        if (line.trim() === "exit") {
+        switch (line.trim().toLowerCase()) {
+        case "exit": case "e": case "quit": case "q": case "close":
             bankWatcher.close();
             templateWatch.close();
             process.exitCode = 0;
             rl.close();
+            break;
         }
     });
 }
@@ -285,7 +292,11 @@ function buildArticlesSync() {
 var cliArgv = process.argv.splice(2);
 switch (cliArgv[0]) {
     case "sync":
-        buildArticlesSync();
+        buildArticlesSync({
+            ...(cliArgv.includes("autoNotUpdateTime")? { autoNotUpdateTime: true }: {}),
+            ...(cliArgv.includes("notUpdateTime_article")? { notUpdateTime_article: true }: {}),
+            ...(cliArgv.includes("notUpdateTime_template")? { notUpdateTime_template: true }: {}),
+        });
         break;
     case "rebuild":
         buildArticlesBank(true, { notUpdateTime: cliArgv.includes("notUpdateTime") });
