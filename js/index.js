@@ -12,10 +12,9 @@ function getThemeColorFromCss(sss = document.styleSheets) {
             var st = csr.selectorText;
             if (st?.indexOf("meta-theme-color") > -1) {
                 let color = csr.style.color;
-                if (color.startsWith("var")) {
-                    console.log(color);
-                    color = getComputedStyle(document.documentElement).getPropertyValue(color.replace(/var\(\s*(\S+)\s*\)/, "$1"));
-                }
+                if (color.startsWith("var"))
+                    color = getComputedStyle(document.documentElement)
+                        .getPropertyValue(color.replace(/var\(\s*(\S+)\s*\)/, "$1"));
                 return color;
             }
         }
@@ -35,9 +34,9 @@ function retheme(theme) {
     let currentTheme = window.cookie.get("theme", "default");
     let nextTheme = theme || allTheme[(allTheme.indexOf(currentTheme) + 1) % allTheme.length];
     window.cookie.set("theme", nextTheme);
-    const link = document.querySelector("#theme");
-    link.onload = () => updateMetaThemeColor();
-    link.href = `/css/theme/${nextTheme}.css`;
+    const link = document.querySelector("#theme"), img = document.createElement("img");
+    img.onerror = () => setTimeout(updateMetaThemeColor, 10);
+    img.src = link.href = `/css/theme/${nextTheme}.css`;
 }
 
 window.addEventListener("load", () => {

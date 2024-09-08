@@ -23,36 +23,49 @@
 
 meta-theme-color { color: var(--html-bg-color); }
 
-body { background-color: var(--html-bg-color); }
+body {
+    transition-property: background-color;
+    background-color: var(--html-bg-color);
+}
 .body { color: var(--content-color); background-color: var(--content-bg-color); }
+
+h1, h2, h3, h4, h5, h6, blockquote, hr, a { transition-property: color, border; }
+pre, code, kbd, samp {
+    transition-property: background-color, color, border;
+    color: var(--code-block-color);
+}
+i, em { transition-property: color; color: #222; }
+b, strong { transition-property: color; color: #111; }
+table, table th, table td { transition-property: border-color; border-color: var(--border-color-heavy); }
+table th { transition-property: background-color, color; color: #222; background-color: #00000010; }
 
 @property --logoBg2-offset {
     syntax: "<length>";
     inherits: false;
     initial-value: 4px;
 }
+@property --logoBg2-color {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: transparent;
+}
 .logoBg2 {
-    background: repeating-radial-gradient(at 0 0,
+    --pos: 0%;
+    --logoBg2-color: var(--content-bg-color);
+    background-image: repeating-radial-gradient(at var(--pos) var(--pos),
         transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
-        var(--content-bg-color) var(--logoBg2-offset), var(--content-bg-color) calc(var(--logoBg2-offset) + 4px));
+        var(--logoBg2-color) var(--logoBg2-offset), var(--logoBg2-color) calc(var(--logoBg2-offset) + 4px));
     animation: move .5s infinite linear;
+    transition-property: --logoBg2-color, color;
 }
-@keyframes move {
-    to { --logoBg2-offset: 12px; }
-}
-@media (max-width: 768px) {
-    .logoBg2 {
-        background: repeating-radial-gradient(
-            transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
-            var(--content-bg-color) var(--logoBg2-offset), var(--content-bg-color) calc(var(--logoBg2-offset) + 4px));
-    }
-}
+@keyframes move { to { --logoBg2-offset: 12px; } }
+@media (max-width: 768px) { .logoBg2 { --pos: 50%; } }
 
 #back2top {
     color: var(--back2top-color);
     background-color: var(--back2top-bg-color);
     box-shadow: 0 1px 3px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 12%);
-    transition: all .2s ease;
+    transition-property: all;
 }
 #back2top:hover {
     box-shadow: 0 1px 5px rgb(0 0 0 / 25%), 0 4px 20px rgb(0 0 0 / 12%);
@@ -61,18 +74,31 @@ body { background-color: var(--html-bg-color); }
     box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%);
 }
 
-.header { border-bottom-color: var(--border-color-light); }
+.header {
+    transition-property: border;
+    border-bottom-color: var(--border-color-light);
+}
 .headerNav a + a { border-left-color: var(--border-color-light); }
 
-.footer { border-top-color: var(--border-color-light); }
+.footer {
+    transition-property: border;
+    border-top-color: var(--border-color-light);
+}
 
-pre, code, kbd, samp { color: var(--code-block-color); }
-
-.contents li + li { border-top-color: var(--border-color-light); }
-.contents li .title { color: var(--content-color); }
+.contents li + li {
+    transition-property: border;
+    border-top-color: var(--border-color-light);
+}
+.contents li .title {
+    transition-property: color;
+    color: var(--content-color);
+}
 .contents li:hover:first-letter { color: var(--content-color); }
 .contents li:first-letter,
-.contents li .title:hover { color: var(--first-letter-color); }
+.contents li .title:hover {
+    transition-property: color;
+    color: var(--first-letter-color);
+}
 .contents li .tags { color: var(--tags-color); }
 .contents li .tags code {
     background-color: var(--code-block-bg-color);
@@ -98,9 +124,3 @@ pre, code, kbd, samp { color: var(--code-block-color); }
     background-color: var(--code-block-bg-color);
     border-color: var(--border-color-light);
 }
-
-i, em { color: #222; }
-b, strong { color: #111; }
-
-table, table th, table td { border-color: var(--border-color-heavy); }
-table th { color: #222; background-color: #00000010; }

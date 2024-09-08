@@ -34,8 +34,9 @@ const replaceGithubVar = str =>
 const links = Object.entries({
     "kokic": "https://kokic.github.io/",
     // "兔子": "https://www.rabbittu.com/",
+    "兔子": "https://blog.awa.moe/",
 }).map(([name, href]) => `<li><a href="${href}">${name}</a></li>`)
-.join("\n               ");
+.join("\n                    ");
 
 marked.use({
     gfm: true,

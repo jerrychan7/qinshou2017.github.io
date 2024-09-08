@@ -1,10 +1,16 @@
 @charset "utf-8";
 
+* {
+    transition-duration: var(--transition-duration);
+    transition-timing-function: ease;
+    transition-property: none;
+}
 html {
     font-size: 100%;
     overflow-y: scroll;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    --transition-duration: .2s;
 }
 body { margin: 0; padding: 0; }
 .body {
@@ -14,7 +20,7 @@ body { margin: 0; padding: 0; }
     padding: 1em;
     margin: auto auto 50px;
     max-width: 47em;
-    transition: all .2s ease;
+    transition-property: color, background-color;
     background-clip: padding-box;
 }
 
