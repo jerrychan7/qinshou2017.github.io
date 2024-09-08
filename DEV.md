@@ -78,3 +78,5 @@
 `npm start` 运行本地服务器。虽然浏览器控台有警告，但随它去吧，没看见啦啦啦~
 
 TODO: hot reload
+
+TODO: add manifest.json for PWA

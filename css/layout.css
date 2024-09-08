@@ -181,25 +181,6 @@ pre {
 
 
 pre { tab-size: 4; }
-.ques-view code, #analysis code {
-    border-radius: 3px;
-    border: 1px solid;
-    padding: 0 3px;
-    margin: 0 2px;
-}
-.ques-view pre, #analysis pre {
-    padding: 6px 12px;
-    border: 1px solid;
-    border-radius: 3px;
-    word-break: break-all;
-}
-.ques-view pre code, #analysis pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-}
-#analysis p { line-height: 190%; }
 
 .contents ul {
     padding: 0 1em;
@@ -334,7 +315,7 @@ table td>*:first-child {
     margin-bottom: 0;
 }
 
-table th { font-weight: bold; color: #325d72; }
+table th { font-weight: bold; }
 
 @media print {
     * { background: transparent !important; color: black !important; filter:none !important; -ms-filter: none !important; }

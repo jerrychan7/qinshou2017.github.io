@@ -1,143 +1,72 @@
 @charset "utf-8";
 
-.darktheme meta-theme-color { color: #3C3F41; }
+:root {
+    --html-bg-color: #3C3F41;
 
-body.darktheme { background-color: #3C3F41; }
-.darktheme .body {  color: #DDD; background-color: #1D1F21; }
+    --content-color: #DDD;
+    --content-bg-color: #1D1F21;
 
-.darktheme .logoBg2 {
-    background: repeating-radial-gradient(at 0 0,
-        transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
-        #1D1F21 var(--logoBg2-offset), #1D1F21 calc(var(--logoBg2-offset) + 4px));
-}
-@media (max-width: 768px) {
-    .darktheme .logoBg2 {
-        background: repeating-radial-gradient(
-            transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
-            #1D1F21 var(--logoBg2-offset), #1D1F21 calc(var(--logoBg2-offset) + 4px));
-    }
+    --border-color-light: #555;
+
+    --back2top-color: #2c84fa;
+    --back2top-bg-color: #2b2830;
 }
 
-.darktheme #back2top {
-    color: #2c84fa;
-    background-color: #2b2830;
-    transition: all .2s ease;
-}
+/* h1, h2, h3, h4, h5, h6 { color: #faa700; } */
+h1, h2, h3, h4, h5, h6 { color: #D89333; }
+h1, h2 { border-bottom-color: #333; }
+/* h1 { color: #B77FDB; } */
+/* h1:first-letter { color: #6C9EF8; } */
 
-.darktheme .header { border-bottom-color: #555; }
-.darktheme .headerNav a + a { border-left-color: #555; }
+a { color: #6C9EF8; }
+a:visited { color: #B77FDB; }
+a:active { color:#8080FF; }
 
-.darktheme .footer { border-top-color: #555; }
-
-.darktheme h1,
-.darktheme h2,
-.darktheme h3,
-.darktheme h4,
-.darktheme h5,
-/*.darktheme h6 { color: #faa700; }*/
-.darktheme h6 { color: #D89333; }
-.darktheme h1, .darktheme h2 { border-bottom-color: #333; }
-/*
-.darktheme h1 { color: #B77FDB; }
-.darktheme h1:first-letter { color: #6C9EF8; }
-*/
-
-.darktheme a { color: #6C9EF8; }
-.darktheme a:visited { color: #B77FDB; }
-.darktheme a:active{ color:#8080FF; }
-
-.darktheme blockquote {
+blockquote {
     color: #a8a8a8;
     border-left-color: #303436;
 }
 
-.darktheme hr {
+hr {
     border-top-color: #747474;
     border-bottom-color: #3c3c3c;
 }
 
-.darktheme pre,
-.darktheme code,
-.darktheme kbd,
-.darktheme samp { color: #fff; }
+pre, code, kbd, samp { color: #fff; }
 
-.darktheme .article code:not([class*="language-"]) {
-    color: #e74c3c;
-    background: #3C3F41;
-    border-color: #62676a;
-}
-.darktheme .article pre:not([class*="language-"]) {
-    background: #3C3F41;
-    border-color: #62676a;
-}
-.darktheme .article pre code:not([class*="language-"]) {
-    color: #fff;
-}
-
-.darktheme .ques-view code,
-.darktheme #analysis code {
-    background-color: #3C3F41;
-    border-color: #62676a;
-}
-.darktheme .ques-view pre,
-.darktheme #analysis pre {
-    background-color: #3C3F41;
-    border-color: #62676a;
-}
-.darktheme .ques-view pre code,
-.darktheme #analysis pre code {
-    color: #fff;
-    border: none;
-}
-
-.darktheme .ques-view code, .darktheme #analysis code {
-    border: 1px solid;
-}
-.darktheme .ques-view pre, .darktheme #analysis pre {
-    border: 1px solid;
-}
-.darktheme .ques-view pre code, .darktheme #analysis pre code {
-    border: none;
-}
-
-.darktheme .contents li .title {
-    color: #B77FDB;
-}
-.darktheme .contents li:first-letter {
-    color: #6C9EF8;
-}
-.darktheme .contents li code {
-    background-color: #3C3F41;
+.contents li { --first-letter-color: #6C9EF8; }
+.contents li .title { color: #B77FDB; }
+.contents li code, .contents li .tags code {
+    background-color: var(--html-bg-color);
     border-color: #62676a;
 }
 
-.darktheme .article .time {
-    color: #999;
+.article code:not([class*="language-"]) {
+    border-color: #62676a;
 }
-.darktheme .article .tags code {
-    background-color: #3C3F41;
-/*    border-color: #62676a;*/
-    border-color: #3C3F41;
+.article .tags code {
+    background-color: var(--html-bg-color);
+   /* border-color: #62676a; */
+    border-color: var(--html-bg-color);
     color: #85A300;
 }
-.darktheme .article .tags a:visited,
-.darktheme .article .tags a:active {
+.article .tags a:visited,
+.article .tags a:active {
     color: #D89333;
 }
 
-.darktheme b, .darktheme strong {
-    color: #EEE;
-}
-.darktheme img {
+i, em { color: #EEE; }
+b, strong { color: #FFF; }
+
+img {
     filter: invert(88%);
     overflow: auto;
 }
-.darktheme img[src^="data:image/gif;base64,"],
-.darktheme img[src$=".gif"] {
+img[src^="data:image/gif;base64,"], img[src$=".gif"] {
     filter: invert(0);
 }
 
-.darktheme table th {
-    color: #c8d4dc;
-    background-color: #3C3F41;
+table th {
+    color: #FFF;
+    background-color: var(--html-bg-color);
 }
