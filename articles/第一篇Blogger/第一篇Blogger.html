@@ -1,68 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
-    <title>第一篇Blogger</title>
-    <link rel="stylesheet" href="/css/layout.css" />
-    <link rel="stylesheet" href="/css/themeBase.css" />
-    <script>
-        window.cookie = {
-            get(key, defaultValue = null) {
-                let allCookies = document.cookie.split(";");
-                for (const cki of allCookies) {
-                    const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
-                    if (k == key) return v || "";
-                }
-                return defaultValue;
-            },
-            set(key, value, exdays = 365) {
-                if (!key) return;
-                const d = new Date(), e = encodeURIComponent;
-                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-                document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
-            },
-            del(key) { window.cookie.set(key, "", -1); },
-            has: (key) => window.cookie.get(key) != null,
-        };
-        document.write(`
-            <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
-            <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
-        `);
-    </script>
-    <link rel="stylesheet" href="/css/prism.css" />
-    <script src="/js/index.js"></script>
-    <script src="/js/top.js"></script>
-    <link rel="stylesheet" href="/css/katex.min.css" />
-    <script defer src="/js/katex.min.js"></script>
-    <script defer src="/js/katex-auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
-    <script>
-        window.addEventListener("load", function() {
-            var time = {"Post":"2019-08-13T03:23+08:00","Update":"2022-12-08T14:34:40.878Z"};
-            document.getElementById("postTime").innerHTML = time.Post? (new Date(time.Post)).toLocaleString(): "Unknow";
-            document.getElementById("updateTime").innerHTML = time.Update? (new Date(time.Update)).toLocaleString(): "Unknow";
-        });
-    </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" Content="width=device-width, initial-scale=1" />
+  <title>第一篇Blogger</title>
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/themeBase.css" />
+  <script>
+    window.cookie = {
+      get(key, defaultValue = null) {
+        let allCookies = document.cookie.split(";");
+        for (const cki of allCookies) {
+          const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
+          if (k == key) return v || "";
+        }
+        return defaultValue;
+      },
+      set(key, value, exdays = 365) {
+        if (!key) return;
+        const d = new Date(), e = encodeURIComponent;
+        d.setTime(+d + exdays * 24 * 60 * 60 * 1000);
+        document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
+      },
+      del(key) { window.cookie.set(key, "", -1); },
+      has: (key) => window.cookie.get(key) != null,
+    };
+    document.write(`
+      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
+      <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
+    `);
+  </script>
+  <link rel="stylesheet" href="/css/prism.css" />
+  <script src="/js/index.js"></script>
+  <script src="/js/top.js"></script>
+  <link rel="stylesheet" href="/css/katex.min.css" />
+  <script defer src="/js/katex.min.js"></script>
+  <script defer src="/js/katex-auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const { Post, Update } = {"Post":"2019-08-13T03:23+08:00","Update":"2022-12-08T14:34:40.878Z"}, f = t => t? (new Date(t)).toLocaleString(): "Unknow";
+      document.getElementById("postTime").innerHTML = f(Post);
+      document.getElementById("updateTime").innerHTML = f(Update);
+    });
+  </script>
 </head>
-<body><div class="body">
+
+<body>
+  <div class="body">
     <div class="header">
-        <div class="logo">
-            <div class="logoword">QS</div>
-            <div class="logoBg2"></div>
-        </div>
-        <div class="headerNav">
-            <a href="/index.html">index</a>
-            <a href="/tags.html">tags</a>
-            <a href="/about.html">about</a>
-            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
-        </div>
+      <div class="logo">
+        <div class="logoword">QS</div>
+        <div class="logoBg2"></div>
+      </div>
+      <div class="headerNav">
+        <a href="/index.html">index</a>
+        <a href="/tags.html">tags</a>
+        <a href="/about.html">about</a>
+        <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+      </div>
     </div>
     <div class="article match-braces line-numbers">
-        <div class="time">
-            Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
-        </div>
-        <div class="tags"><a href="/tags.html#tag=杂记"><code>杂记</code></a></div>
-        <h1 id="第一篇blogger">第一篇Blogger</h1>
+      <div class="time">
+        Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+      </div>
+      <div class="tags"><a href="/tags.html#tag=杂记"><code>杂记</code></a></div>
+      <h1 id="第一篇blogger">第一篇Blogger</h1>
 <p>如题，这是咱的第一篇博客。</p>
 <p>最近还是比较忙<del>并不</del>，所以抽空零零碎碎的慢慢的利用GitHub Pages磨出了这个博客。</p>
 <p>emm 虽然总想着弄个博客玩玩，但突然间却并不知道要写些什么。
@@ -171,15 +175,18 @@ $$</p>
 
     </div>
     <div class="footer">
-        <ul><li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
-            <li>友链:
-                <ul>
-                    <li><a href="https://kokic.github.io/">kokic</a></li>
-                    <li><a href="https://blog.awa.moe/">兔子</a></li>
-                </ul>
-            </li>
-        </ul>
+      <ul>
+        <li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
+        <li>友链:
+          <ul>
+            <li><a href="https://kokic.github.io/">kokic</a></li>
+            <li><a href="https://blog.awa.moe/">兔子</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
     <script src="/js/prism.js"></script>
-</div></body>
+  </div>
+</body>
+
 </html>

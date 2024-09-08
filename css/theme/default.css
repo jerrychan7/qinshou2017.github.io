@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 :root {
-    --code-block-bg-color: #f7f7f7;
+  --code-block-bg-color: #f7f7f7;
 }
 
 h1, h2, h3, h4, h5, h6 { color: #111; }
@@ -12,13 +12,13 @@ a:visited { color: #0b0080; }
 a:active { color:#faa700; }
 
 blockquote {
-    color: #666;
-    border-left-color: #eee;
+  color: #666;
+  border-left-color: #eee;
 }
 
 hr {
-    border-top-color: #aaa;
-    border-bottom-color: #eee;
+  border-top-color: #aaa;
+  border-bottom-color: #eee;
 }
 
 .contents li { --first-letter-color: #4183c4; }

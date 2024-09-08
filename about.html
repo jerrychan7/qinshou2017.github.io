@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" Content ="width=device-width, initial-scale=1" />
-    <title>about</title>
-    <link rel="stylesheet" href="/css/layout.css" />
-    <link rel="stylesheet" href="/css/themeBase.css" />
-    <script>
-        window.cookie = {
-            get(key, defaultValue = null) {
-                let allCookies = document.cookie.split(";");
-                for (const cki of allCookies) {
-                    const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
-                    if (k == key) return v || "";
-                }
-                return defaultValue;
-            },
-            set(key, value, exdays = 365) {
-                if (!key) return;
-                const d = new Date(), e = encodeURIComponent;
-                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-                document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
-            },
-            del(key) { window.cookie.set(key, "", -1); },
-            has: (key) => window.cookie.get(key) != null,
-        };
-        document.write(`
-            <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
-            <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
-        `);
-    </script>
-    <script src="/js/index.js"></script>
-    <script src="/js/top.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>about</title>
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/themeBase.css" />
+  <script>
+    window.cookie = {
+      get(key, defaultValue = null) {
+        let allCookies = document.cookie.split(";");
+        for (const cki of allCookies) {
+          const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
+          if (k == key) return v || "";
+        }
+        return defaultValue;
+      },
+      set(key, value, exdays = 365) {
+        if (!key) return;
+        const d = new Date(), e = encodeURIComponent;
+        d.setTime(+d + exdays * 24 * 60 * 60 * 1000);
+        document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
+      },
+      del(key) { window.cookie.set(key, "", -1); },
+      has: (key) => window.cookie.get(key) != null,
+    };
+    document.write(`
+      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
+      <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
+    `);
+  </script>
+  <script src="/js/index.js"></script>
+  <script src="/js/top.js"></script>
 </head>
-<body><div class="body">
+
+<body>
+  <div class="body">
     <div class="header">
-        <div class="logo">
-            <div class="logoword">QS</div>
-            <!-- <div class="logoBg"><script>
-                for (let i = 0, t = 16; i < t; ++i)
-                    document.write(`<div class="hexagon" style="--i: ${t - i};"></div>`);
-            </script></div> -->
-            <div class="logoBg2"></div>
-        </div>
-        <div class="headerNav">
-            <a href="index.html">index</a>
-            <a href="tags.html">tags</a>
-            <a href="javascript:void(0);" onclick="retheme();">change theme</a>
-        </div>
+      <div class="logo">
+        <div class="logoword">QS</div>
+        <!-- <div class="logoBg">
+          <script>
+            for (let i = 0, t = 16; i < t; ++i)
+              document.write(`<div class="hexagon" style="--i: ${t - i};"></div>`);
+          </script>
+        </div> -->
+        <div class="logoBg2"></div>
+      </div>
+      <div class="headerNav">
+        <a href="index.html">index</a>
+        <a href="tags.html">tags</a>
+        <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+      </div>
     </div>
     <div>
-    <h1 id="关于我">关于我</h1>
+      <h1 id="关于我">关于我</h1>
 <p>外号<em><strong>禽兽</strong></em>，<del>关系好的可以叫兽兽哟</del></p>
 <p>学生，鶸废咸鱼，<del>啥都不会【迫真</del></p>
 <h1 id="是一个">是一个</h1>
@@ -69,14 +74,17 @@
 
     </div>
     <div class="footer">
-        <ul><li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
-            <li>友链:
-                <ul>
-                    <li><a href="https://kokic.github.io/">kokic</a></li>
-                    <li><a href="https://blog.awa.moe/">兔子</a></li>
-                </ul>
-            </li>
-        </ul>
+      <ul>
+        <li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
+        <li>友链:
+          <ul>
+            <li><a href="https://kokic.github.io/">kokic</a></li>
+            <li><a href="https://blog.awa.moe/">兔子</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-</div></body>
+  </div>
+</body>
+
 </html>

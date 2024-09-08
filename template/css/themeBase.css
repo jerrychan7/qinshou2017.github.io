@@ -4,123 +4,126 @@
 /* @import url("./theme/darktheme.css"); */
 
 :root {
-    --html-bg-color: #FFF;
+  --html-bg-color: #FFF;
 
-    --content-color: #333;
-    --content-bg-color: #FEFEFE;
+  --content-color: #333;
+  --content-bg-color: #FEFEFE;
 
-    --border-color-light: #E4E4E4;
-    --border-color-heavy: #DDD;
+  --border-color-light: #E4E4E4;
+  --border-color-heavy: #DDD;
 
-    --code-block-color: #000;
-    --code-block-bg-color: var(--html-bg-color);
-    --code-block-border-color: var(--border-color-light);
-    --tags-color: #E74C3C;
+  --code-block-color: #000;
+  --code-block-bg-color: var(--html-bg-color);
+  --code-block-border-color: var(--border-color-light);
+  --tags-color: #E74C3C;
 
-    --back2top-color: #7253ED;
-    --back2top-bg-color: #F2F2F2;
+  --back2top-color: #7253ED;
+  --back2top-bg-color: #F2F2F2;
 }
 
 meta-theme-color { color: var(--html-bg-color); }
 
 body {
-    transition-property: background-color;
-    background-color: var(--html-bg-color);
+  transition-property: background-color;
+  background-color: var(--html-bg-color);
 }
-.body { color: var(--content-color); background-color: var(--content-bg-color); }
+.body {
+  color: var(--content-color);
+  background-color: var(--content-bg-color);
+}
 
 h1, h2, h3, h4, h5, h6, blockquote, hr, a { transition-property: color, border; }
 pre, code, kbd, samp {
-    transition-property: background-color, color, border;
-    color: var(--code-block-color);
+  transition-property: background-color, color, border;
+  color: var(--code-block-color);
 }
-i, em { transition-property: color; color: #222; }
-b, strong { transition-property: color; color: #111; }
-table, table th, table td { transition-property: border-color; border-color: var(--border-color-heavy); }
-table th { transition-property: background-color, color; color: #222; background-color: #00000010; }
+i, em { color: #222; transition-property: color; }
+b, strong { color: #111; transition-property: color; }
+table, table th, table td { border-color: var(--border-color-heavy); transition-property: border-color; }
+table th { color: #222; background-color: #00000010; transition-property: background-color, color, border-color; }
 
 @property --logoBg2-offset {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 4px;
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 4px;
 }
 @property --logoBg2-color {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: transparent;
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
 }
 .logoBg2 {
-    --pos: 0%;
-    --logoBg2-color: var(--content-bg-color);
-    background-image: repeating-radial-gradient(at var(--pos) var(--pos),
-        transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
-        var(--logoBg2-color) var(--logoBg2-offset), var(--logoBg2-color) calc(var(--logoBg2-offset) + 4px));
-    animation: move .5s infinite linear;
-    transition-property: --logoBg2-color, color;
+  --pos: 0%;
+  --logoBg2-color: var(--content-bg-color);
+  background-image: repeating-radial-gradient(at var(--pos) var(--pos),
+    transparent calc(var(--logoBg2-offset) - 4px), transparent var(--logoBg2-offset),
+    var(--logoBg2-color) var(--logoBg2-offset), var(--logoBg2-color) calc(var(--logoBg2-offset) + 4px));
+  animation: move .5s infinite linear;
+  transition-property: --logoBg2-color, color;
 }
 @keyframes move { to { --logoBg2-offset: 12px; } }
 @media (max-width: 768px) { .logoBg2 { --pos: 50%; } }
 
 #back2top {
-    color: var(--back2top-color);
-    background-color: var(--back2top-bg-color);
-    box-shadow: 0 1px 3px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 12%);
-    transition-property: all;
+  color: var(--back2top-color);
+  background-color: var(--back2top-bg-color);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 12%);
+  transition-property: all;
 }
 #back2top:hover {
-    box-shadow: 0 1px 5px rgb(0 0 0 / 25%), 0 4px 20px rgb(0 0 0 / 12%);
+  box-shadow: 0 1px 5px rgb(0 0 0 / 25%), 0 4px 20px rgb(0 0 0 / 12%);
 }
 #back2top:active {
-    box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%);
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%);
 }
 
 .header {
-    transition-property: border;
-    border-bottom-color: var(--border-color-light);
+  transition-property: border;
+  border-bottom-color: var(--border-color-light);
 }
 .headerNav a + a { border-left-color: var(--border-color-light); }
 
 .footer {
-    transition-property: border;
-    border-top-color: var(--border-color-light);
+  transition-property: border;
+  border-top-color: var(--border-color-light);
 }
 
 .contents li + li {
-    transition-property: border;
-    border-top-color: var(--border-color-light);
+  transition-property: border;
+  border-top-color: var(--border-color-light);
 }
 .contents li .title {
-    transition-property: color;
-    color: var(--content-color);
+  transition-property: color;
+  color: var(--content-color);
 }
 .contents li:hover:first-letter { color: var(--content-color); }
 .contents li:first-letter,
 .contents li .title:hover {
-    transition-property: color;
-    color: var(--first-letter-color);
+  transition-property: color;
+  color: var(--first-letter-color);
 }
 .contents li .tags { color: var(--tags-color); }
 .contents li .tags code {
-    background-color: var(--code-block-bg-color);
-    border-color: var(--border-color-light);
-    color: var(--tags-color);
+  background-color: var(--code-block-bg-color);
+  border-color: var(--border-color-light);
+  color: var(--tags-color);
 }
 
 .article .time { color: #999; }
 .article code:not([class*="language-"]) {
-    color: var(--tags-color);
-    background-color: var(--code-block-bg-color);
-    border-color: var(--border-color-light);
+  color: var(--tags-color);
+  background-color: var(--code-block-bg-color);
+  border-color: var(--border-color-light);
 }
 .article pre:not([class*="language-"]) {
-    background-color: var(--code-block-bg-color);
-    border-color: var(--border-color-heavy);
+  background-color: var(--code-block-bg-color);
+  border-color: var(--border-color-heavy);
 }
 .article pre code:not([class*="language-"]) {
-    color: var(--content-color);
+  color: var(--content-color);
 }
 .article .tags code {
-    color: var(--tags-color);
-    background-color: var(--code-block-bg-color);
-    border-color: var(--border-color-light);
+  color: var(--tags-color);
+  background-color: var(--code-block-bg-color);
+  border-color: var(--border-color-light);
 }
