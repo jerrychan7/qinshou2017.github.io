@@ -18,9 +18,9 @@
             },
             set(key, value, exdays = 365) {
                 if (!key) return;
-                const d = new Date(), encode = encodeURIComponent;
+                const d = new Date(), e = encodeURIComponent;
                 d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-                document.cookie = encode(key) + "=" + encode(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
+                document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
             },
             del(key) { window.cookie.set(key, "", -1); },
             has: (key) => window.cookie.get(key) != null,
@@ -57,7 +57,7 @@
             <a href="javascript:void(0);" onclick="retheme();">change theme</a>
         </div>
     </div>
-    <div class="article">
+    <div class="article match-braces line-numbers">
         <div class="time">
             Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
         </div>

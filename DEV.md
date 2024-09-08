@@ -59,7 +59,7 @@
   * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
 
 语法高亮选择了prismjs，下载时的选项：  
-<https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+c+cpp+css-extras+glsl+json+latex+markup-templating+php+sql&plugins=line-highlight+line-numbers+autolinker+file-highlight+highlight-keywords+remove-initial-line-feed+inline-color+previewers+autoloader+keep-markup+command-line+data-uri-highlight+toolbar+copy-to-clipboard+filter-highlight-all>
+<https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+bash+c+cpp+css-extras+glsl+json+json5+markup-templating&plugins=line-highlight+line-numbers+show-invisibles+autolinker+highlight-keywords+inline-color+command-line+data-uri-highlight+toolbar+copy-to-clipboard+download-button+match-braces>
 
 数学公式显示使用了katex。
 
@@ -74,6 +74,8 @@
 `npm run watch` 同步构建。对于文章的更新会更新最后修改时间，而模板的更新则不会。
 
 `npm run watch:updateTime` 同步构建。无论是模板还是文章，都会更新最后修改时间。
+
+`npm run watch:notUpdateTime` 同步构建。无论是模板还是文章，都不会更新最后修改时间。
 
 `npm start` 运行本地服务器。虽然浏览器控台有警告，但随它去吧，没看见啦啦啦~
 

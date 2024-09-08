@@ -11,6 +11,7 @@
         "rebuild:nut": "node build.js rebuild notUpdateTime",
         "watch": "node build.js sync autoNotUpdateTime",
         "watch:updateTime": "node build.js sync",
+        "watch:notUpdateTime": "node build.js sync notUpdateTime_article notUpdateTime_template",
         "start": "node server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
