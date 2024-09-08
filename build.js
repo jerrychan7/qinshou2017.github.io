@@ -6,6 +6,7 @@ import { gfmHeadingId } from "marked-gfm-heading-id";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
 import { createInterface } from "readline";
+import markedKatex from "./marked-katex-ext.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +41,7 @@ const links = Object.entries({
 
 marked.use({
     gfm: true,
-}, gfmHeadingId());
+}, gfmHeadingId(), markedKatex());
 
 function mkdir(dirPath) {
     var dir = "", dps = dirPath.split(/[/\\]/g);

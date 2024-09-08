@@ -72,7 +72,7 @@ function fn(j) { const i = 10, k = [], s = "string"; return i; }
 
 $$
 \begin{bmatrix}
-   a & b \\\\
+   a & b \\
    c & d
 \end{bmatrix}
 $$
@@ -83,7 +83,7 @@ $$
 
 $$
 \begin{alignedat}{2}
-   10&x+ &3&y = 2 \\\\
+   10&x+ &3&y = 2 \\
    3&x+&13&y = 4
 \end{alignedat}
 $$
@@ -94,6 +94,6 @@ $$
 
 \\(S\_{n}=\cfrac {(a\_{1}+a\_{n})\cdot n} {2}\\)
 
-$S\_{n}=\cfrac {(a\_{1}+a\_{n})\cdot n} {2}$
+$S_{n}=\cfrac {(a_{1}+a_{n})\cdot n} {2}$
 
 [咸鱼.gif]: ./xy.gif
