@@ -23,6 +23,8 @@
 
 meta-theme-color { color: var(--html-bg-color); }
 
+html { background-color: var(--html-bg-color); }
+
 body {
   transition-property: background-color;
   background-color: var(--html-bg-color);

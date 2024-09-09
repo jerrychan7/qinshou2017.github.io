@@ -36,7 +36,12 @@ body { margin: 0; padding: 0; }
   text-decoration: none;
 }
 
-.logo { display: inline-block; position: relative; padding: 5px; overflow: hidden; font-family: "courier new"; }
+@font-face {
+  font-family: 'CourierNewQS';
+  src: url(./fonts/CourierNewQS.woff2) format('woff2'),
+       url(./fonts/CourierNewQS.ttf) format('truetype');
+}
+.logo { display: inline-block; position: relative; padding: 5px; overflow: hidden; font-family: "Courier New", "CourierNewQS"; }
 .header .logo {
   display: block;
   border-radius: 50%;
