@@ -42,7 +42,7 @@
       }
     }
     window.addEventListener("hashchange", hashchange);
-    const tags_title = { /*tags-title*/ };
+    const tags_title = {"算法":["全排列","快速排序"],"全排列":["全排列"],"排序":["快速排序"],"快速排序":["快速排序"],"团体程序设计天梯赛":["L2-010. 排座位","根据前中后遍历序列创建树"],"数据结构与算法:树":["L2-010. 排座位","根据前中后遍历序列创建树"],"数据结构与算法:并查集":["L2-010. 排座位"],"数据结构与算法:集合":["L2-010. 排座位"],"数据结构与算法:图":["L2-010. 排座位"],"数据结构与算法:位运算":["内码对称"],"杂记":["第一篇Blogger"]};
     window.addEventListener("load", () => {
       document.getElementById("tags").innerHTML = `<ul>${
         Object.entries(tags_title).reduce((content, [tag, titles]) =>
