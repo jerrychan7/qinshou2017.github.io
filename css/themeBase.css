@@ -16,9 +16,6 @@
   --code-block-bg-color: var(--html-bg-color);
   --code-block-border-color: var(--border-color-light);
   --tags-color: #E74C3C;
-
-  --back2top-color: #7253ED;
-  --back2top-bg-color: #F2F2F2;
 }
 
 meta-theme-color { color: var(--html-bg-color); }
@@ -67,15 +64,17 @@ table th { color: #222; background-color: #00000010; transition-property: backgr
 @media (max-width: 768px) { .logoBg2 { --pos: 50%; } }
 
 #back2top {
-  color: var(--back2top-color);
-  background-color: var(--back2top-bg-color);
+  color: #7253ED;
+  background: #FAFAFA;
   box-shadow: 0 1px 3px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 12%);
   transition-property: all;
 }
 #back2top:hover {
+  background: #EDEDED;
   box-shadow: 0 1px 5px rgb(0 0 0 / 25%), 0 4px 20px rgb(0 0 0 / 12%);
 }
 #back2top:active {
+  background: #EAEAEA;
   box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%);
 }
 

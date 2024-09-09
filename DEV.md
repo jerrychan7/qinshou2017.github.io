@@ -79,7 +79,7 @@
 * [ ] add manifest.json for PWA
 * [ ] 发布在单独分支
 * [ ] 引入 [giscus](https://github.com/giscus/giscus) 作为评论
-* [ ] TOP按钮位置改变
+* [x] TOP按钮位置改变
 * [ ] 改变主题色变为悬浮按钮
 * [ ] TOC
 * [ ] 根据用户系统偏好自动选择亮色/暗色

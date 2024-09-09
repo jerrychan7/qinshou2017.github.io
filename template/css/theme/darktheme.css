@@ -1,15 +1,12 @@
 @charset "utf-8";
 
 :root {
-    --html-bg-color: #3C3F41;
+  --html-bg-color: #3C3F41;
 
-    --content-color: #DDD;
-    --content-bg-color: #1D1F21;
+  --content-color: #DDD;
+  --content-bg-color: #1D1F21;
 
-    --border-color-light: #555;
-
-    --back2top-color: #2c84fa;
-    --back2top-bg-color: #2b2830;
+  --border-color-light: #555;
 }
 
 /* h1, h2, h3, h4, h5, h6 { color: #faa700; } */
@@ -23,13 +20,13 @@ a:visited { color: #B77FDB; }
 a:active { color:#8080FF; }
 
 blockquote {
-    color: #a8a8a8;
-    border-left-color: #303436;
+  color: #a8a8a8;
+  border-left-color: #303436;
 }
 
 hr {
-    border-top-color: #747474;
-    border-bottom-color: #3c3c3c;
+  border-top-color: #747474;
+  border-bottom-color: #3c3c3c;
 }
 
 pre, code, kbd, samp { color: #fff; }
@@ -37,36 +34,40 @@ pre, code, kbd, samp { color: #fff; }
 .contents li { --first-letter-color: #6C9EF8; }
 .contents li .title { color: #B77FDB; }
 .contents li code, .contents li .tags code {
-    background-color: var(--html-bg-color);
-    border-color: #62676a;
+  background-color: var(--html-bg-color);
+  border-color: #62676a;
 }
 
 .article code:not([class*="language-"]) {
-    border-color: #62676a;
+  border-color: #62676a;
 }
 .article .tags code {
-    background-color: var(--html-bg-color);
+  background-color: var(--html-bg-color);
    /* border-color: #62676a; */
-    border-color: var(--html-bg-color);
-    color: #85A300;
+  border-color: var(--html-bg-color);
+  color: #85A300;
 }
 .article .tags a:visited,
 .article .tags a:active {
-    color: #D89333;
+  color: #D89333;
 }
 
 i, em { color: #EEE; }
 b, strong { color: #FFF; }
 
 img {
-    filter: invert(88%);
-    overflow: auto;
+  filter: invert(88%);
+  overflow: auto;
 }
 img[src^="data:image/gif;base64,"], img[src$=".gif"] {
-    filter: invert(0);
+  filter: invert(0);
 }
 
 table th {
-    color: #FFF;
-    background-color: var(--html-bg-color);
+  color: #FFF;
+  background-color: var(--html-bg-color);
 }
+
+#back2top { color: #2c84fa; background: #2B2830; }
+#back2top:hover { background: #26242B; }
+#back2top:active { background: #242128; }
