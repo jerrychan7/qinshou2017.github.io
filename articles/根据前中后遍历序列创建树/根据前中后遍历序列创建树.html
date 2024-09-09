@@ -27,13 +27,12 @@
       has: (key) => window.cookie.get(key) != null,
     };
     document.write(`
-      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
+      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "light")}.css" />
       <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
     `);
   </script>
   <link rel="stylesheet" href="/css/prism.css" />
   <script src="/js/index.js"></script>
-  <script src="/js/top.js"></script>
   <link rel="stylesheet" href="/css/katex.min.css" />
   <script defer src="/js/katex.min.js"></script>
   <script defer src="/js/katex-auto-render.min.js"
@@ -58,7 +57,7 @@
         <a href="/index.html">index</a>
         <a href="/tags.html">tags</a>
         <a href="/about.html">about</a>
-        <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        <!-- <a href="javascript:void(0);" onclick="retheme();">change theme</a> -->
       </div>
     </div>
     <div class="article match-braces line-numbers">
@@ -212,6 +211,10 @@ int main() {
       </ul>
     </div>
     <script src="/js/prism.js"></script>
+  </div>
+  <div id="fixedBtns">
+    <a href="javascript:void(0);" id="back2top" title="Go to top">^<br/>TOP</a>
+    <a href="javascript:void(0);" id="changeTheme" title="change theme"></a>
   </div>
 </body>
 

@@ -68,6 +68,6 @@ table th {
   background-color: var(--html-bg-color);
 }
 
-#back2top { color: #2c84fa; background: #2B2830; }
-#back2top:hover { background: #26242B; }
-#back2top:active { background: #242128; }
+#fixedBtns > * { color: #2c84fa; background: #2B2830; }
+#fixedBtns > *:hover { background: #26242B; }
+#fixedBtns > *:active { background: #242128; }

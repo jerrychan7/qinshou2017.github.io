@@ -27,12 +27,11 @@
       has: (key) => window.cookie.get(key) != null,
     };
     document.write(`
-      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "default")}.css" />
+      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "light")}.css" />
       <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
     `);
   </script>
   <script src="/js/index.js"></script>
-  <script src="/js/top.js"></script>
   <script>
     function hashchange() {
       let hash = window.location.hash.replace("#", "");
@@ -65,7 +64,7 @@
       <div class="headerNav">
         <a href="index.html">index</a>
         <a href="about.html">about</a>
-        <a href="javascript:void(0);" onclick="retheme();">change theme</a>
+        <!-- <a href="javascript:void(0);" onclick="retheme();">change theme</a> -->
       </div>
     </div>
     <div id="tags"></div>
@@ -80,6 +79,10 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div id="fixedBtns">
+    <a href="javascript:void(0);" id="back2top" title="Go to top">^<br/>TOP</a>
+    <a href="javascript:void(0);" id="changeTheme" title="change theme"></a>
   </div>
 </body>
 

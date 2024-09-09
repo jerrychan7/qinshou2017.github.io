@@ -211,14 +211,15 @@ function refreshOtherFiles() {
 
   fs.writeFileSync(path.join(rootDirPath, "/js/index.js"),
     fs.readFileSync(path.join(templateDirPath, "/js/index.js"), "utf8")
-    .replace(/\/\*allTheme\*\//g,
-      fs.readdirSync(path.join(templateDirPath, "/css/theme/"))
-      .reduce((allTheme, themeName) => {
-        if (themeName !== "default.css"
-          && fs.statSync(path.join(templateDirPath, "/css/theme/", themeName)).isFile())
-          allTheme.push(themeName.replace(path.extname(themeName), ""));
-        return allTheme;
-      }, ["default"]).join(",")));
+    // .replace(/\/\*allTheme\*\//g,
+    //   fs.readdirSync(path.join(templateDirPath, "/css/theme/"))
+    //   .reduce((allTheme, themeName) => {
+    //     if (themeName !== "default.css"
+    //       && fs.statSync(path.join(templateDirPath, "/css/theme/", themeName)).isFile())
+    //       allTheme.push(themeName.replace(path.extname(themeName), ""));
+    //     return allTheme;
+    //   }, ["default"]).join(","))
+  );
 
   saveArticlesMetadata();
 }
