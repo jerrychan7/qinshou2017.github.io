@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" Content="width=device-width, initial-scale=1" />
-  <title>{title}</title>
+  <title>{& ATTR filenameWithoutExt %}</title>
   <link rel="stylesheet" href="/css/layout.css" />
   <link rel="stylesheet" href="/css/themeBase.css" />
   <script>
@@ -39,7 +39,8 @@
     onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
   <script>
     window.addEventListener("load", () => {
-      const { Post, Update } = { /*time*/ }, f = t => t? (new Date(t)).toLocaleString(): "Unknow";
+      const Post = "{& ATTR time.Post %}", Update = "{& ATTR time.Update %}";
+      const f = (s, t = (new Date(s)).toLocaleString()) => t !== "Invalid Date"? t: "Unknow";
       document.getElementById("postTime").innerHTML = f(Post);
       document.getElementById("updateTime").innerHTML = f(Update);
     });
@@ -64,19 +65,9 @@
       <div class="time">
         Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
       </div>
-      <div class="tags">{tags}</div>
-      {articleContent}
-    </div>
-    <div class="footer">
-      <ul>
-        <li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
-        <li>友链:
-          <ul>
-            {links}
-          </ul>
-        </li>
-      </ul>
-    </div>
+      <div class="tags">{& ATTR tags %}</div>
+      {& ATTR markdowns\.content %}
+    </div>{& INCLUDE footer.html %}
     <script src="/js/prism.js"></script>
   </div>
   <div id="fixedBtns">

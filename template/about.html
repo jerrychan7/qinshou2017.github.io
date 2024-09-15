@@ -1,37 +1,8 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>{& INCLUDE header.html %}
   <title>about</title>
-  <link rel="stylesheet" href="/css/layout.css" />
-  <link rel="stylesheet" href="/css/themeBase.css" />
-  <script>
-    window.cookie = {
-      get(key, defaultValue = null) {
-        let allCookies = document.cookie.split(";");
-        for (const cki of allCookies) {
-          const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
-          if (k == key) return v || "";
-        }
-        return defaultValue;
-      },
-      set(key, value, exdays = 365) {
-        if (!key) return;
-        const d = new Date(), e = encodeURIComponent;
-        d.setTime(+d + exdays * 24 * 60 * 60 * 1000);
-        document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
-      },
-      del(key) { window.cookie.set(key, "", -1); },
-      has: (key) => window.cookie.get(key) != null,
-    };
-    document.write(`
-      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "light")}.css" />
-      <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
-    `);
-  </script>
-  <script src="/js/index.js"></script>
 </head>
 
 <body>
@@ -54,18 +25,8 @@
       </div>
     </div>
     <div>
-      {about.md}
-    </div>
-    <div class="footer">
-      <ul>
-        <li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
-        <li>友链:
-          <ul>
-            {links}
-          </ul>
-        </li>
-      </ul>
-    </div>
+      {& INCLUDE about.md %}
+    </div>{& INCLUDE footer.html %}
   </div>
   <div id="fixedBtns">
     <a href="javascript:void(0);" id="back2top" title="Go to top">^<br/>TOP</a>

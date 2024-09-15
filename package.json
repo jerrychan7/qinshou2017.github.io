@@ -18,6 +18,7 @@
     "author": "qinshou2017",
     "license": "MIT",
     "dependencies": {
+        "front-matter": "^4.0.2",
         "marked": "^14.1.1",
         "marked-gfm-heading-id": "^4.1.0"
     }

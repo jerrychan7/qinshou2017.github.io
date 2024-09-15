@@ -39,7 +39,8 @@
     onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
   <script>
     window.addEventListener("load", () => {
-      const { Post, Update } = {"Post":"2019-08-13T03:23+08:00","Update":"2022-12-08T14:34:40.878Z"}, f = t => t? (new Date(t)).toLocaleString(): "Unknow";
+      const Post = "2019-08-13T03:23+08:00", Update = "2022-12-08T14:34:40.878Z";
+      const f = (s, t = (new Date(s)).toLocaleString()) => t !== "Invalid Date"? t: "Unknow";
       document.getElementById("postTime").innerHTML = f(Post);
       document.getElementById("updateTime").innerHTML = f(Update);
     });

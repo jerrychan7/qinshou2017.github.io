@@ -34,7 +34,7 @@
 
 # 配置文件
 
-`/articlesBank/articleInfo.json`  
+`/markdowns/articleInfo.json`  
 必须要有，不然build将失败。不在该json中的文章将被视为第一次上传。
 
 ```JSON
@@ -53,7 +53,7 @@
 
 文章
 
-* 从`/articlesBank/`自动生成到`/articles/`中。
+* 从`/markdowns/`自动生成到`/articles/`中。
 * 文章的第一行要由JSON打头（`{`），这个JSON字符串更新不会影响文章的最后修改时间，里面放入文章的：
   * 文章的`tags`，若无该字段，则会归类为“未分类”；
   * 文章的`abstract`，若无该字段或该字段为空，则在build时会获取文章的前100个字作为摘要。
