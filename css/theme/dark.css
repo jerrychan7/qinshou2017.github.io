@@ -56,7 +56,7 @@ i, em { color: #EEE; }
 b, strong { color: #FFF; }
 
 img {
-  filter: invert(88%);
+  /* filter: invert(88%); */
   overflow: auto;
 }
 img[src^="data:image/gif;base64,"], img[src$=".gif"] {
