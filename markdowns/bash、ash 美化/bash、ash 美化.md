@@ -134,7 +134,7 @@ PROMPT_COMMAND='(( __t ))&&printf "\n\e[2mExecution time: %d.%09ds\e[m" $((__t=$
 ```bash
 PS0='${__t:0:$((__t=$(date +%s%N),0))}'
 PROMPT_COMMAND='(( __t ))&&printf "\n\e[2mExecution time: %d.%09ds\e[m" $((__t=$(date +%s%N)-__t,__t/1000000000)) $((__t%1000000000));__t=0'
-PS1='\n$(E=$?;[[ $E -ne 0 ]]&&echo -e "\e[2mExit status: \e[0;91m$E\n\e[m")\[\e[1;34m\]>\[\e[m\] \[\e[36m\]'`id -nu`'\[\e[m\]@\[\e[32m\]'`echo ${SSH_CONNECTION:-'  localhost '}|cut -d' ' -f3`'\[\e[m\]:\[\e[1;33m\]\w\[\e[m\]$(br=`git branch 2>/dev/null|awk '\''/^\*/{print $2}'\''`;[[ -n "$br" ]]&&echo -e " (\e[34mgit:\e[36m$br\e[m`git diff --no-ext-diff --quiet||echo \*``git diff --no-ext-diff --cached --quiet||echo +``git ls-files -o --exclude-standard --directory --no-empty-directory --error-unmatch -- ":/*" 2>&1 >/dev/null&&echo %`)") [\t]\n\[\e[1;31m\]\$\[\e[m\] '
+PS1='\n$(E=$?;[[ $E -ne 0 ]]&&echo -e "\e[2mExit status: \e[0;91m$E\n\e[m")\[\e[1;34m\]>\[\e[m\] \[\e[36m\]'`id -nu`'\[\e[m\]@\[\e[32m\]'`echo ${SSH_CONNECTION:-'  localhost'}|cut -d' ' -f3`'\[\e[m\]:\[\e[1;33m\]\w\[\e[m\]$(br=`git branch 2>/dev/null|awk '\''/^\*/{print $2}'\''`;[[ -n "$br" ]]&&echo -e " (\e[34mgit:\e[36m$br\e[m`git diff --no-ext-diff --quiet||echo \*``git diff --no-ext-diff --cached --quiet||echo +``git ls-files -o --exclude-standard --directory --no-empty-directory --error-unmatch -- ":/*" >/dev/null 2>&1&&echo %`)") [\t]\n\[\e[1;31m\]\$\[\e[m\] '
 ```
 
 小技巧，`\e[m` 可以直接将颜色重置，而不用写比较长的 `\e[0;0m` 之类的。

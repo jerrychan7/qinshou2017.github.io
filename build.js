@@ -44,45 +44,21 @@ marked.use({
 }, gfmHeadingId(), markedKatex());
 
 function mkdir(dirPath) {
-  var dir = "", dps = dirPath.split(/[/\\]/g);
-  if (path.isAbsolute(dirPath)) dir = dps[0];
-  for (let i = dir.length? 1: 0; i < dps.length; ++i) {
-    dir = path.join(dir, dps[i]);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-  }
+  if (!fs.existsSync(dirPath))
+    fs.mkdirSync(dirPath, { recursive: true, });
 }
 
-function rmdir(dirPath){
-  if(fs.existsSync(dirPath)){
-    fs.readdirSync(dirPath).forEach((file, index) => {
-      let curPath = path.join(dirPath, file);
-      if(fs.statSync(curPath).isDirectory())
-        rmdir(curPath);
-      else
-        fs.unlinkSync(curPath);
-    });
-    fs.rmdirSync(dirPath);
-  }
+function rmdir(dirPath) {
+  if (!fs.existsSync(dirPath)) return;
+  fs.rmSync(dirPath, { recursive: true, force: true, });
 }
 
 function copyFile(src, dst) {
-  mkdir(path.dirname(src));
-  // fs.createReadStream(src).pipe(fs.createWriteStream(dst));
-  fs.copyFileSync(src, dst);
+  fs.cpSync(src, dst);
 }
 
 function copyDir(srcDir, aimDir) {
-  if (!fs.existsSync(aimDir)) mkdir(aimDir);
-  fs.readdirSync(srcDir).forEach(filename => {
-    var filedir = path.join(srcDir, filename),
-      stats = fs.statSync(filedir),
-      ad = path.join(aimDir, filename);
-    if (stats.isDirectory())
-      return copyDir(filedir, ad);
-    if (!stats.isFile()) return;
-    // fs.createReadStream(filedir).pipe(fs.createWriteStream(ad));
-    fs.copyFileSync(filedir, ad);
-  });
+  fs.cpSync(srcDir, aimDir, { recursive: true, });
 }
 
 const getMD5 = str => crypto.createHash("md5").update(str).digest("hex");
@@ -147,7 +123,7 @@ function buildSingleArticle(articleDirPath, rebuild = false, { notUpdateTime = f
         .replace("{tags}", () => articleInfo.tags.map(t => `<a href="/tags.html#tag=${t}"><code>${t}</code></a>`).join("&#09;"))
         .replace("{articleContent}", () => marked_article)
         .replace("{links}", () => links);
-    fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out);
+    fs.writeFileSync(path.join(outputDirPath, articleName + ".html"), out, { flag: "w" });
     articlesInfo[articleName].abstract = articleInfo.abstract
       ? articleInfo.abstract
       : marked_article.replace(/.*<\/h\d>\n/g, "").trim().replace(/<[^>]+>/g,"").substring(0,101);

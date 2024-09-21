@@ -57,11 +57,10 @@ b, strong { color: #FFF; }
 
 img {
   /* filter: invert(88%); */
+  filter: brightness(.8);
   overflow: auto;
 }
-img[src^="data:image/gif;base64,"], img[src$=".gif"] {
-  filter: invert(0);
-}
+/* img[src^="data:image/gif;base64,"], img[src$=".gif"] { filter: invert(0); } */
 
 table th {
   color: #FFF;

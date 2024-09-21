@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" Content="width=device-width, initial-scale=1" />
+  <title>VSCode for Android</title>
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/themeBase.css" />
+  <script>
+    window.cookie = {
+      get(key, defaultValue = null) {
+        let allCookies = document.cookie.split(";");
+        for (const cki of allCookies) {
+          const [k, v] = cki.trim().split("=", 2).map(decodeURIComponent);
+          if (k == key) return v || "";
+        }
+        return defaultValue;
+      },
+      set(key, value, exdays = 365) {
+        if (!key) return;
+        const d = new Date(), e = encodeURIComponent;
+        d.setTime(+d + exdays * 24 * 60 * 60 * 1000);
+        document.cookie = e(key) + "=" + e(value) + ";expires=" + d.toUTCString() + ";path=/;samesite=strict";
+      },
+      del(key) { window.cookie.set(key, "", -1); },
+      has: (key) => window.cookie.get(key) != null,
+    };
+    document.write(`
+      <link rel="stylesheet" id="theme" href="/css/theme/${window.cookie.get("theme", "light")}.css" />
+      <meta name="theme-color" content="${window.cookie.get("themeColor", "#FFF")}" />
+    `);
+  </script>
+  <link rel="stylesheet" href="/css/prism.css" />
+  <script src="/js/index.js"></script>
+  <link rel="stylesheet" href="/css/katex.min.css" />
+  <script defer src="/js/katex.min.js"></script>
+  <script defer src="/js/katex-auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: !0}, {left: '$', right: '$', display: !1}, {left: '\\(', right: '\\)', display: false}, {left: '\\begin{equation}', right: '\\end{equation}', display: true}, {left: '\\begin{align}', right: '\\end{align}', display: true}, {left: '\\begin{alignat}', right: '\\end{alignat}', display: true}, {left: '\\begin{gather}', right: '\\end{gather}', display: true}, {left: '\\begin{CD}', right: '\\end{CD}', display: true}, {left: '\\[', right: '\\]', display: true}]});"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const { Post, Update } = {"Post":"2024-09-21T14:56:56.965Z","Update":"2024-09-21T14:56:56.965Z"}, f = t => t? (new Date(t)).toLocaleString(): "Unknow";
+      document.getElementById("postTime").innerHTML = f(Post);
+      document.getElementById("updateTime").innerHTML = f(Update);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="body">
+    <div class="header">
+      <div class="logo">
+        <div class="logoword">QS</div>
+        <div class="logoBg2"></div>
+      </div>
+      <div class="headerNav">
+        <a href="/index.html">index</a>
+        <a href="/tags.html">tags</a>
+        <a href="/about.html">about</a>
+        <!-- <a href="javascript:void(0);" onclick="retheme();">change theme</a> -->
+      </div>
+    </div>
+    <div class="article match-braces line-numbers">
+      <div class="time">
+        Post: <span id="postTime">{Post}</span> Update: <span id="updateTime">{Update}</span>
+      </div>
+      <div class="tags"><a href="/tags.html#tag=vscode"><code>vscode</code></a>&#09;<a href="/tags.html#tag=android"><code>android</code></a>&#09;<a href="/tags.html#tag=折腾"><code>折腾</code></a></div>
+      <h1 id="vscode-for-android">VSCode for Android</h1>
+<p>本文是讲如何在 Android 上用微软官方的 VSCode！如果你：</p>
+<ul>
+<li>有个安卓平板（手机也行，但屏幕比较小，体验上并不算好）</li>
+<li>有个实体键鼠（快捷键啊快捷键，没有也能用，就不太方便）</li>
+<li>没有电脑又有编程需求</li>
+<li>或者需要频繁的传源代码到安卓端</li>
+</ul>
+<p>那本文简直是为你量身定做的。</p>
+<p><img src="./vsc-web.webp" alt="vscode for web page"></p>
+<blockquote>
+<p>我一直都有在手机上写代码的习惯。从最开始大约 2014 年，盛行 MineCraft PE 版，我是个 mod 制作者，当时还是 <a href="https://github.com/zhuowei/MCPELauncher">BlockLauncher (BL)</a> 的天下。<br>一晃十年过去了，至今还在怀念当年在被窝里拿着手机敲 JavaScript 的日子。后来 es5 出来了，es6 也出来了（但 BL 并不支持），再后来，五年前 BL 都停止更新了。<br>最复杂的作品是在 MCPE 还没红石的时候，用 js 实现了红石系统。凭着爱好，愣是在完全没接触过数据结构和算法的情况下，自悟了数组和字典的区别，写出了字典优化的广度优先搜索。<br>扯远了。当年试了很多编辑器，最终找到了 DroidEdit，早就在 15 年就停止了更新的编辑器给了咱很多的惊喜，首先是舒适的高亮，其次是需要的运行资源并不多（当年手机太垃圾）。</p>
+<p>如今，如果你是需要直接在安卓上设备上写代码，那么我后来找到的 <a href="https://github.com/deadlyjack/Acode">Acode</a> 可能很适合你。<br>它支持 sftp，代码提示，代码块折叠，同时有强大的插件系统，配合 <a href="https://termux.dev/en">Termux</a>，加入 OpenAI 之类的 AI 辅助提示，体验上可以说是超弱化版的 VSCode。<br>其实如果你没有大屏幕+键鼠的话其实更推荐上这个，而非本文说的 VSCode。</p>
+</blockquote>
+<p>早些年，解决方案都是指向 <a href="https://github.com/coder/code-server">code-server</a>，但这个是第三方的，和官方没有啥关系。而且绝大部分插件都用不了，<a href="https://coder.com/docs/code-server/FAQ#why-cant-code-server-use-microsofts-extension-marketplace">还需要手动下载并导入</a>。<br>所以咱们要上就直接上官方的！前几年 VSCode 对于触屏设备几乎没有支持，但随着微软开始重视 <a href="https://vscode.dev">vscode.dev</a> 网页的开发，触屏设备逐渐开始有了一定的兼容性 <del>虽然体验上还是很屎</del>。
+同时，VSCode 逐渐分离了客户端和服务端，这就使很多操作成为了可能。同时出了一个 <a href="https://code.visualstudio.com/docs/editor/command-line">VSCode CLI</a> 是将所有一切粘合起来的一个入口。</p>
+<p>感谢 <a href="https://termux.dev/en">Termux</a>，提供了一个类 Linux 环境，但还是有不小差异的，特别是在文件路径和可执行文件上的差异。
+要获得更接近原生的体验，需要 <a href="https://github.com/termux/proot-distro">proot-distro</a>，其可看作是一个使用 <code>proot</code> 的巨型 bash 脚本，打包了其他用户设置好的 Linux 发行版。
+本质上来说是提供了一个容器，主要做的是假装你的根目录在 rootfs 的目录下，提供文件级别的隔离，但是进程等共享你当前运行的系统的资源。
+接下来，我从头记录如何从零开始配置环境。</p>
+<h2 id="安装-termux">安装 Termux</h2>
+<p>首先是安装 <a href="https://termux.dev/en">Termux</a>。目前是推荐在 <a href="https://github.com/termux/termux-app/releases">GitHub</a>/<a href="https://f-droid.org/en/packages/com.termux/">F-Droid</a> 中下载安装。
+我是从 F-Droid 中安装的，因为 Termux 配套的生态在 F-Droid 中都能找到。
+（能在这两个源任意一个下到，都证明会翻墙了，下面的基本都开着梯子吧）<br>安装完 Termux 后：</p>
+<pre><code class="language-bash">pkg update
+pkg upgrade # 这个过程中会有提示说要不要改 usr/etc/apt/sources.list 里的东西，直接 Y 就可以了，旧的会自动备份到同目录下的 sources.list.dpkg-old
+pkg i vim proot-distro openssh
+termux-setup-storage # 可选】请求外部储存访问权限
+mkdir ~/vscode # 新建个目录放 VSCode 相关的东西
+</code></pre>
+<p>VSCode 中有一个 SSH 连接上后就能用的功能，但 VSCode 本身运行是需要 libstdc++.so 和 /lib/ld-musl-aarch64.so.1 之类的库的，Termux 本身是缺失必要的库的，同时库的路径也是不对的。
+因此尝试用 VSCode 直接 SSH 上去是不行的。
+其实此时解决方案就已经有眉目了，就不是 <code>proot</code> 所解决的痛点吗。</p>
+<p>在此之前，需要将 VSCode CLI 下载到本地，方便后续操作。
+执行 <code>uname -a</code> 来获取当前 CPU 架构。根据下表选择运行的代码：</p>
+<table>
+<thead>
+<tr>
+<th>架构</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>arm64 / aarch64</td>
+<td><code>curl -Lk &#39;https://code.visualstudio.com/sha/download?build=stable&amp;os=cli-alpine-arm64&#39; --output ~/vscode/vscode_cli.tar.gz</code></td>
+</tr>
+<tr>
+<td>arm32 / armv7l / armv8l</td>
+<td><code>curl -Lk &#39;https://code.visualstudio.com/sha/download?build=stable&amp;os=cli-linux-armhf&#39; --output ~/vscode/vscode_cli.tar.gz</code></td>
+</tr>
+<tr>
+<td>x64</td>
+<td><code>curl -Lk &#39;https://code.visualstudio.com/sha/download?build=stable&amp;os=cli-alpine-x64&#39; --output ~/vscode/vscode_cli.tar.gz</code></td>
+</tr>
+</tbody></table>
+<p>然后到目录里解压文件，目前压缩包里就一个 <code>code</code> 可执行文件：</p>
+<pre><code class="language-bash">cd ~/vscode
+# 解压
+tar -xf vscode_cli.tar.gz
+# 新建个文件夹给 VSCode Server 存放用户数据和安装的插件扩展
+mkdir -p server/data server/extensions
+# 新建个文件夹给 Alpine 下的 CLI 存放下载的 VSCode Server
+mkdir -p alpine-cli/cli
+# 新建个文件夹给 Ubuntu 下的 CLI 存放下载的 VSCode Server
+mkdir -p ubuntu-cli/cli
+</code></pre>
+<h2 id="安装和配置-alpine">安装和配置 alpine</h2>
+<p>接下来通过 <code>proot-distro</code> 来安装 Alpine Linux。<br>首选是 Alpine Linux，因为足够小，只有不到 3MB。
+除了它之外最小的发行版是 Ubuntu，大约 25MB。
+如果用不习惯 Alpine，可以看下面一节 Ubuntu 的。
+但一般来说，作为轻度使用，并没有必要上过于复杂的系统，避免过多的资源占用。</p>
+<pre><code class="language-bash">pd i alpine
+# 以隔离环境启动 alpine 且进入交互式 shell。剩下的是路径绑定。如果你没有 termux-setup-storage 请求储存访问权限，则没有 /sdcard 那个路径，可删
+pd sh alpine --isolated --bind /data/data/com.termux:/termux --bind ~:/home/termux --bind /storage/emulated/0:/sdcard
+# 为了方便，你可以在 .bashrc 里 alias alpine=&#39;...&#39; 将上面的写个别名
+# 同时，proot-distro 虚拟的系统的文件都存在：
+# export PDFS=/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs
+</code></pre>
+<p>在 Alpine Linux 里：</p>
+<pre><code class="language-bash">apk update
+apk upgrade
+
+# 可选】添加说明手册 man
+apk add mandoc man-pages
+# 可选】将现在系统装有的包有 doc 的都加到 man 里
+apk add docs
+
+# 装 nodejs 是为了 VSCode Server 执行依赖环境
+apk add nodejs
+
+# 将 VSCode CLI 软连接到用户 bin 中
+ln -s /home/termux/vscode/code /usr/local/bin/code
+# 将 VSCode CLI 存放数据的文件夹软连接过来（--cli-data-dir 默认是 ~/.vscode/cli）
+ln -s /home/termux/vscode/alpine-cli /root/.vscode
+# 将 VSCode Server 存放数据的文件夹软连接过来（--server-data-dir 默认是 ~/.vscode-server）
+mkdir .vscode-server
+ln -s /home/termux/vscode/server/data /root/.vscode-server/data
+ln -s /home/termux/vscode/server/extensions /root/.vscode-server/extensions
+# 可选】将 CLI 连接到 .vscode-server 里
+ln -s /home/termux/vscode/alpine-cli/cli /root/.vscode-server/cli
+
+# 可选】如果需要用 npm 的话 要单独安装 npm
+apk add npm
+
+# 可选】安装 git
+apk add git
+
+# 可选】调整时区
+apk add tzdata
+ln -s /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+echo -e &quot;\n\nTZ=Asia/Hong_Kong\n&quot; &gt;&gt; ~/.profile
+echo -e &quot;\n\nif [ -r ~/.profile ]; then . ~/.profile; fi\n&quot; &gt;&gt; /etc/profile
+
+# 可选】装 ssh
+apk add openssh
+# 配置 sshd 的秘钥
+ssh-keygen -A
+# 设置密码，方便以后 SSH
+passwd
+# 可选】sshd 的调用是要使用绝对路径的，为了方便可以写个别名：
+echo -e &quot;\nalias sshd=&#39;/usr/sbin/sshd&#39;\n&quot; &gt;&gt; ~/.profile
+# 配置 sshd 的默认端口，以及允许root登录
+echo -e &quot;\nPort 8023\nPermitRootLogin yes\n&quot; &gt;&gt; /etc/ssh/sshd_config
+# 配置允许 VSCode SSH 上去后可以进行端口转发
+sed -E &#39;s/(AllowTcpForwarding )no/\1yes #no/&#39; /etc/sshd/sshd_config
+
+# 可选】将宿主机的 authorized_keys 软连接到 Alpine
+[ -e &quot;/home/termux/.ssh/authorized_keys&quot; ] &amp;&amp; ln -s /home/termux/.ssh/authorized_keys /root/.ssh/authorized_keys
+# 可选】将宿主机的私钥复制到 Alpine
+cp /home/termux/.ssh/id_ed25519 /root/.ssh/id_ed25519
+</code></pre>
+<h2 id="安装和配置-ubuntu">安装和配置 Ubuntu</h2>
+<p>如果你不喜欢 Alpine Linux，那也许你可以尝试下 Ubuntu。
+但还是不推荐使用 Ubuntu，因为 <code>proot-distro</code> 本身只是对路径和一些常用工具的模拟，本身系统底层还是 Android（没有 <code>systemctl</code> 之类的）</p>
+<pre><code class="language-bash">pd i ubuntu
+# 以隔离环境启动 ubuntu 且进入交互式 shell。剩下的是路径绑定。如果你没有 termux-setup-storage 请求储存访问权限，则没有 /sdcard 那个路径，可删
+pd sh ubuntu --isolated --bind /data/data/com.termux:/termux --bind ~:/home/termux --bind /storage/emulated/0:/sdcard
+# 为了方便，你可以在 .bashrc 里 alias ubuntu=&#39;...&#39; 将上面的写个别名
+# 同时，proot-distro 虚拟的系统的文件都存在：
+# export PDFS=/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs
+</code></pre>
+<p>在 ubuntu 里：</p>
+<pre><code class="language-bash"># 由于 Android 没有 Systemd，禁用 Ubuntu 的 Snap
+cat &lt;&lt; EOF | tee /etc/apt/preferences.d/nosnap.pref
+# To prevent repository packages from triggering the installation of Snap,
+# this file forbids snapd from being installed by APT.
+# For more information: https://linuxmint-user-guide.readthedocs.io/en/latest/snap.html
+Package: snapd
+Pin: release a=*
+Pin-Priority: -10
+EOF
+
+apt update
+apt upgrade
+
+# 可选】说明手册 man
+apt install man
+
+# 装 nodejs 是为了 VSCode Server 执行环境
+apt install nodejs
+
+# 可选】设置时区
+apt install tzdata
+# ln -s /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+
+# 可选】安装 ssh
+apt install ssh
+mkdir /run/sshd
+# 配置 sshd 的默认端口，以及允许root登录
+echo -e &quot;\nPort 8024\nPermitRootLogin yes\n&quot; &gt;&gt; /etc/ssh/sshd_config
+passwd
+# 配置允许 VSCode SSH 上去后可以进行端口转发
+echo -e &quot;\nAllowTcpForwarding yes\n&quot; &gt;&gt; /etc/ssh/sshd_config
+# 可选】将宿主机的 authorized_keys 软连接到 Ubuntu
+[ -e &quot;/home/termux/.ssh/authorized_keys&quot; ] &amp;&amp; ln -s /home/termux/.ssh/authorized_keys /root/.ssh/authorized_keys
+# 可选】将宿主机的私钥复制到 Ubuntu
+cp /home/termux/.ssh/id_ed25519 /root/.ssh/id_ed25519
+
+# 可选】如果需要用 npm 的话 要单独安装 npm 这个依赖很多需要挺大的空间的
+apt install npm
+
+# 可选】安装 git
+apt install git
+
+# 将 VSCode CLI 软连接到用户 bin 中
+ln -s /home/termux/vscode/code /usr/local/bin/code
+# 将 VSCode CLI 存放数据的文件夹软连接过来（--cli-data-dir 默认是 ~/.vscode/cli）
+ln -s /home/termux/vscode/ubuntu-cli /root/.vscode
+# 将 VSCode Server 存放数据的文件夹软连接过来（--server-data-dir 默认是 ~/.vscode-server）
+mkdir .vscode-server
+ln -s /home/termux/vscode/server/data /root/.vscode-server/data
+ln -s /home/termux/vscode/server/extensions /root/.vscode-server/extensions
+# 可选】将 CLI 连接到 .vscode-server 里
+ln -s /home/termux/vscode/ubuntu-cli/cli /root/.vscode-server/cli
+</code></pre>
+<h2 id="vscode-启动">VSCode 启动！</h2>
+<p>上面的设置中，将 VSCode Server 的配置都统一存放到了 <code>/data/data/com.termux/files/home/vscode/server</code> 中:</p>
+<ul>
+<li><code>data/</code> 存放的是用户数据，包括配置之类的</li>
+<li><code>extensions/</code> 存放的是下载好的插件</li>
+<li>上面两个文件夹都以软连接的形式连接到了发行版中</li>
+<li>好处是脱离了 <code>proot-distro</code> 的影响，发行版随便切换折腾都不会影响你设置好的 VSCode 配置</li>
+<li>同时，VSCode 客户端 SSH 连接上去后，数据也是存放到这两个文件夹中的，保证一致的体验</li>
+</ul>
+<p>是的，如果你配置了 SSH，这个时候其实就能系统中开启 sshd，用 VSCode SSH 上去开始爽了。</p>
+<p>虽然可以用，但是 SSH 上去其实是比较吃资源的（尝试多打开几个文件夹然后 <code>ps -e</code> 一下就知道了）。
+而且这不是在安卓上使用 VSCode。</p>
+<p>重点来了，如果你是在本地/局域网内，可以直接通过命令启动 VSCode Web Server 来在网页上体验 VSCode！</p>
+<pre><code class="language-bash">code serve-web --host &#39;0.0.0.0&#39; --without-connection-token
+</code></pre>
+<blockquote>
+<p>如果出现 <code>uv_interface_addresses</code> 错误不影响正常使用，这是可能是由于 Android 不允许直接获得硬件 Mac 地址导致的。更多可以查看 <a href="https://github.com/termux/termux-packages/issues/10868">termux/issues#10868</a>。</p>
+</blockquote>
+<p>如果你是在远程，可以通过 Remote Tunnels 来连接！只需要执行命令，并且打开 <a href="https://vscode.dev">vscode.dev</a> 登录就可以了！没有麻烦的内网穿透，没有麻烦的 VPS！一切都这么简单！</p>
+<pre><code class="language-bash">code tunnel
+</code></pre>
+<p>如果你是 Alpine，ash 需要手动添加 <code>-l</code> 参数，配置使用交互式shell（登录时调用 <code>/etc/profile</code> 文件），VSCode 配置：</p>
+<pre><code class="language-json5">{
+    &quot;terminal.integrated.defaultProfile.linux&quot;: &quot;ash&quot;,
+    &quot;terminal.integrated.profiles.linux&quot;: {
+        &quot;ash&quot;: {
+            &quot;path&quot;: &quot;/bin/ash&quot;,
+            &quot;icon&quot;: &quot;terminal&quot;,
+            &quot;args&quot;: [
+                &quot;-l&quot;
+            ]
+        }
+    },
+}
+</code></pre>
+<p>推荐配置写到远程服务器上，Ubuntu 中没有 ash，所以默认打开不会是 ash，而是 bash。</p>
+<blockquote>
+<p>ash 美化可以看咱上一篇文章<a href="../bash%E3%80%81ash%20%E7%BE%8E%E5%8C%96/bash%E3%80%81ash%20%E7%BE%8E%E5%8C%96.html">《bash / ash 美化》</a>。
+如果你选择在 alpine 里装 bash，你可能发现咱的美化在时间上是有问题的，原因是因为 busybox 的 data 命令和 Ubuntu 环境的是不一样的，需要 <code>apk add coreutils</code>。</p>
+</blockquote>
+<h2 id="已知问题和限制">已知问题和限制</h2>
+<ol>
+<li>局域网内的设备由于不是 <code>https</code> 协议，因此像 markdown 预览功能啊、复制粘贴啊可能是没办法正常用的。后续有时间我看看能不能局域网搞个签名，然后配置 nginx 端口转发，最后可能会出个教程，或者有人有精力折腾的可以一试。但是本机的 <code>localhost</code> 和 <code>127.0.0.1</code> 不受影响。</li>
+<li>有极小一部分插件是不能用的，目前就发现微软官方的 Remote - SSH 是装不了的，这就意味着你无法在 Web 版的 VSCode 里再 SSH 远程连接到其他系统了。</li>
+<li>外置储存设备里的（<code>/sdcard</code>、<code>/storage/emulated/0</code>、<code>/storage/self/primary</code>），由于 Android 系统本身的限制，无法在上面创建任何软/硬连接。因此 npm 之类的命令，需要依赖软连接的是注定失败的。</li>
+<li>由于将 SSH 和 <code>serve-web</code> 的 <code>--server-data-dir</code> 放到了一块，因此请确保 code 的版本，和 SSH 上去的 VSCode 版本是否是一致的，你可以通过 <code>code update</code> 来将 VSCode CLI 更新到最新。</li>
+<li>虽然和 VSCode 没关系，但顺带说下 docker 是没办法的，因为 Android 系统底层在编译的时候就缺少 docker 运行必备的某些组件，例如 <code>iptables</code> 防火墙。因此需要运行 docker 只能通过采用 QEMU 之类的虚拟机来实现。</li>
+<li>如果你没有实体键盘，用的是屏幕虚拟键盘：<ul>
+<li>在工作区输入失去焦点后，你可能需要点击下周围的一些内容（比如菜单啊之类的区域），然后再点击工作区才能再次唤出键盘。</li>
+<li>如果你的焦点是在工作区，且你的菜单是折叠状态的，那么你点击展开菜单图标时菜单可能是一闪而过的，此时你需要点击下除了工作区之外的地方让工作区失去焦点才能正常点击菜单展开按钮。</li>
+</ul>
+</li>
+<li>VSCode 的设置界面没有做过小的屏幕的自适应，因此可能需要横屏才能显示全设置内容。</li>
+<li>菜单类型，如果你想拥有像桌面版 VSCode 一样的菜单，需要在：设置 &gt; 用户 &gt; 窗口 &gt; Menu Bar Visibility (<code>window.menuBarVisibility</code>) 中调成 <code>classic</code>/<code>visible</code>。但有一个 bug，如果是从 <code>compact</code> 状态切换过去的，会失效，因此需要调成其他的再调回你想要的。例如，你现在是 <code>compact</code>，想切换成 <code>visible</code>，你可能得先换到 <code>hidden</code> 再换成 <code>visible</code>。</li>
+</ol>
+<h2 id="在小屏幕上一些有用的设置">在小屏幕上一些有用的设置</h2>
+<p>如果你非常的具有折腾精神的想要在小屏幕上使用网页版的 VSCode，那么还是需要在 VSCode 上进行些设置，用起来才不那么变扭。下面是我个人的配置，可以作为参考。
+首先，你需要将系统的自动旋转屏幕打开，因为设置界面需要横屏才能显示完整。</p>
+<p>设置 &gt; 用户：</p>
+<pre><code class="language-json5">{
+  // 在主边栏和辅助边栏上方显示活动栏
+  &quot;workbench.activityBar.location&quot;: &quot;top&quot;,
+  // 菜单栏可见性，在过小的屏幕上会显示为折叠按钮
+  &quot;window.menuBarVisibility&quot;: &quot;visible&quot;,
+  // 关闭缩略图
+  &quot;editor.minimap.enabled&quot;: false,
+  // 调小显示字体
+  &quot;editor.fontSize&quot;: 12,
+  &quot;terminal.integrated.fontSize&quot;: 12,
+  // 关闭屏幕阅读器支持【理论上会快一些
+  &quot;editor.accessibilitySupport&quot;: &quot;off&quot;,
+  // 在视区宽度和“Editor: Word Wrap Column”中的较小值处换行
+  &quot;editor.wordWrap&quot;: &quot;bounded&quot;,
+  // 关闭垂直自行边距（常用于debuger）
+  &quot;editor.glyphMargin&quot;: false,
+  // 关闭行号显示
+  // &quot;editor.lineNumbers&quot;: &quot;off&quot;,
+  // 行号宽度最小化（https://stackoverflow.com/questions/44912058/is-there-a-way-to-make-vscode-line-number-field-smaller-width）
+  &quot;editor.lineDecorationsWidth&quot;: 0,
+  // 关闭代码折叠功能
+  // &quot;editor.folding&quot;: false,
+  // 高对比度的暗色主题（OLED 屏友好）
+  &quot;workbench.preferredDarkColorTheme&quot;: &quot;Default High Contrast&quot;,
+}
+</code></pre>
+<p>设置后，可用来显示代码的空间会多很多。</p>
+<p><img src="./vsc-phone.webp" alt="vscode for android phone"></p>
+<h2 id="中途遇到的坑">中途遇到的坑</h2>
+<p>如果你查看 <code>code help</code> 你会发现有一个参数是 <code>--cli-data-dir</code>。这个目录存放下载下来的 VSCode Server 本身。
+本来想着 Alpine 和 Ubuntu 设置成一样能共用的，可以避免重复下载和更新。
+结果忽略了它下载下来的 node 是和系统强相关的，Alpine 和 Ubuntu 的动态连接器是完全不一样的，导致了无法通用……</p>
+<p>这是 Alpine 下 VSCode CLI 下载下来的：</p>
+<pre><code class="language-txt">&gt; file alpine/vscode/cli/serve-web/hash/node
+alpine/vscode/cli/serve-web/hash/node: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-musl-aarch64.so.1, with debug_info, not stripped
+</code></pre>
+<p>这是 Ubuntu 下 VSCode CLI 下载下来的：</p>
+<pre><code class="language-txt">&gt; file ubuntu/vscode/cli/serve-web/hash/node
+ubuntu/vscode/cli/serve-web/hash/node: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=ac53c694372490a52ad5071f1560feaad4924021, for GNU/Linux 3.7.0, with debug_info, not stripped, too many notes (256)
+</code></pre>
+<p>可以看到一个用的是 <code>/lib/ld-musl-aarch64.so.1</code>，一个用的是 <code>/lib/ld-linux-aarch64.so.1</code>。必然不能共用，musl 和 glibc 完全就是两个东西……</p>
+<p>因此，就算其他的东西都一样，但还是得区分两者的 CLI 路径。</p>
+
+    </div>
+    <div class="footer">
+      <ul>
+        <li>All rights reserved &copy; qinshou2017@github、jerrychan7@github</li>
+        <li>友链:
+          <ul>
+            <li><a href="https://kokic.github.io/">kokic</a></li>
+            <li><a href="https://blog.awa.moe/">兔子</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <script src="/js/prism.js"></script>
+  </div>
+  <div id="fixedBtns">
+    <a href="javascript:void(0);" id="back2top" title="Go to top">^<br/>TOP</a>
+    <a href="javascript:void(0);" id="changeTheme" title="change theme"></a>
+  </div>
+</body>
+
+</html>
